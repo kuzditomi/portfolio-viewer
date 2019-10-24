@@ -13,12 +13,14 @@ const Display: React.FC<DisplayProps> = ({ report }) => {
         <thead>
           <tr>
             <th>Underlying</th>
+            <th>Expiration</th>
           </tr>
         </thead>
         <tbody>
           {report.trades.map((trade, i) => (
             <tr key={i}>
               <td>{trade.underlying}</td>
+              <td>{trade.expiration.toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>

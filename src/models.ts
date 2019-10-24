@@ -1,5 +1,6 @@
 export interface Trade {
     underlying: string;
+    expiration: Date;
 }
 
 export interface Report {

@@ -84,10 +84,15 @@ export class ReportParser {
     }
 
     private ParseMyTrade(tradeLine: string[]): Trade {
-        const optionData = tradeLine[SYMBOL_COLUMN].split(' ');
-        
+        const optionData = tradeLine[SYMBOL_COLUMN].split('   ');
+
+        const underlying = optionData[0];
+        const expirationString = optionData[1].substr(0, 6);
+        const expiration = new Date(+expirationString.substr(0, 2)+2000, (+expirationString.substr(2, 2)) - 1, +(expirationString.substr(4, 2)))
+
         return {
-            underlying: optionData[0]
+            underlying,
+            expiration
         }
     }
 }
