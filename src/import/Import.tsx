@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ReportParser, ReportException } from "./ReportParser";
-import { Report } from "./Report";
-import "./Report.scss";
+import { Report } from "../models";
+import "./Import.scss";
 
 let reportParser: ReportParser;
 

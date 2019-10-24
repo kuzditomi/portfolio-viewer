@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
-import './App.scss';
-import Import from './import/Import';
-import { Report } from './import/Report';
+import React, { useState } from "react";
+import "./App.scss";
+import Import from "./import/Import";
+import { Report } from "./models";
+import Display from "./display/Display";
 
 const App: React.FC = () => {
   const [report, setReport] = useState<Optional<Report>>(undefined);
 
   return (
-    <div className="App">
-     HELLO
-     <Import onImport={(report)=>{
-       setReport(report);
-     }}/>
+    <>
+      <header>IBKR report viewer</header>
+      <div className="App">
+        <Import
+          onImport={report => {
+            setReport(report);
+          }}
+        />
 
-     { report && report.name }
-    </div>
+        {report && <Display report={report} />}
+      </div>
+    </>
   );
-}
+};
 
 export default App;

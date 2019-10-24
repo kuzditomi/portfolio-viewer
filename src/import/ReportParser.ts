@@ -1,11 +1,19 @@
-import { Report } from "./Report";
+import { Report, Trade } from "../models";
 
 export interface ReportException {
     message: string;
 }
 
 const TYPE_COLUMN = 0; // should contain Trades
+const HEADER_COLUMN = 1; // should contain header
 const ACCOUNT_COLUMN = 2; // should contain nothing for own account
+const SYMBOL_COLUMN = 5; // should contain underlying symbol
+
+enum ParseState {
+    NotFoundMyTradesYet = 1,
+    Trades = 2,
+    MyTradesFinished = 3
+}
 
 export class ReportParser {
     public Parse(file: File): Promise<Report> {
@@ -20,10 +28,10 @@ export class ReportParser {
 
         reader.onload = () => {
             console.debug('File loaded.');
-            let csvdata = reader.result as string;
+            const rawCsv = reader.result as string;
 
             try {
-                const report = this.ProcessData(csvdata);
+                const report = this.ParseRawData(rawCsv);
                 resolve(report);
             } catch {
                 reject({ message: "Error while parsing..." });
@@ -35,19 +43,51 @@ export class ReportParser {
         return result;
     }
 
-    private ProcessData(csvData: string): Report {
+    private ParseRawData(rawCsv: string): Report {
         console.debug('Processing csvData...');
 
-        const data = csvData
+        const dataLines = rawCsv
             .split('\n')
             .map(line => line.split(','));
 
-        const myTrades = data.filter(line => line[TYPE_COLUMN] === 'Trades' && line[ACCOUNT_COLUMN] === '');
-
-        console.log(myTrades);
+        const myTrades = this.ParseMyTrades(dataLines);
 
         return {
-            name: 'ok'
+            name: 'ok',
+            trades: myTrades
+        }
+    }
+
+    private ParseMyTrades(data: string[][]): Trade[] {
+        let parseState = ParseState.NotFoundMyTradesYet;
+        const myTrades = data.reduce<Trade[]>((my: Trade[], line: string[]) => {
+            switch (parseState) {
+                case ParseState.NotFoundMyTradesYet:
+                    if (line[TYPE_COLUMN] === 'Trades' && line[HEADER_COLUMN] === 'Header') {
+                        parseState = ParseState.Trades;
+                    }
+                    return [];
+                case ParseState.Trades:
+                    if (line[ACCOUNT_COLUMN] !== '') {
+                        parseState = ParseState.MyTradesFinished;
+                    } else {
+                        my.push(this.ParseMyTrade(line));
+                    }
+                    return my;
+                case ParseState.MyTradesFinished:
+                default:
+                    return my;
+            }
+        }, []);
+
+        return myTrades;
+    }
+
+    private ParseMyTrade(tradeLine: string[]): Trade {
+        const optionData = tradeLine[SYMBOL_COLUMN].split(' ');
+        
+        return {
+            underlying: optionData[0]
         }
     }
 }
