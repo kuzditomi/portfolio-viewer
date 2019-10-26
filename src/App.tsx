@@ -3,6 +3,7 @@ import "./App.scss";
 import Import from "./import/Import";
 import { Report } from "./models";
 import Display from "./display/Display";
+import History from "./history/History";
 
 const App: React.FC = () => {
   const [report, setReport] = useState<Optional<Report>>(undefined);
@@ -11,11 +12,8 @@ const App: React.FC = () => {
     <>
       <header>IBKR report viewer</header>
       <div className="App">
-        <Import
-          onImport={report => {
-            setReport(report);
-          }}
-        />
+        <History onImport={setReport} />
+        <Import onImport={setReport} />
 
         {report && <Display report={report} />}
       </div>
