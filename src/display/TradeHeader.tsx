@@ -14,7 +14,7 @@ const TradeHeader: React.FC = () => {
   return (
     <tr>
       {columns.map(column => (
-        <th>{columnTitles[column]}</th>
+        <th key={column}>{columnTitles[column]}</th>
       ))}
     </tr>
   );
