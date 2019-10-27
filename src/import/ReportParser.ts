@@ -89,7 +89,6 @@ export class ReportParser {
             if (line[ACCOUNT_COLUMN] !== "") {
               parseState = ParseState.MyTradesFinished;
             } else {
-              console.log(line);
               my.push(this.ParseMyTrade(line));
             }
             return my;
