@@ -1,4 +1,4 @@
-import { Report, Trade } from "../models";
+import { Report, Trade, OptionType } from '../models';
 
 export interface ReportException {
   message: string;
@@ -8,6 +8,9 @@ const TYPE_COLUMN = 0; // should contain Trades
 const HEADER_COLUMN = 1; // should contain header
 const ACCOUNT_COLUMN = 2; // should contain nothing for own account
 const SYMBOL_COLUMN = 5; // should contain underlying symbol
+const QUANTITY_COLUMN = 7; // should contain contract position quantity
+const BUY_QUANTITY_COLUMN = 7;
+const SELL_QUANTITY_COLUMN = 10;
 
 enum ParseState {
   NotFoundMyTradesYet = 1,
@@ -16,17 +19,17 @@ enum ParseState {
 }
 
 export class ReportParser {
-  private rawImport: string = '';
+  private rawImport: string = "";
 
-  public GetRawImport(){
-      return this.rawImport;
+  public GetRawImport() {
+    return this.rawImport;
   }
 
   public Parse(file: File): Promise<Report> {
     let resolve: (report: Report) => void;
     let reject: (error: ReportException) => void;
 
-    this.rawImport = '';
+    this.rawImport = "";
 
     const result = new Promise<Report>(
       (_resolve: (report: Report) => void, _reject) => {
@@ -47,7 +50,7 @@ export class ReportParser {
         const report = this.ParseRawData(rawCsv);
         resolve(report);
       } catch {
-        this.rawImport = '';
+        this.rawImport = "";
         reject({ message: "Error while parsing..." });
       }
     };
@@ -61,7 +64,6 @@ export class ReportParser {
     console.debug("Processing csvData...");
 
     const dataLines = rawCsv.split("\n").map(line => line.split(","));
-
     const myTrades = this.ParseMyTrades(dataLines);
 
     return {
@@ -72,28 +74,32 @@ export class ReportParser {
 
   private ParseMyTrades(data: string[][]): Trade[] {
     let parseState = ParseState.NotFoundMyTradesYet;
-    const myTrades = data.reduce<Trade[]>((my: Trade[], line: string[]) => {
-      switch (parseState) {
-        case ParseState.NotFoundMyTradesYet:
-          if (
-            line[TYPE_COLUMN] === "Trades" &&
-            line[HEADER_COLUMN] === "Header"
-          ) {
-            parseState = ParseState.Trades;
-          }
-          return [];
-        case ParseState.Trades:
-          if (line[ACCOUNT_COLUMN] !== "") {
-            parseState = ParseState.MyTradesFinished;
-          } else {
-            my.push(this.ParseMyTrade(line));
-          }
-          return my;
-        case ParseState.MyTradesFinished:
-        default:
-          return my;
-      }
-    }, []);
+    const myTrades = data.reduce<Trade[]>(
+      (my: Trade[], line: string[], index) => {
+        switch (parseState) {
+          case ParseState.NotFoundMyTradesYet:
+            if (
+              line[TYPE_COLUMN] === "Trades" &&
+              line[HEADER_COLUMN] === "Header"
+            ) {
+              parseState = ParseState.Trades;
+            }
+            return [];
+          case ParseState.Trades:
+            if (line[ACCOUNT_COLUMN] !== "") {
+              parseState = ParseState.MyTradesFinished;
+            } else {
+              console.log(line);
+              my.push(this.ParseMyTrade(line));
+            }
+            return my;
+          case ParseState.MyTradesFinished:
+          default:
+            return my;
+        }
+      },
+      []
+    );
 
     return myTrades;
   }
@@ -108,10 +114,19 @@ export class ReportParser {
       +expirationString.substr(2, 2) - 1,
       +expirationString.substr(4, 2)
     );
+    const optionType = optionData[1][6] === 'C' ? OptionType.Call : OptionType.Put; 
+    const optionTarget = Number(optionData[1].substr(7, 7)) / 100;
+
+    const position =
+      Number(tradeLine[BUY_QUANTITY_COLUMN]) +
+      Number(tradeLine[SELL_QUANTITY_COLUMN]);
 
     return {
       underlying,
-      expiration
+      expiration,
+      position,
+      optionTarget,
+      optionType
     };
   }
 }
