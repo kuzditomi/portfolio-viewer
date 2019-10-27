@@ -2,6 +2,7 @@ import { Report } from "../models";
 import React from "react";
 import "./display.scss";
 import TradeRow from "./TradeRow";
+import TradeHeader from './TradeHeader';
 
 export interface DisplayProps {
   report: Report;
@@ -12,14 +13,7 @@ const Display: React.FC<DisplayProps> = ({ report }) => (
     <h2>{report.name}</h2>
     <table>
       <thead>
-        <tr>
-          <th>Underlying</th>
-          <th>Option type</th>
-          <th>Option target</th>
-          <th>Position</th>
-          <th>Expiration</th>
-          <th>Days remaining</th>
-        </tr>
+        <TradeHeader/>
       </thead>
       <tbody>
         {report.trades.map((trade, i) => (

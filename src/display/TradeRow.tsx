@@ -1,20 +1,11 @@
 import { OptionType, Trade } from "../models";
 import React from "react";
 import "./display.scss";
+import { columns } from './models';
 
 export interface TradeRowProps {
   trade: Trade;
 }
-
-const columns = [
-  "underlying",
-  "optionType",
-  "optionTarget",
-  "position",
-  "expiration",
-  "remainingDays"
-] as const;
-type columns = typeof columns[number]; // Thanks typesciprt 3.4 !!!
 
 const columnDisplayers: { [key in columns]: (trade: Trade) => string } = {
   underlying: trade => trade.underlying,
