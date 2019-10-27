@@ -1,7 +1,25 @@
 .display {
   table {
+    th,
+    td {
+      padding: 5px;
+    }
+
     th {
+      font-size: 12px;
+      max-width: 8em;
       text-transform: uppercase;
+      background: #3c3cc3;
+      color: white;
+    }
+
+    tbody {
+      tr:nth-child(2n){
+        background: #afaffa;
+      }
+      tr:nth-child(2n+1){
+        background: #d1d1fa;
+      }
     }
   }
 }
