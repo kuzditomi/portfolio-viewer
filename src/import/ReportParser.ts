@@ -94,7 +94,8 @@ export class ReportParser {
       return map;
     }, {} as { [key: string]: TradeGroup })
 
-    return Object.values(mapByUnderlyingAndExpiration);
+    return Object.values(mapByUnderlyingAndExpiration)
+      .sort((a,b) => +a.expiration - +b.expiration);
   }
 
   private ParseMyTrades(data: string[][]): Trade[] {
