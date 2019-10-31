@@ -2,6 +2,7 @@ import React from "react";
 import { columns } from "./models";
 
 const columnTitles: { [key in columns]: string } = {
+  action: '',
   underlying: "Underlying",
   optionTarget: "Option Target",
   optionType: "Option Type",

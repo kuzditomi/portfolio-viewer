@@ -14,12 +14,23 @@
     }
 
     tbody {
-      tr:nth-child(2n){
+      tr:nth-child(2n) {
         background: #afaffa;
       }
-      tr:nth-child(2n+1){
+      tr:nth-child(2n + 1) {
         background: #d1d1fa;
+      }
+      tr.trade-group-row {
+        background: blue;
+        color: white;
       }
     }
   }
+}
+
+.collapse-btn {
+  border: none;
+  background: black;
+  color: white;
+  cursor: pointer;
 }

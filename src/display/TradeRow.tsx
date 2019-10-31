@@ -8,6 +8,7 @@ export interface TradeRowProps {
 }
 
 const columnDisplayers: { [key in columns]: (trade: Trade) => string } = {
+  action: trade => '',
   underlying: trade => trade.underlying,
   optionType: trade => (trade.optionType === OptionType.Call ? "CALL" : "PUT"),
   optionTarget: trade => trade.optionTarget.toString(),

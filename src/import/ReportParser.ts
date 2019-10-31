@@ -1,4 +1,4 @@
-import { Report, Trade, OptionType } from '../models';
+import { Report, Trade, OptionType, TradeGroup } from '../models';
 
 export interface ReportException {
   message: string;
@@ -66,10 +66,35 @@ export class ReportParser {
     const dataLines = rawCsv.split("\n").map(line => line.split(","));
     const myTrades = this.ParseMyTrades(dataLines);
 
+    const tradeGroups = this.getGroupsFromTrades(myTrades);
+
     return {
       name: "ok",
+      tradeGroups,
       trades: myTrades
     };
+  }
+
+  private getGroupsFromTrades(trades: Trade[]) {
+    const mapByUnderlyingAndExpiration = trades.reduce((map, trade) => {
+      const { expiration, underlying } = trade;
+      const key = `${underlying} - ${expiration.toLocaleDateString()}`;
+
+
+      if (!map[key]) {
+        map[key] = {
+          underlying,
+          expiration,
+          trades: []
+        };
+      }
+
+      map[key].trades.push(trade);
+
+      return map;
+    }, {} as { [key: string]: TradeGroup })
+
+    return Object.values(mapByUnderlyingAndExpiration);
   }
 
   private ParseMyTrades(data: string[][]): Trade[] {
@@ -113,7 +138,7 @@ export class ReportParser {
       +expirationString.substr(2, 2) - 1,
       +expirationString.substr(4, 2)
     );
-    const optionType = optionData[1][6] === 'C' ? OptionType.Call : OptionType.Put; 
+    const optionType = optionData[1][6] === 'C' ? OptionType.Call : OptionType.Put;
     const optionTarget = Number(optionData[1].substr(7, 7)) / 100;
 
     const position =

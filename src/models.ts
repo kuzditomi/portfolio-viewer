@@ -12,5 +12,12 @@ export interface Trade {
 
 export interface Report {
     name: string;
-    trades: Trade[]
+    tradeGroups: TradeGroup[];
+    trades: Trade[];
+}
+
+export interface TradeGroup {
+    underlying: string;
+    expiration: Date;
+    trades: Trade[];
 }
