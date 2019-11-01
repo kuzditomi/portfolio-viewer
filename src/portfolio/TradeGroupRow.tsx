@@ -1,9 +1,8 @@
 import { TradeGroup } from "../models";
 import React, { useState } from "react";
-import "./display.scss";
 import { columns } from "./models";
 import TradeRow from "./TradeRow";
-import { getPriceString } from "./displayUtils";
+import PriceColumn from "./PriceColumn.component";
 
 export interface TradeGroupRowProps {
   tradeGroup: TradeGroup;
@@ -19,7 +18,12 @@ const getRemainingDays = (date: Date): number => {
   return Math.floor((Number(date) - Number(now)) / 1000 / 60 / 60 / 24);
 };
 
-const empty = () => "";
+const tdWrapper = (key: string, child: React.ReactNode) => (
+  <td key={key} className={key}>
+    {child}
+  </td>
+);
+const empty = (key: string) => (_tradeGroup: TradeGroup) => tdWrapper(key, "");
 
 const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,22 +35,29 @@ const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
   const columnDisplayers: {
     [key in columns]: (tradeGroup: CollapseableTradeGroup) => React.ReactNode;
   } = {
-    action: tradeGroup => (
-      <button className="collapse-btn" onClick={() => toggleIsOpen()}>
-        {tradeGroup.isOpen ? "-" : "+"}
-      </button>
-    ),
-    underlying: tradeGroup => tradeGroup.underlying,
-    optionType: empty,
-    optionTarget: empty,
-    position: empty,
-    price: tradeGroup =>
-      getPriceString(
-        tradeGroup.trades.reduce((sum, trade) => (sum += trade.price), 0)
+    action: tradeGroup =>
+      tdWrapper(
+        "action",
+        <button className="collapse-btn" onClick={() => toggleIsOpen()}>
+          {tradeGroup.isOpen ? "-" : "+"}
+        </button>
       ),
-    expiration: tradeGroup => tradeGroup.expiration.toLocaleDateString(),
+    underlying: tradeGroup => tdWrapper("underlying", tradeGroup.underlying),
+    optionType: empty("optionType"),
+    optionTarget: empty("optionTarget"),
+    position: empty("position"),
+    price: tradeGroup => (
+      <PriceColumn
+        price={tradeGroup.trades.reduce(
+          (sum, trade) => (sum += trade.price),
+          0
+        )}
+      />
+    ),
+    expiration: tradeGroup =>
+      tdWrapper('expiration', tradeGroup.expiration.toLocaleDateString()),
     remainingDays: tradeGroup =>
-      getRemainingDays(tradeGroup.expiration).toString()
+      tdWrapper('remainingDays', getRemainingDays(tradeGroup.expiration).toString())
   };
 
   const group: CollapseableTradeGroup = { ...tradeGroup, isOpen };
@@ -54,11 +65,7 @@ const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
   return (
     <>
       <tr className="trade-group-row">
-        {columns.map(column => (
-          <td key={column} className={column}>
-            {columnDisplayers[column](group)}
-          </td>
-        ))}
+        {columns.map(column => columnDisplayers[column](group))}
       </tr>
       {isOpen
         ? tradeGroup.trades.map((trade, i) => (
