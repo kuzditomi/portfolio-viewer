@@ -1,25 +1,27 @@
-import React from "react";
-import { ImportHistoryService } from "./ImportHistory.service";
+import React, { useEffect } from "react";
 
-let historyService: ImportHistoryService;
-
-export interface ImportHistoryDispatchProps {
-  onImport(reportKey: string):void;
+export interface ImportHistoryStateProps {
+  history: string[];
 }
 
-const ImportHistory: React.FC<ImportHistoryDispatchProps> = ({ onImport }) => {
-  if (!historyService) {
-    historyService = new ImportHistoryService();
-  }
+export interface ImportHistoryDispatchProps {
+  importFromHistory(reportKey: string): void;
+  loadHistory(): void;
+}
 
-  const savedRawImportKeys = historyService.GetRawImportKeys();
+const ImportHistory: React.FC<
+  ImportHistoryStateProps & ImportHistoryDispatchProps
+> = ({ history, importFromHistory, loadHistory }) => {
+  useEffect(() => {
+    loadHistory();
+  }, [loadHistory]);
 
   return (
     <div className="history">
       <ul>
-        {savedRawImportKeys.map(key => (
+        {history.map(key => (
           <li key={key}>
-            <button onClick={() =>  onImport(key)}>{key}</button>
+            <button onClick={() => importFromHistory(key)}>{key}</button>
           </li>
         ))}
       </ul>

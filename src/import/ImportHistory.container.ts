@@ -1,13 +1,20 @@
 import { connect } from "react-redux";
 import { AppState } from "../store";
-import ImportHistory, { ImportHistoryDispatchProps } from './ImportHistory.component';
+import ImportHistory, { ImportHistoryDispatchProps, ImportHistoryStateProps } from './ImportHistory.component';
 import { Dispatch } from 'redux';
-import { loadReport } from './import.actioncreators';
+import { loadReport, loadHistory } from './import.actioncreators';
+import { importHistorySelector } from "./import.selectors";
+
+const mapStateToProps = (state: AppState): ImportHistoryStateProps => ({
+  history: importHistorySelector(state)
+});
 
 const mapDispatchToProps = (dispatch: Dispatch): ImportHistoryDispatchProps => ({
-  onImport: (key: string) => { loadReport(key)(dispatch) }
+  importFromHistory: (key: string) => { loadReport(key)(dispatch) },
+  loadHistory: ()=> loadHistory()(dispatch)
 })
 
-export default connect<{}, ImportHistoryDispatchProps, {}, AppState>(
-  null, mapDispatchToProps
+export default connect<ImportHistoryStateProps, ImportHistoryDispatchProps, 
+{}, AppState>(
+  mapStateToProps, mapDispatchToProps
 )(ImportHistory);

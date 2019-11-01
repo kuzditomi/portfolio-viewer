@@ -1,17 +1,20 @@
 import { Dispatch } from "redux";
 import { ImportHistoryService } from './ImportHistory.service';
 import { ReportParserService } from "./ReportParser.service";
-import { IMPORT_ACTIONS, IMPORT_ACTION_FROM_HISTORY } from "./import.actions";
+import { reportLoadedFromHistoryAction, historyLoadedAction } from './import.actions';
 
 const importHistoryService = new ImportHistoryService();
 const reportParserService = new ReportParserService();
 
-export const loadReport = (reportKey: string) => (dispatch: Dispatch): IMPORT_ACTION_FROM_HISTORY => {
+export const loadReport = (reportKey: string) => (dispatch: Dispatch) => {
     const rawImport = importHistoryService.GetRawImport(reportKey);
     const report = reportParserService.ParseRawData(rawImport);
 
-    return dispatch({
-        type: IMPORT_ACTIONS.IMPORT_FROM_HISTORY,
-        payload: report
-    });
+    return dispatch(reportLoadedFromHistoryAction(report));
+}
+
+export const loadHistory = () => (dispatch: Dispatch) => {
+    const history = importHistoryService.GetRawImportKeys();
+
+    return dispatch(historyLoadedAction(history));
 }
