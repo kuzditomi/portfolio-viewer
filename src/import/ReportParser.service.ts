@@ -18,7 +18,7 @@ enum ParseState {
   MyTradesFinished = 3
 }
 
-export class ReportParser {
+export class ReportParserService {
   private rawImport: string = "";
 
   public GetRawImport() {

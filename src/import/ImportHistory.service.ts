@@ -4,7 +4,7 @@ interface History {
   rawImports: { [key: string]: string };
 }
 
-export class HistoryService {
+export class ImportHistoryService {
   private getSavedHistory(): History {
     const savedReports = localStorage.getItem(HISTORY_KEY);
     if (savedReports) {

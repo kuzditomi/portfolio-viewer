@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { ReportParser, ReportException } from "./ReportParser";
+import { ReportParserService, ReportException } from "./ReportParser.service";
 import { Report } from "../models";
 import "./Import.scss";
-import { HistoryService } from '../history/HistoryService';
+import { ImportHistoryService } from './ImportHistory.service';
 
-let reportParser: ReportParser;
-let historyService: HistoryService;
+let reportParser: ReportParserService;
+let historyService: ImportHistoryService;
 
 export interface ImportProps {
   onImport(report: Report): void;
@@ -24,7 +24,7 @@ const Import: React.FC<ImportProps> = ({ onImport }) => {
     }
 
     if (!reportParser) {
-      reportParser = new ReportParser();
+      reportParser = new ReportParserService();
     }
 
     try {
@@ -54,7 +54,7 @@ const Import: React.FC<ImportProps> = ({ onImport }) => {
     }
 
     if(!historyService){
-      historyService = new HistoryService();
+      historyService = new ImportHistoryService();
     }
     historyService.SaveRawImport(reportParser.GetRawImport());
     onImport(report);

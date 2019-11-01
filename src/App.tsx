@@ -1,23 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.scss";
-import Import from "./import/Import";
-import { Report } from "./models";
-import Display from "./display/Display";
-import History from "./history/History";
+import Portfolio from "./portfolio/Portfolio.container";
+import ImportHistory from "./import/ImportHistory.container";
+import { Provider } from "react-redux";
+import store from "./store";
 
 const App: React.FC = () => {
-  const [report, setReport] = useState<Optional<Report>>(undefined);
-
   return (
-    <>
+    <Provider store={store}>
       <header>IBKR report viewer</header>
       <div className="App">
-        <History onImport={setReport} />
-        <Import onImport={setReport} />
+        <ImportHistory />
+        {/* <Import onImport={setReport} /> */}
 
-        {report && <Display report={report} />}
+        <Portfolio/>
       </div>
-    </>
+    </Provider>
   );
 };
 
