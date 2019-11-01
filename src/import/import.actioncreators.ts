@@ -18,3 +18,10 @@ export const loadHistory = () => (dispatch: Dispatch) => {
 
     return dispatch(historyLoadedAction(history));
 }
+
+
+export const importFile = (file: File) => async (dispatch: Dispatch) => {
+    const rawImport = await reportParserService.Parse(file);
+    importHistoryService.SaveRawImport(rawImport);
+    loadHistory()(dispatch);
+}

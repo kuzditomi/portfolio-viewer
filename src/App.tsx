@@ -4,6 +4,7 @@ import Portfolio from "./portfolio/Portfolio.container";
 import ImportHistory from "./import/ImportHistory.container";
 import { Provider } from "react-redux";
 import store from "./store";
+import Import from "./import/Import.container";
 
 const App: React.FC = () => {
   return (
@@ -11,8 +12,7 @@ const App: React.FC = () => {
       <header>IBKR report viewer</header>
       <div className="App">
         <ImportHistory />
-        {/* <Import onImport={setReport} /> */}
-
+        <Import />
         <Portfolio/>
       </div>
     </Provider>

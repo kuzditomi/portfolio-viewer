@@ -24,18 +24,14 @@ enum ParseState {
 export class ReportParserService {
   private rawImport: string = "";
 
-  public GetRawImport() {
-    return this.rawImport;
-  }
-
-  public Parse(file: File): Promise<Report> {
-    let resolve: (report: Report) => void;
-    let reject: (error: ReportException) => void;
+  public Parse(file: File): Promise<string> {
+    let resolve: (raw: string) => void;
+    let reject: (error: string) => void;
 
     this.rawImport = "";
 
-    const result = new Promise<Report>(
-      (_resolve: (report: Report) => void, _reject) => {
+    const result = new Promise<string>(
+      (_resolve: (raw: string) => void, _reject) => {
         [resolve, reject] = [_resolve, _reject];
       }
     );
@@ -50,11 +46,10 @@ export class ReportParserService {
       this.rawImport = rawCsv;
 
       try {
-        const report = this.ParseRawData(rawCsv);
-        resolve(report);
+        resolve(this.rawImport);
       } catch {
         this.rawImport = "";
-        reject({ message: "Error while parsing..." });
+        reject("Error while parsing...");
       }
     };
 
@@ -104,7 +99,7 @@ export class ReportParserService {
   private ParseMyTrades(data: string[][]): Trade[] {
     let parseState = ParseState.NotFoundMyTradesYet;
     const myTrades = data.reduce<Trade[]>(
-      (my: Trade[], line: string[], index) => {
+      (my: Trade[], line: string[]) => {
         switch (parseState) {
           case ParseState.NotFoundMyTradesYet:
             if (
@@ -133,7 +128,7 @@ export class ReportParserService {
   }
 
   private ParseMyTrade(tradeLine: string[]): Trade {
-    const optionData = tradeLine[SYMBOL_COLUMN].split("   ");
+    const optionData = tradeLine[SYMBOL_COLUMN].split('  ').map(s => s.trim());
 
     const underlying = optionData[0];
     const expirationString = optionData[1].substr(0, 6);
