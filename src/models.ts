@@ -8,6 +8,7 @@ export interface Trade {
     expiration: Date;
     optionType: OptionType;
     optionTarget: number;
+    price: number;
 }
 
 export interface Report {

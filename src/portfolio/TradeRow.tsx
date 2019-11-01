@@ -1,19 +1,21 @@
 import { OptionType, Trade } from "../models";
 import React from "react";
 import "./display.scss";
-import { columns } from './models';
+import { columns } from "./models";
+import { getPriceString } from './displayUtils';
 
 export interface TradeRowProps {
   trade: Trade;
 }
 
 const columnDisplayers: { [key in columns]: (trade: Trade) => string } = {
-  action: trade => '',
+  action: () => "",
   underlying: trade => trade.underlying,
   optionType: trade => (trade.optionType === OptionType.Call ? "CALL" : "PUT"),
   optionTarget: trade => trade.optionTarget.toString(),
   position: trade => trade.position.toString(),
   expiration: trade => trade.expiration.toLocaleDateString(),
+  price: trade => getPriceString(trade.price),
   remainingDays: trade => getRemainingDays(trade.expiration).toString()
 };
 
@@ -27,7 +29,9 @@ const TradeRow: React.FC<TradeRowProps> = ({ trade }) => {
   return (
     <tr>
       {columns.map(column => (
-        <td key={column} className={column}>{columnDisplayers[column](trade)}</td>
+        <td key={column} className={column}>
+          {columnDisplayers[column](trade)}
+        </td>
       ))}
     </tr>
   );

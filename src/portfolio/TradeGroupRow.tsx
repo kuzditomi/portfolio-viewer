@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./display.scss";
 import { columns } from "./models";
 import TradeRow from "./TradeRow";
+import { getPriceString } from "./displayUtils";
 
 export interface TradeGroupRowProps {
   tradeGroup: TradeGroup;
@@ -39,6 +40,10 @@ const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
     optionType: empty,
     optionTarget: empty,
     position: empty,
+    price: tradeGroup =>
+      getPriceString(
+        tradeGroup.trades.reduce((sum, trade) => (sum += trade.price), 0)
+      ),
     expiration: tradeGroup => tradeGroup.expiration.toLocaleDateString(),
     remainingDays: tradeGroup =>
       getRemainingDays(tradeGroup.expiration).toString()

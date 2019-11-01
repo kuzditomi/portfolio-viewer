@@ -1,14 +1,15 @@
-import React from "react";
-import { columns } from "./models";
+import React from 'react';
+import { columns } from './models';
 
 const columnTitles: { [key in columns]: string } = {
   action: '',
-  underlying: "Underlying",
-  optionTarget: "Option Target",
-  optionType: "Option Type",
-  position: "Position",
-  expiration: "Expiration",
-  remainingDays: "Remaining days"
+  underlying: 'Underlying',
+  optionTarget: 'Option Target',
+  optionType: 'Option Type',
+  position: 'Position',
+  expiration: 'Expiration',
+  price: 'Price',
+  remainingDays: 'Remaining days'
 };
 
 const TradeHeader: React.FC = () => {

@@ -8,9 +8,12 @@ const TYPE_COLUMN = 0; // should contain Trades
 const HEADER_COLUMN = 1; // should contain header
 const ACCOUNT_COLUMN = 2; // should contain nothing for own account
 const SYMBOL_COLUMN = 5; // should contain underlying symbol
-const QUANTITY_COLUMN = 7; // should contain contract position quantity
+// const QUANTITY_COLUMN = 7; // should contain contract position quantity
 const BUY_QUANTITY_COLUMN = 7;
+const BUY_AVG_PRICE_COLUMN = 8;
+
 const SELL_QUANTITY_COLUMN = 10;
+const SELL_AVG_PRICE_COLUMN = 11;
 
 enum ParseState {
   NotFoundMyTradesYet = 1,
@@ -95,7 +98,7 @@ export class ReportParserService {
     }, {} as { [key: string]: TradeGroup })
 
     return Object.values(mapByUnderlyingAndExpiration)
-      .sort((a,b) => +a.expiration - +b.expiration);
+      .sort((a, b) => +a.expiration - +b.expiration);
   }
 
   private ParseMyTrades(data: string[][]): Trade[] {
@@ -146,12 +149,17 @@ export class ReportParserService {
       Number(tradeLine[BUY_QUANTITY_COLUMN]) +
       Number(tradeLine[SELL_QUANTITY_COLUMN]);
 
+    const price =
+      Number(tradeLine[BUY_AVG_PRICE_COLUMN]) -
+      Number(tradeLine[SELL_AVG_PRICE_COLUMN]);
+
     return {
       underlying,
       expiration,
       position,
       optionTarget,
-      optionType
+      optionType,
+      price
     };
   }
 }
