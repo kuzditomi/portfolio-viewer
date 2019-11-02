@@ -8,7 +8,7 @@ import React from "react";
 import { DateFilter } from "./filters.models";
 import { dateFilterSelector } from "./filters.selectors";
 import { AppState } from "../store";
-import { dateFilterSelectedAction } from "./filters.actions";
+import { filterByDate } from "./filters.actioncreators";
 
 const mapStateToProps = (state: AppState): RadioFilterStateProps => ({
   selectedValue: dateFilterSelector(state) as number
@@ -16,7 +16,7 @@ const mapStateToProps = (state: AppState): RadioFilterStateProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch): RadioFilterDispatchProps => ({
   onSelected: (value: number) => {
-    dispatch(dateFilterSelectedAction(value as DateFilter));
+    filterByDate(value as DateFilter)(dispatch);
   }
 });
 

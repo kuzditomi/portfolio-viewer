@@ -2,10 +2,10 @@ import { connect } from "react-redux";
 import { AppState } from "../store";
 import { PortfolioStateProps } from "./Portfolio.component";
 import Portfolio from './Portfolio.component';
-import { currentPortfolioSelector } from './portfolio.selector';
+import { filteredPortfolioSelector } from './portfolio.selector';
 
 const mapStateToProps = (state: AppState): PortfolioStateProps => ({
-    report: currentPortfolioSelector(state)
+    report: filteredPortfolioSelector(state)
 })
 
 export default connect<PortfolioStateProps, {}, {}, AppState>(
