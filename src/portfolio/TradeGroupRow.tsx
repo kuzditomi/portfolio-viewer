@@ -48,6 +48,7 @@ const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
     position: empty("position"),
     price: tradeGroup => (
       <PriceColumn
+        key={'price'}
         price={tradeGroup.trades.reduce(
           (sum, trade) => (sum += trade.price),
           0
@@ -55,9 +56,12 @@ const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
       />
     ),
     expiration: tradeGroup =>
-      tdWrapper('expiration', tradeGroup.expiration.toLocaleDateString()),
+      tdWrapper("expiration", tradeGroup.expiration.toLocaleDateString()),
     remainingDays: tradeGroup =>
-      tdWrapper('remainingDays', getRemainingDays(tradeGroup.expiration).toString())
+      tdWrapper(
+        "remainingDays",
+        getRemainingDays(tradeGroup.expiration).toString()
+      )
   };
 
   const group: CollapseableTradeGroup = { ...tradeGroup, isOpen };

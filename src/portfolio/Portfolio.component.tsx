@@ -3,6 +3,7 @@ import React from "react";
 import "./portfolio.scss";
 import TradeHeader from "./TradeHeader";
 import TradeGroupRow from "./TradeGroupRow";
+import Filters from "../filters/Filters.component";
 
 export interface PortfolioStateProps {
   report?: Report;
@@ -15,8 +16,7 @@ const Portfolio: React.FC<PortfolioStateProps> = ({ report }) => {
 
   return (
     <div className="display">
-      <h2>{report.name}</h2>
-
+      <Filters/>
       <table>
         <thead>
           <TradeHeader />

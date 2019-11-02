@@ -5,6 +5,7 @@ import ImportHistory from "./import/ImportHistory.container";
 import { Provider } from "react-redux";
 import store from "./store";
 import Import from "./import/Import.container";
+import './flex.scss';
 
 const App: React.FC = () => {
   return (

@@ -9,4 +9,4 @@ export const columns = [
   'remainingDays'
 ] as const;
 
-export type columns = typeof columns[number]; // Thanks typesciprt 3.4 !!!
+export type columns = typeof columns[number]; // Thanks typescript 3.4 !!!
