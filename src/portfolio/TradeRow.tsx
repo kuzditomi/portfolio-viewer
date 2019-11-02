@@ -15,7 +15,7 @@ const tdWrapper = (key: string, node: React.ReactNode) => (
 const columnDisplayers: {
   [key in columns]: (trade: Trade) => React.ReactNode;
 } = {
-  action: () => tdWrapper("action",""),
+  action: () => tdWrapper("action", ""),
   underlying: trade => tdWrapper("underlying", trade.underlying),
   optionType: trade =>
     tdWrapper(
@@ -27,15 +27,8 @@ const columnDisplayers: {
   position: trade => tdWrapper("position", trade.position.toString()),
   expiration: trade =>
     tdWrapper("expiration", trade.expiration.toLocaleDateString()),
-  price: trade => <PriceColumn key={'price'} price={trade.price} />,
-  remainingDays: trade =>
-    tdWrapper("remainingDays", getRemainingDays(trade.expiration).toString())
-};
-
-const getRemainingDays = (date: Date): number => {
-  const now = new Date();
-
-  return Math.floor((Number(date) - Number(now)) / 1000 / 60 / 60 / 24);
+  price: trade => <PriceColumn key={"price"} price={trade.price} />,
+  remainingDays: () => tdWrapper("remainingDays", "")
 };
 
 const TradeRow: React.FC<TradeRowProps> = ({ trade }) => {

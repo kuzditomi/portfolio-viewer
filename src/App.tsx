@@ -12,9 +12,11 @@ const App: React.FC = () => {
     <Provider store={store}>
       <header>IBKR report viewer</header>
       <div className="App">
-        <ImportHistory />
-        <Import />
-        <Portfolio/>
+        <div className="flex flex-row">
+          <ImportHistory />
+          <Import />
+        </div>
+        <Portfolio />
       </div>
     </Provider>
   );

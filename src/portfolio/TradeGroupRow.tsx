@@ -12,10 +12,14 @@ interface CollapseableTradeGroup extends TradeGroup {
   isOpen: boolean;
 }
 
-const getRemainingDays = (date: Date): number => {
+const getRemainingDays = (date: Date): string => {
   const now = new Date();
 
-  return Math.floor((Number(date) - Number(now)) / 1000 / 60 / 60 / 24);
+  const remainingDays = Math.floor(
+    (Number(date) - Number(now)) / 1000 / 60 / 60 / 24
+  );
+
+  return remainingDays < 0 ? 'EXPIRED' : remainingDays.toString();
 };
 
 const tdWrapper = (key: string, child: React.ReactNode) => (
@@ -48,7 +52,7 @@ const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
     position: empty("position"),
     price: tradeGroup => (
       <PriceColumn
-        key={'price'}
+        key={"price"}
         price={tradeGroup.trades.reduce(
           (sum, trade) => (sum += trade.price),
           0
@@ -58,10 +62,7 @@ const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
     expiration: tradeGroup =>
       tdWrapper("expiration", tradeGroup.expiration.toLocaleDateString()),
     remainingDays: tradeGroup =>
-      tdWrapper(
-        "remainingDays",
-        getRemainingDays(tradeGroup.expiration).toString()
-      )
+      tdWrapper("remainingDays", getRemainingDays(tradeGroup.expiration))
   };
 
   const group: CollapseableTradeGroup = { ...tradeGroup, isOpen };

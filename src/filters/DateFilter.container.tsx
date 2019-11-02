@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch: Dispatch): RadioFilterDispatchProps => ({
 
 const dateOptions = {
   All: DateFilter.All,
-  Closed: DateFilter.Closed,
+  Expired: DateFilter.Expired,
   Open: DateFilter.Open
 };
 
@@ -30,7 +30,7 @@ const DateFilterComponent: React.FC<
   RadioFilterStateProps & RadioFilterDispatchProps
 > = ({ ...props }) => (
   <RadioFilter
-    label={"dateFilter"}
+    label={"By Date"}
     options={dateOptions}
     selectedValue={DateFilter.All}
     {...props}

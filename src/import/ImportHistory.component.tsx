@@ -18,6 +18,7 @@ const ImportHistory: React.FC<
 
   return (
     <div className="history">
+      Imported reports:
       <ul>
         {history.map(key => (
           <li key={key}>

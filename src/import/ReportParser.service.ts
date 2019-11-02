@@ -128,17 +128,17 @@ export class ReportParserService {
   }
 
   private ParseMyTrade(tradeLine: string[]): Trade {
-    const optionData = tradeLine[SYMBOL_COLUMN].split('  ').map(s => s.trim());
+    const symbolData = tradeLine[SYMBOL_COLUMN];
 
-    const underlying = optionData[0];
-    const expirationString = optionData[1].substr(0, 6);
+    const underlying = symbolData.substr(0,6).trim();
+    const expirationString = symbolData.substr(6, 6);
     const expiration = new Date(
       +expirationString.substr(0, 2) + 2000,
       +expirationString.substr(2, 2) - 1,
       +expirationString.substr(4, 2)
     );
-    const optionType = optionData[1][6] === 'C' ? OptionType.Call : OptionType.Put;
-    const optionTarget = Number(optionData[1].substr(7, 7)) / 100;
+    const optionType = symbolData[12] === 'C' ? OptionType.Call : OptionType.Put;
+    const optionTarget = Number(symbolData.substr(13, 7)) / 100;
 
     const position =
       Number(tradeLine[BUY_QUANTITY_COLUMN]) +
