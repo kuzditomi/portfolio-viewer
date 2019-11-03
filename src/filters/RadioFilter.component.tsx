@@ -2,6 +2,7 @@ import React from "react";
 import Filter, { FilterProps } from "./Filter.component";
 
 export interface RadioFilterProps extends FilterProps {
+  prefix: string;
   options: {
     [key: string]: number;
   };
@@ -17,7 +18,7 @@ export interface RadioFilterDispatchProps {
 
 const RadioFilter: React.FC<
   RadioFilterProps & RadioFilterStateProps & RadioFilterDispatchProps
-> = ({ options, selectedValue, onSelected, ...props }) => {
+> = ({ prefix, options, selectedValue, onSelected, ...props }) => {
   return (
     <Filter {...props}>
       {Object.keys(options).map(key => (
@@ -25,7 +26,7 @@ const RadioFilter: React.FC<
           {key}
           <input
             type="radio"
-            name={key}
+            name={`${prefix}-${key}`}
             value={options[key]}
             checked={selectedValue === options[key]}
             onChange={() => onSelected(options[key])}

@@ -5,31 +5,36 @@ import RadioFilter, {
   RadioFilterDispatchProps
 } from "./RadioFilter.component";
 import React from "react";
-import { DateFilter } from "./filters.models";
-import { dateFilterSelector } from "./filters.selectors";
+import { PositionFilter } from "./filters.models";
 import { AppState } from "../store";
-import { filterByDate } from "./filters.actioncreators";
+import { positionFilterSelector } from "./filters.selectors";
+import { filterByPosition } from "./filters.actioncreators";
 
 const mapStateToProps = (state: AppState): RadioFilterStateProps => ({
-  selectedValue: dateFilterSelector(state) as number
+  selectedValue: positionFilterSelector(state) as number
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): RadioFilterDispatchProps => ({
   onSelected: (value: number) => {
-    filterByDate(value as DateFilter)(dispatch);
+    filterByPosition(value as PositionFilter)(dispatch);
   }
 });
 
-const dateOptions = {
-  All: DateFilter.All,
-  Expired: DateFilter.Expired,
-  Open: DateFilter.Open
+const positionOptions = {
+  All: PositionFilter.All,
+  Closed: PositionFilter.Closed,
+  Open: PositionFilter.Open
 };
 
-const DateFilterComponent: React.FC<
+const PositionFilterComponent: React.FC<
   RadioFilterStateProps & RadioFilterDispatchProps
 > = ({ ...props }) => (
-  <RadioFilter prefix={'date'} label={"By Date"} options={dateOptions} {...props} />
+  <RadioFilter
+    prefix={"position"}
+    label={"By Position"}
+    options={positionOptions}
+    {...props}
+  />
 );
 
 export default connect<
@@ -40,4 +45,4 @@ export default connect<
 >(
   mapStateToProps,
   mapDispatchToProps
-)(DateFilterComponent);
+)(PositionFilterComponent);
