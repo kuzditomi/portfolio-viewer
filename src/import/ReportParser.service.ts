@@ -110,7 +110,7 @@ export class ReportParserService {
             }
             return [];
           case ParseState.Trades:
-            if (line[ACCOUNT_COLUMN] !== "") {
+            if (line[ACCOUNT_COLUMN] === "Total" ) {
               parseState = ParseState.MyTradesFinished;
             } else {
               my.push(this.ParseMyTrade(line));
