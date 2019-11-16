@@ -1,6 +1,5 @@
 import { Report } from "../models";
 import React from "react";
-import "./portfolio.scss";
 import TradeHeader from "./TradeHeader";
 import TradeGroupRow from "./TradeGroupRow";
 import Filters from "../filters/Filters.component";

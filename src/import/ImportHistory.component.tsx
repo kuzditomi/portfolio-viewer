@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Grid, Typography } from "@material-ui/core";
 
 export interface ImportHistoryStateProps {
   history: string[];
@@ -9,16 +10,21 @@ export interface ImportHistoryDispatchProps {
   loadHistory(): void;
 }
 
-const ImportHistory: React.FC<
-  ImportHistoryStateProps & ImportHistoryDispatchProps
-> = ({ history, importFromHistory, loadHistory }) => {
+const ImportHistory: React.FC<ImportHistoryStateProps &
+  ImportHistoryDispatchProps> = ({
+  history,
+  importFromHistory,
+  loadHistory
+}) => {
   useEffect(() => {
     loadHistory();
   }, [loadHistory]);
 
   return (
-    <div className="history">
-      Imported reports:
+    <Grid>
+      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+        Imported reports
+      </Typography>
       <ul>
         {history.map(key => (
           <li key={key}>
@@ -26,7 +32,7 @@ const ImportHistory: React.FC<
           </li>
         ))}
       </ul>
-    </div>
+    </Grid>
   );
 };
 

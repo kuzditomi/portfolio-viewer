@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Import.scss";
+import { Grid, Typography } from "@material-ui/core";
 
 export interface ImportDispatchProps {
   importFile(file: File): void;
@@ -30,13 +30,16 @@ const Import: React.FC<ImportDispatchProps> = ({ importFile }) => {
   };
 
   return (
-    <div className="import flex flex-column">
+    <Grid>
+      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+        Import flex query
+      </Typography>
       <button onClick={() => onImportExample()}>Load example</button>
       <div className="flex flex-row">
         <input type="file" onChange={e => setFile(e.target.files)} />
         <button onClick={() => onImport()}>IMPORT!</button>
       </div>
-    </div>
+    </Grid>
   );
 };
 

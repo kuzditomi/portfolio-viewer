@@ -1,10 +1,8 @@
 import React from "react";
 import { withStyles, createStyles, WithStyles } from "@material-ui/styles";
-import { Theme, Container } from "@material-ui/core";
+import { Theme, Container, Grid, Paper } from "@material-ui/core";
 import Portfolio from "./portfolio/Portfolio.container";
 import ImportHistory from "./import/ImportHistory.container";
-import { Provider } from "react-redux";
-import store from "./store";
 import Import from "./import/Import.container";
 
 const styles = (theme: Theme) =>
@@ -21,24 +19,40 @@ const styles = (theme: Theme) =>
     container: {
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(4)
+    },
+    paper: {
+      padding: theme.spacing(2),
+      display: "flex",
+      overflow: "auto",
+      flexDirection: "column"
     }
   });
 
-const MainComponent: React.FC<WithStyles<typeof styles>> = ({classes}) => (
+const MainComponent: React.FC<WithStyles<typeof styles>> = ({ classes }) => {
+  return (
     <main className={classes.content}>
-    <div className={classes.appBarSpacer} />
-    <Container maxWidth="lg" className={classes.container}>
-      <Provider store={store}>
-        <div className="App">
-          <div className="flex flex-row">
-            <ImportHistory />
-            <Import />
-          </div>
-          <Portfolio />
-        </div>
-      </Provider>
-    </Container>
-  </main>
-);
+      <div className={classes.appBarSpacer} />
+      <Container maxWidth="lg" className={classes.container}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Paper className={classes.paper}>
+              <ImportHistory />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper className={classes.paper}>
+              <Import />
+            </Paper>
+          </Grid>
+          <Grid item xs={12}>
+            <Paper className={classes.paper}>
+              <Portfolio />
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+    </main>
+  );
+};
 
 export default withStyles(styles)(MainComponent);
