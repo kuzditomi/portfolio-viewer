@@ -2,18 +2,23 @@ import React from "react";
 import DateFilter from "./DateFilter.container";
 import PositionFilter from "./PositionFilter.container";
 import "./filters.scss";
+import { Grid, Typography } from "@material-ui/core";
 
-export interface FiltersProps {}
-
-const Filters: React.FC<FiltersProps> = () => {
+const Filters: React.FC = () => {
   return (
-    <div className="filters">
-      Filters
-      <div className="flex">
-        <DateFilter/>
-        <PositionFilter/>
-      </div>
-    </div>
+    <>
+      <Typography component="h2" variant="h6" color="primary" gutterBottom>
+        Filters
+      </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <DateFilter />
+        </Grid>
+        <Grid item xs={4}>
+          <PositionFilter />
+        </Grid>
+      </Grid>
+    </>
   );
 };
 

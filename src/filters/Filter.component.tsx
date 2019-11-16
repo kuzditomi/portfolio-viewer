@@ -1,4 +1,5 @@
 import React from "react";
+import { FormControl, FormLabel } from "@material-ui/core";
 
 export interface FilterProps {
   label: string;
@@ -6,10 +7,10 @@ export interface FilterProps {
 
 const Filter: React.FC<FilterProps> = ({ label, children }) => {
   return (
-    <div className="filter flex flex-column">
-      <span>{label}</span>
+    <FormControl component="fieldset">
+      <FormLabel component="legend">{label}</FormLabel>
       {children}
-    </div>
+    </FormControl>
   );
 };
 
