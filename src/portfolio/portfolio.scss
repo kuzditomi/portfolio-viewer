@@ -34,6 +34,20 @@
       }
     }
   }
+
+  .summary{
+    border: 1px solid black;
+    margin: 10px 0;
+    padding: 5px;
+    width: auto;
+
+    .win {
+      color: green;
+    }
+    .loss {
+      color: red;
+    }
+  }
 }
 
 .collapse-btn {

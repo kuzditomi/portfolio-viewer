@@ -14,7 +14,7 @@ export interface Trade {
 export interface Report {
     name: string;
     tradeGroups: TradeGroup[];
-    trades: Trade[];
+    // trades: Trade[];
 }
 
 export interface TradeGroup {

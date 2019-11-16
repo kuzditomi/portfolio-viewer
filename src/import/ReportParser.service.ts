@@ -69,7 +69,7 @@ export class ReportParserService {
     return {
       name: "ok",
       tradeGroups,
-      trades: myTrades
+      // trades: myTrades
     };
   }
 
