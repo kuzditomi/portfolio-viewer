@@ -1,10 +1,12 @@
 import { Dispatch } from "redux";
 import { ImportHistoryService } from './ImportHistory.service';
-import { ReportParserService } from "./ReportParser.service";
+// import { ReportParserService } from "./Parser/ReportParser.service";
 import { reportLoadedFromHistoryAction, historyLoadedAction } from './import.actions';
+import { IParser } from './Parser/IParser.service';
+import { FlexQueryParserService } from './Parser/FlexQueryParser.service';
 
 const importHistoryService = new ImportHistoryService();
-const reportParserService = new ReportParserService();
+const reportParserService: IParser = new FlexQueryParserService();
 
 export const loadReport = (reportKey: string) => (dispatch: Dispatch) => {
     const rawImport = importHistoryService.GetRawImport(reportKey);

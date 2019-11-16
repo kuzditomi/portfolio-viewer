@@ -1,4 +1,5 @@
-import { Report, Trade, OptionType, TradeGroup } from '../models';
+import { Trade, OptionType } from '../../models';
+import { ParserBase } from './ParserBase.service';
 
 export interface ReportException {
   message: string;
@@ -21,84 +22,12 @@ enum ParseState {
   MyTradesFinished = 3
 }
 
-export class ReportParserService {
-  private rawImport: string = "";
-
-  public Parse(file: File): Promise<string> {
-    let resolve: (raw: string) => void;
-    let reject: (error: string) => void;
-
-    this.rawImport = "";
-
-    const result = new Promise<string>(
-      (_resolve: (raw: string) => void, _reject) => {
-        [resolve, reject] = [_resolve, _reject];
-      }
-    );
-
-    console.debug(`Parsing ${file.name}...`);
-
-    var reader = new FileReader();
-
-    reader.onload = () => {
-      console.debug("File loaded.");
-      const rawCsv = reader.result as string;
-      this.rawImport = rawCsv;
-
-      try {
-        resolve(this.rawImport);
-      } catch {
-        this.rawImport = "";
-        reject("Error while parsing...");
-      }
-    };
-
-    reader.readAsBinaryString(file);
-
-    return result;
-  }
-
-  public ParseRawData(rawCsv: string): Report {
-    console.debug("Processing csvData...");
-
+export class ReportParserService extends ParserBase {
+  protected ParseMyTrades(rawCsv: string): Trade[] {
     const dataLines = rawCsv.split("\n").map(line => line.split(","));
-    const myTrades = this.ParseMyTrades(dataLines);
 
-    const tradeGroups = this.getGroupsFromTrades(myTrades);
-
-    return {
-      name: "ok",
-      tradeGroups,
-      // trades: myTrades
-    };
-  }
-
-  private getGroupsFromTrades(trades: Trade[]) {
-    const mapByUnderlyingAndExpiration = trades.reduce((map, trade) => {
-      const { expiration, underlying } = trade;
-      const key = `${underlying} - ${expiration.toLocaleDateString()}`;
-
-
-      if (!map[key]) {
-        map[key] = {
-          underlying,
-          expiration,
-          trades: []
-        };
-      }
-
-      map[key].trades.push(trade);
-
-      return map;
-    }, {} as { [key: string]: TradeGroup })
-
-    return Object.values(mapByUnderlyingAndExpiration)
-      .sort((a, b) => +a.expiration - +b.expiration);
-  }
-
-  private ParseMyTrades(data: string[][]): Trade[] {
     let parseState = ParseState.NotFoundMyTradesYet;
-    const myTrades = data.reduce<Trade[]>(
+    const myTrades = dataLines.reduce<Trade[]>(
       (my: Trade[], line: string[]) => {
         switch (parseState) {
           case ParseState.NotFoundMyTradesYet:
