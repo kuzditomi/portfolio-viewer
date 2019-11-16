@@ -3,6 +3,28 @@ import React, { useState } from "react";
 import { columns } from "./models";
 import TradeRow from "./TradeRow.component";
 import PriceColumn from "./PriceColumn.component";
+import { TableRow, TableCell, IconButton, Theme } from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { withStyles, createStyles, WithStyles } from "@material-ui/styles";
+import clsx from 'clsx';
+import { grey } from "@material-ui/core/colors";
+
+const styles = (theme: Theme) =>
+  createStyles({
+    expand: {
+      padding: 0,
+      transform: "rotate(0deg)",
+      transition: theme.transitions.create("transform", {
+        duration: theme.transitions.duration.shortest
+      })
+    },
+    expandOpen: {
+      transform: "rotate(180deg)"
+    },
+    groupRow: {
+      background: grey[100]
+    }
+  });
 
 export interface TradeGroupRowProps {
   tradeGroup: TradeGroup;
@@ -19,17 +41,18 @@ const getRemainingDays = (date: Date): string => {
     (Number(date) - Number(now)) / 1000 / 60 / 60 / 24
   );
 
-  return remainingDays < 0 ? 'EXPIRED' : remainingDays.toString();
+  return remainingDays < 0 ? "EXPIRED" : remainingDays.toString();
 };
 
-const tdWrapper = (key: string, child: React.ReactNode) => (
-  <td key={key} className={key}>
+const cell = (key: string, child: React.ReactNode) => (
+  <TableCell key={key} className={key}>
     {child}
-  </td>
+  </TableCell>
 );
-const empty = (key: string) => (_tradeGroup: TradeGroup) => tdWrapper(key, "");
+const empty = (key: string) => (_tradeGroup: TradeGroup) => cell(key, "");
 
-const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
+const TradeGroupRow: React.FC<TradeGroupRowProps &
+  WithStyles<typeof styles>> = ({ tradeGroup, classes }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleIsOpen = () => {
@@ -40,13 +63,19 @@ const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
     [key in columns]: (tradeGroup: CollapseableTradeGroup) => React.ReactNode;
   } = {
     action: tradeGroup =>
-      tdWrapper(
+      cell(
         "action",
-        <button className="collapse-btn" onClick={() => toggleIsOpen()}>
-          {tradeGroup.isOpen ? "-" : "+"}
-        </button>
+        <IconButton
+          aria-label="share"
+          onClick={() => toggleIsOpen()}
+          className={clsx(classes.expand, {
+            [classes.expandOpen]: tradeGroup.isOpen
+          })}
+        >
+          <ExpandMoreIcon />
+        </IconButton>
       ),
-    underlying: tradeGroup => tdWrapper("underlying", tradeGroup.underlying),
+    underlying: tradeGroup => cell("underlying", tradeGroup.underlying),
     optionType: empty("optionType"),
     optionTarget: empty("optionTarget"),
     position: empty("position"),
@@ -60,18 +89,18 @@ const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
       />
     ),
     expiration: tradeGroup =>
-      tdWrapper("expiration", tradeGroup.expiration.toLocaleDateString()),
+      cell("expiration", tradeGroup.expiration.toLocaleDateString()),
     remainingDays: tradeGroup =>
-      tdWrapper("remainingDays", getRemainingDays(tradeGroup.expiration))
+      cell("remainingDays", getRemainingDays(tradeGroup.expiration))
   };
 
   const group: CollapseableTradeGroup = { ...tradeGroup, isOpen };
 
   return (
     <>
-      <tr className="trade-group-row">
+      <TableRow className={classes.groupRow}>
         {columns.map(column => columnDisplayers[column](group))}
-      </tr>
+      </TableRow>
       {isOpen
         ? tradeGroup.trades.map((trade, i) => (
             <TradeRow trade={trade} key={i} />
@@ -81,4 +110,4 @@ const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
   );
 };
 
-export default TradeGroupRow;
+export default withStyles(styles)(TradeGroupRow);

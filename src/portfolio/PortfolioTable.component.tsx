@@ -1,23 +1,22 @@
 import React from "react";
 import { Report } from "../models";
-import TradeHeader from './TradeHeader.component';
-import TradeGroupRow from './TradeGroupRow.component';
+import TradeHeader from "./TradeHeader.component";
+import TradeGroupRow from "./TradeGroupRow.component";
+import { Table, TableBody } from "@material-ui/core";
 
 export interface PortfolioTableProps {
   report: Report;
 }
 
 const PortfolioTableComponent: React.FC<PortfolioTableProps> = ({ report }) => (
-  <table>
-    <thead>
-      <TradeHeader />
-    </thead>
-    <tbody>
+  <Table>
+    <TradeHeader />
+    <TableBody>
       {report.tradeGroups.map((group, i) => (
         <TradeGroupRow tradeGroup={group} key={i} />
       ))}
-    </tbody>
-  </table>
+    </TableBody>
+  </Table>
 );
 
 export default PortfolioTableComponent;

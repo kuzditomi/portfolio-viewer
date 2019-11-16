@@ -1,4 +1,5 @@
 import React from "react";
+import { TableCell } from '@material-ui/core';
 
 export interface PriceColumnProps {
   price: number;
@@ -10,9 +11,9 @@ const getPriceString = (price: number) => {
 
 const PriceColumn: React.FC<PriceColumnProps> = ({ price }) => {
   return (
-    <td className={`price ${price > 0 ? "loss" : "win"}`}>
+    <TableCell className={`price ${price > 0 ? "loss" : "win"}`}>
       {getPriceString(price)}
-    </td>
+    </TableCell>
   );
 };
 

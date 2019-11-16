@@ -1,24 +1,27 @@
-import React from 'react';
-import { columns } from './models';
+import React from "react";
+import { columns } from "./models";
+import { TableHead, TableCell, TableRow } from "@material-ui/core";
 
 const columnTitles: { [key in columns]: string } = {
-  action: '',
-  underlying: 'Underlying',
-  optionTarget: 'Option Target',
-  optionType: 'Option Type',
-  position: 'Position',
-  expiration: 'Expiration',
-  price: 'Price',
-  remainingDays: 'Remaining days'
+  action: "",
+  underlying: "Underlying",
+  optionTarget: "Option Target",
+  optionType: "Option Type",
+  position: "Position",
+  expiration: "Expiration",
+  price: "Price",
+  remainingDays: "Remaining days"
 };
 
 const TradeHeader: React.FC = () => {
   return (
-    <tr>
-      {columns.map(column => (
-        <th key={column}>{columnTitles[column]}</th>
-      ))}
-    </tr>
+    <TableHead>
+      <TableRow>
+        {columns.map(column => (
+          <TableCell key={column}>{columnTitles[column]}</TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
   );
 };
 
