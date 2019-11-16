@@ -43,7 +43,6 @@ export abstract class ParserBase implements IParser {
             const { expiration, underlying } = trade;
             const key = `${underlying} - ${expiration.toLocaleDateString()}`;
 
-
             if (!map[key]) {
                 map[key] = {
                     underlying,

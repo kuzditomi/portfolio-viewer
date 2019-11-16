@@ -8,7 +8,7 @@ export const filteredPortfolioSummary = (state: AppState) => {
     }
 
     const totalPL = state.portfolio.filteredPortfolio.tradeGroups.reduce((totalSum, tradeGroup) =>
-        totalSum + tradeGroup.trades.reduce((tradeGroupSum, trade) => tradeGroupSum + trade.price, 0)
+        totalSum + tradeGroup.trades.reduce((tradeGroupSum, trade) => tradeGroupSum + trade.tradePrice, 0)
         , 0);
 
     return {

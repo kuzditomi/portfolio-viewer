@@ -54,7 +54,7 @@ const TradeGroupRow: React.FC<TradeGroupRowProps> = ({ tradeGroup }) => {
       <PriceColumn
         key={"price"}
         price={tradeGroup.trades.reduce(
-          (sum, trade) => (sum += trade.price),
+          (sum, trade) => (sum += trade.tradePrice),
           0
         )}
       />

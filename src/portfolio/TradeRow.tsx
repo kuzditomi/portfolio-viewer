@@ -12,6 +12,7 @@ const tdWrapper = (key: string, node: React.ReactNode) => (
     {node}
   </td>
 );
+
 const columnDisplayers: {
   [key in columns]: (trade: Trade) => React.ReactNode;
 } = {
@@ -23,11 +24,11 @@ const columnDisplayers: {
       trade.optionType === OptionType.Call ? "CALL" : "PUT"
     ),
   optionTarget: trade =>
-    tdWrapper("optionTarget", trade.optionTarget.toString()),
+    tdWrapper("optionTarget", trade.strikePrice.toString()),
   position: trade => tdWrapper("position", trade.position.toString()),
   expiration: trade =>
     tdWrapper("expiration", trade.expiration.toLocaleDateString()),
-  price: trade => <PriceColumn key={"price"} price={trade.price} />,
+  price: trade => <PriceColumn key={"price"} price={trade.tradePrice} />,
   remainingDays: () => tdWrapper("remainingDays", "")
 };
 

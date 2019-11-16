@@ -12,11 +12,11 @@ export class FlexQueryParserService extends ParserBase {
             return {
                 underlying: tradeElement.getAttribute('underlyingSymbol')!,
                 position,
-                expiration: new Date(+expiry.substr(0,4),+ expiry.substr(4,2), +expiry.substr(6,2)),
+                expiration: new Date(+expiry.substr(0, 4), +expiry.substr(4, 2) - 1, +expiry.substr(6, 2)),
                 optionType: tradeElement.getAttribute('putCall') === 'P' ? OptionType.Put : OptionType.Call,
-                optionTarget: +tradeElement.getAttribute('strike')!,
-                price: (position < 0 ? -1 : 1) * (+tradeElement.getAttribute('tradePrice')!)
-            } 
+                strikePrice: +tradeElement.getAttribute('strike')!,
+                tradePrice: (position < 0 ? -1 : 1) * (+tradeElement.getAttribute('tradePrice')!)
+            } as Trade
         });
 
         return trades;

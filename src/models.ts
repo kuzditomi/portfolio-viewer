@@ -7,14 +7,13 @@ export interface Trade {
     position: number;
     expiration: Date;
     optionType: OptionType;
-    optionTarget: number;
-    price: number;
+    strikePrice: number;
+    tradePrice: number;
 }
 
 export interface Report {
     name: string;
     tradeGroups: TradeGroup[];
-    // trades: Trade[];
 }
 
 export interface TradeGroup {

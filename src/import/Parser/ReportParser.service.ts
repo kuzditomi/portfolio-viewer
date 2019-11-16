@@ -81,9 +81,9 @@ export class ReportParserService extends ParserBase {
       underlying,
       expiration,
       position,
-      optionTarget,
+      strikePrice: optionTarget,
       optionType,
-      price
+      tradePrice: price
     };
   }
 }

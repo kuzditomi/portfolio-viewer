@@ -10,7 +10,7 @@ export class FilterService {
         ];
 
         const filteredPortfolio = filtersToApply.reduce((report, filter) => filter(report), reportToFilter)
-        
+
         return filteredPortfolio;
     }
 
@@ -30,26 +30,38 @@ export class FilterService {
     }
 
     private filterByPosition = (filter: PositionFilter) => (portfolio: Report): Report => {
+        const isClosingCombinationWith = (trade: Trade) =>(otherTrade: Trade) =>
+            trade.optionType === otherTrade.optionType &&
+            trade.strikePrice === otherTrade.strikePrice &&
+            trade.position === (-1 * otherTrade.position);
+
         const positionFilters = {
-            [PositionFilter.All]: () => true,
-            [PositionFilter.Closed]: (trade: Trade) => trade.position === 0,
-            [PositionFilter.Open]: (trade: Trade) => trade.position !== 0,
+            [PositionFilter.All]: (tradeGroup: TradeGroup) => tradeGroup,
+            [PositionFilter.Closed]: (tradeGroup: TradeGroup) => {
+                const filteredTrades = tradeGroup.trades
+                    .filter(trade => tradeGroup.trades.find(isClosingCombinationWith(trade)))
+
+                return {
+                    ...tradeGroup,
+                    trades: filteredTrades
+                }
+            },
+            [PositionFilter.Open]: (tradeGroup: TradeGroup) => {
+                const filteredTrades = tradeGroup.trades
+                    .filter(trade => !tradeGroup.trades.find(isClosingCombinationWith(trade)))
+
+                return {
+                    ...tradeGroup,
+                    trades: filteredTrades
+                }
+            }
         }
 
         const filteredPortfolio: Report = {
             ...portfolio,
-            tradeGroups: portfolio.tradeGroups.reduce((filteredTradeGroups, tradeGroup) => {
-                const filteredTrades = tradeGroup.trades.filter(positionFilters[filter]);
-
-                if (filteredTrades.length > 0) {
-                    filteredTradeGroups.push({
-                        ...tradeGroup,
-                        trades: filteredTrades
-                    })
-                }
-
-                return filteredTradeGroups;
-            }, [] as TradeGroup[])
+            tradeGroups: portfolio.tradeGroups
+                .map(positionFilters[filter])
+                .filter(tg => tg.trades.length > 0)
         };
 
         return filteredPortfolio;
