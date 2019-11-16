@@ -8,7 +8,7 @@ export interface ImportDispatchProps {
 
 const Import: React.FC<ImportDispatchProps> = ({ importFile }) => {
   const onImportExample = () => {
-    const exampleFileUrl = "/example.xml";
+    const exampleFileUrl = "example.xml";
 
     let xhr = new XMLHttpRequest();
     xhr.open("GET", exampleFileUrl);
