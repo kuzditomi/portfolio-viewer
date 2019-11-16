@@ -22,7 +22,7 @@ const styles = (theme: Theme) =>
       transform: "rotate(180deg)"
     },
     groupRow: {
-      background: grey[100]
+      background: grey[300]
     }
   });
 
