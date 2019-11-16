@@ -59,14 +59,79 @@ describe('Filter Service', () => {
             const filteredPortfolio = filterSerive.applyFilters(report, filter);
 
             // Assert
-            expect(filteredPortfolio).toEqual(report);
+            expect(filteredPortfolio.tradeGroups.length).toEqual(1);
+            expect(filteredPortfolio.tradeGroups[0].trades.length).toEqual(3);
         });
 
-        it('should return closed trades only when PositionFilter.Close is selected', () => {
+        it('should not return tradegroup with open positions only when PositionFilter.Close is selected', () => {
             // Arange
             const filter: FiltersState = {
                 dateFilter: DateFilter.All,
-                positionFilter: PositionFilter.All
+                positionFilter: PositionFilter.Closed
+            }
+
+            report.tradeGroups = [
+                {
+                    expiration: mockTrade.expiration,
+                    trades: [
+                        {
+                            ...mockTrade,
+                            position: 1
+                        }
+                    ],
+                    underlying: mockTrade.underlying
+                }
+            ];
+
+            // Act
+            const filteredPortfolio = filterSerive.applyFilters(report, filter);
+
+            // Assert
+            expect(filteredPortfolio.tradeGroups.length).toEqual(0);
+        });
+
+        it('should return closed trades only within tradegroup when PositionFilter.Close is selected', () => {
+            // Arange
+            const filter: FiltersState = {
+                dateFilter: DateFilter.All,
+                positionFilter: PositionFilter.Closed
+            }
+
+            report.tradeGroups = [
+                {
+                    expiration: mockTrade.expiration,
+                    trades: [
+                        {
+                            ...mockTrade,
+                            position: 1
+                        },
+                        {
+                            ...mockTrade,
+                            position: -1
+                        },
+                        {
+                            ...mockTrade,
+                            strikePrice: mockTrade.strikePrice+1,
+                            position: -1
+                        }
+                    ],
+                    underlying: mockTrade.underlying
+                }
+            ];
+
+            // Act
+            const filteredPortfolio = filterSerive.applyFilters(report, filter);
+
+            // Assert
+            expect(filteredPortfolio.tradeGroups.length).toEqual(1);
+            expect(filteredPortfolio.tradeGroups[0].trades.length).toEqual(2);
+        });
+
+        it('should not return tradegroup with closed positions only when PositionFilter.Open is selected', () => {
+            // Arange
+            const filter: FiltersState = {
+                dateFilter: DateFilter.All,
+                positionFilter: PositionFilter.Open
             }
 
             report.tradeGroups = [
@@ -91,6 +156,43 @@ describe('Filter Service', () => {
 
             // Assert
             expect(filteredPortfolio.tradeGroups.length).toEqual(0);
+        });
+
+        it('should return open trades only within trade group when PositionFilter.Open is selected', () => {
+            // Arange
+            const filter: FiltersState = {
+                dateFilter: DateFilter.All,
+                positionFilter: PositionFilter.Open
+            }
+
+            report.tradeGroups = [
+                {
+                    expiration: mockTrade.expiration,
+                    trades: [
+                        {
+                            ...mockTrade,
+                            position: 1
+                        },
+                        {
+                            ...mockTrade,
+                            position: -1
+                        },
+                        {
+                            ...mockTrade,
+                            strikePrice: mockTrade.strikePrice +1,
+                            position: -1
+                        },
+                    ],
+                    underlying: mockTrade.underlying
+                }
+            ];
+
+            // Act
+            const filteredPortfolio = filterSerive.applyFilters(report, filter);
+
+            // Assert
+            expect(filteredPortfolio.tradeGroups.length).toEqual(1);
+            expect(filteredPortfolio.tradeGroups[0].trades.length).toEqual(1);
         });
     });
 });
