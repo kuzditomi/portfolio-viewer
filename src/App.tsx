@@ -1,25 +1,18 @@
 import React from "react";
 import "./App.scss";
-import Portfolio from "./portfolio/Portfolio.container";
-import ImportHistory from "./import/ImportHistory.container";
-import { Provider } from "react-redux";
-import store from "./store";
-import Import from "./import/Import.container";
-import './flex.scss';
+import CssBaseline from "@material-ui/core/CssBaseline";
+import HeaderComponent from "./Header.component";
+import AppThemeComponent from "./AppTheme.component";
+import MainComponent from "./Main.component";
 
-const App: React.FC = () => {
-  return (
-    <Provider store={store}>
-      <header>IBKR report viewer</header>
-      <div className="App">
-        <div className="flex flex-row">
-          <ImportHistory />
-          <Import />
-        </div>
-        <Portfolio />
-      </div>
-    </Provider>
-  );
-};
+const App: React.FC = () => (
+  <AppThemeComponent>
+    <div className="app">
+      <CssBaseline />
+      <HeaderComponent />
+      <MainComponent />
+    </div>
+  </AppThemeComponent>
+);
 
 export default App;
