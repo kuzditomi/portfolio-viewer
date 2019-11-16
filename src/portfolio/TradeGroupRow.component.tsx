@@ -1,7 +1,7 @@
 import { TradeGroup } from "../models";
 import React, { useState } from "react";
 import { columns } from "./models";
-import TradeRow from "./TradeRow";
+import TradeRow from "./TradeRow.component";
 import PriceColumn from "./PriceColumn.component";
 
 export interface TradeGroupRowProps {
