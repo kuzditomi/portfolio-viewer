@@ -1,6 +1,7 @@
 import { AppActionTypes } from '../actions';
 import { DateFilter, PositionFilter } from './filters.models';
 import { FILTERS_ACTIONS } from './filters.actions';
+import { IMPORT_ACTIONS } from '../import/import.actions';
 
 export interface FiltersState {
     dateFilter: DateFilter,
@@ -25,6 +26,9 @@ export default function (state = initialState, action: AppActionTypes): FiltersS
                 ...state,
                 positionFilter: action.payload
             }
+        }
+        case IMPORT_ACTIONS.REPORT_LOADED_FROM_HISTORY:{
+            return initialState;
         }
         default:
             return state;
