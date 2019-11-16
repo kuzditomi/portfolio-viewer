@@ -1,22 +1,12 @@
-import React, { useState } from "react";
-import { Grid, Typography } from "@material-ui/core";
+import React from "react";
+import { Grid, Typography, Button } from "@material-ui/core";
+import FileUploadComponent from "./FileUpload.component";
 
 export interface ImportDispatchProps {
   importFile(file: File): void;
 }
 
 const Import: React.FC<ImportDispatchProps> = ({ importFile }) => {
-  const [file, setFile] = useState<FileList | null>();
-
-  const onImport = () => {
-    if (!file || file.length !== 1) {
-      alert("please provide a single file!");
-      return;
-    }
-
-    importFile(file[0]);
-  };
-
   const onImportExample = () => {
     const exampleFileUrl = "/example.xml";
 
@@ -30,16 +20,26 @@ const Import: React.FC<ImportDispatchProps> = ({ importFile }) => {
   };
 
   return (
-    <Grid>
+    <>
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
         Import flex query
       </Typography>
-      <button onClick={() => onImportExample()}>Load example</button>
-      <div className="flex flex-row">
-        <input type="file" onChange={e => setFile(e.target.files)} />
-        <button onClick={() => onImport()}>IMPORT!</button>
-      </div>
-    </Grid>
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <FileUploadComponent upload={importFile} />
+        </Grid>
+        <Grid item xs={12}>
+          If you have no flex queries exported yet:&nbsp;
+          <Button
+            onClick={() => onImportExample()}
+            color="primary"
+            variant="contained"
+          >
+            Load example
+          </Button>
+        </Grid>
+      </Grid>
+    </>
   );
 };
 
