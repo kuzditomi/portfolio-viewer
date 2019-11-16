@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import { Grid, Typography } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon
+} from "@material-ui/core";
+import BarChartIcon from "@material-ui/icons/BarChart";
 
 export interface ImportHistoryStateProps {
   history: string[];
@@ -25,13 +33,16 @@ const ImportHistory: React.FC<ImportHistoryStateProps &
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
         Imported reports
       </Typography>
-      <ul>
+      <List component="nav" aria-label="Main mailbox folders">
         {history.map(key => (
-          <li key={key}>
-            <button onClick={() => importFromHistory(key)}>{key}</button>
-          </li>
+          <ListItem button onClick={() => importFromHistory(key)} key={key}>
+            <ListItemIcon>
+              <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary={key} />
+          </ListItem>
         ))}
-      </ul>
+      </List>
     </Grid>
   );
 };
