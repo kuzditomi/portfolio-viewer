@@ -27,6 +27,18 @@ const addDays = (date: Date, days: number): Date => {
 }
 
 describe('PL service', () => {
+    function getMultipleTradePL(data: Partial<Trade>[]) {
+        const group: TradeGroup = {
+            ...mockGroup,
+            trades: data.map(d => ({
+                ...mockTrade,
+                ...d
+            }))
+        }
+
+        return PLService.getPLForGroup(group);
+    }
+
     it('should set 0 PL for group with all open trade', () => {
         // Arrange
         const group: TradeGroup = {
@@ -45,7 +57,6 @@ describe('PL service', () => {
 
     describe('closed trades calculation in group', () => {
         function getSingleClosedTradePL(openPosition: number, openPrice: number, closePosition: number, closePrice: number) {
-            // Arrange
             const group: TradeGroup = {
                 ...mockGroup,
                 trades: [
@@ -63,7 +74,6 @@ describe('PL service', () => {
                 ]
             }
 
-            // Act
             return PLService.getPLForGroup(group);
         }
 
@@ -94,6 +104,47 @@ describe('PL service', () => {
         it('should handle BUY TO CLOSE positive PL', () => {
             // Act
             const pl = getSingleClosedTradePL(-1, 10, 1, 5);
+
+            // Assert
+            expect(pl).toEqual(5);
+        });
+
+        it('should handle multiple closed trades in group', () => {
+            // Arrange
+            const date = new Date(2000, 2, 2);
+            const trades: Partial<Trade>[] = [
+                // TRADE A: buy to open
+                {
+                    tradeDate: date,
+                    position: 1,
+                    strikePrice: 100,
+                    tradePrice: 90,
+                },
+                // TRADE A: sell to close with 10$ profit
+                {
+                    tradeDate: addDays(date,1),
+                    position: -1,
+                    strikePrice: 100,
+                    tradePrice: 100,
+                },
+                // TRADE B: sell to open
+                {
+                    tradeDate: date,
+                    position: -1,
+                    strikePrice: 110,
+                    tradePrice: 90,
+                },
+                // TRADE B: buy to close with 5$ loss
+                {
+                    tradeDate: addDays(date,1),
+                    position: 1,
+                    strikePrice: 110,
+                    tradePrice: 95,
+                }
+            ];
+
+            // Act
+            const pl = getMultipleTradePL(trades);
 
             // Assert
             expect(pl).toEqual(5);

@@ -1,5 +1,6 @@
 import { IParser } from './IParser.service';
 import { Report, Trade, TradeGroup } from '../../models';
+import PLService from '../../calculations/PL.Service';
 
 export abstract class ParserBase implements IParser {
     private rawImport: string = "";
@@ -59,7 +60,8 @@ export abstract class ParserBase implements IParser {
 
         return Object.values(mapByUnderlyingAndExpiration)
             .sort((a, b) => +a.expiration - +b.expiration)
-            .map(group => { group.trades.sort((a,b) => +a.tradeDate - +b.tradeDate); return group; });
+            .map(group => { group.trades.sort((a,b) => +a.tradeDate - +b.tradeDate); return group; })
+            .map(PLService.setPLForGroup);
     }
 
     public ParseRawData(rawText: string): Report {

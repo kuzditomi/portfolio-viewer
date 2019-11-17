@@ -1,7 +1,8 @@
-import { Report, TradeGroup } from "../models";
+import { Report, TradeGroup } from '../models';
 import { DateFilter, PositionFilter } from './filters.models';
 import { FiltersState } from './filters.reducer';
 import TradesCompareService from "../calculations/TradesCompare.service";
+import PLService from '../calculations/PL.Service';
 
 export class FilterService {
     public applyFilters(reportToFilter: Report, filters: FiltersState): Report {
@@ -12,7 +13,10 @@ export class FilterService {
 
         const filteredPortfolio = filtersToApply.reduce((report, filter) => filter(report), reportToFilter)
 
-        return filteredPortfolio;
+        return {
+            ...filteredPortfolio,
+            tradeGroups: filteredPortfolio.tradeGroups.map(PLService.setPLForGroup)
+        };
     }
 
     private filterByDate = (filter: DateFilter) => (portfolio: Report): Report => {

@@ -6,7 +6,7 @@ const getPLForGroup = (group: TradeGroup): number => {
         const closingTrade = group.trades.find(TradesCompareService.isClosingCombinationWith(trade));
 
         if (closingTrade && closingTrade.tradeDate >= trade.tradeDate) {
-            return (-closingTrade.position * closingTrade.tradePrice) + (-trade.position * trade.tradePrice);
+            return summary + (-closingTrade.position * closingTrade.tradePrice) + (-trade.position * trade.tradePrice);
         }
 
         return summary;
@@ -15,8 +15,18 @@ const getPLForGroup = (group: TradeGroup): number => {
     return pl;
 }
 
+const setPLForGroup = (group: TradeGroup): TradeGroup => {
+    const pl = getPLForGroup(group);
+
+    return {
+        ...group,
+        pl
+    };
+}
+
 const PLService = {
-    getPLForGroup
+    getPLForGroup,
+    setPLForGroup
 };
 
 export default PLService;
