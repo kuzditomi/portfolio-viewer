@@ -5,9 +5,21 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemIcon
+  ListItemIcon,
+  IconButton
 } from "@material-ui/core";
 import BarChartIcon from "@material-ui/icons/BarChart";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { createStyles, WithStyles, withStyles } from "@material-ui/styles";
+import red from "@material-ui/core/colors/red";
+
+const styles = createStyles({
+  delete: {
+    "&:hover": {
+      color: red[700]
+    }
+  }
+});
 
 export interface ImportHistoryStateProps {
   history: string[];
@@ -15,14 +27,18 @@ export interface ImportHistoryStateProps {
 
 export interface ImportHistoryDispatchProps {
   importFromHistory(reportKey: string): void;
+  deleteFromHistory(reportKey: string): void;
   loadHistory(): void;
 }
 
 const ImportHistory: React.FC<ImportHistoryStateProps &
-  ImportHistoryDispatchProps> = ({
+  ImportHistoryDispatchProps &
+  WithStyles<typeof styles>> = ({
   history,
   importFromHistory,
-  loadHistory
+  loadHistory,
+  deleteFromHistory,
+  classes
 }) => {
   useEffect(() => {
     loadHistory();
@@ -40,6 +56,15 @@ const ImportHistory: React.FC<ImportHistoryStateProps &
               <BarChartIcon />
             </ListItemIcon>
             <ListItemText primary={key} />
+            <IconButton
+              className={classes.delete}
+              onClick={event => {
+                deleteFromHistory(key);
+                event.stopPropagation();
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
           </ListItem>
         ))}
       </List>
@@ -47,4 +72,4 @@ const ImportHistory: React.FC<ImportHistoryStateProps &
   );
 };
 
-export default ImportHistory;
+export default withStyles(styles)(ImportHistory);

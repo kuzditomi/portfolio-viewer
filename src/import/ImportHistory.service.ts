@@ -41,4 +41,16 @@ export class ImportHistoryService {
 
     this.saveHistory(history);
   }
+
+  public DeleteReport(key: string) {
+    const history = this.getSavedHistory();
+
+    if (!history.rawImports[key]) {
+      throw Error(`Key not found in saved history: ${key}`);
+    }
+
+    delete history.rawImports[key];
+
+    this.saveHistory(history);
+  }
 }

@@ -15,12 +15,17 @@ export const loadReport = (reportKey: string) => (dispatch: Dispatch) => {
     return dispatch(reportLoadedFromHistoryAction(report));
 }
 
+export const deleteReport = (reportKey: string) => (dispatch: Dispatch) => {
+    importHistoryService.DeleteReport(reportKey);
+
+    return loadHistory()(dispatch);
+}
+
 export const loadHistory = () => (dispatch: Dispatch) => {
     const history = importHistoryService.GetRawImportKeys();
 
     return dispatch(historyLoadedAction(history));
 }
-
 
 export const importFile = (file: File) => async (dispatch: Dispatch) => {
     const rawImport = await reportParserService.Parse(file);
