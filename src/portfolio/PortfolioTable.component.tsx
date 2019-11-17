@@ -9,7 +9,7 @@ export interface PortfolioTableProps {
 }
 
 const PortfolioTableComponent: React.FC<PortfolioTableProps> = ({ report }) => (
-  <Table>
+  <Table size="small">
     <TradeHeader />
     <TableBody>
       {report.tradeGroups.map((group, i) => (

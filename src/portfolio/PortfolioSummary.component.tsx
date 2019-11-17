@@ -1,16 +1,31 @@
 import React from "react";
 import { PortfolioSummary } from "./models";
-import { Typography } from "@material-ui/core";
+import {
+  Typography,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell
+} from "@material-ui/core";
 import green from "@material-ui/core/colors/green";
 import red from "@material-ui/core/colors/red";
+import { createStyles, WithStyles, withStyles } from "@material-ui/styles";
+
+const styles = createStyles({
+  win: {
+    color: green[700]
+  },
+  loss: {
+    color: red[700]
+  }
+});
 
 export interface PortfolioSummaryStateProps {
   summary?: PortfolioSummary;
 }
 
-const PortfolioSummaryComponent: React.FC<PortfolioSummaryStateProps> = ({
-  summary
-}) => {
+const PortfolioSummaryComponent: React.FC<PortfolioSummaryStateProps &
+  WithStyles<typeof styles>> = ({ summary, classes }) => {
   if (summary === undefined) {
     return null;
   }
@@ -20,17 +35,21 @@ const PortfolioSummaryComponent: React.FC<PortfolioSummaryStateProps> = ({
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
         Summary
       </Typography>
-      Total P/L: 
-      <Typography
-        component="span"
-        style={{
-          color: summary.TotalPL < 0 ? red[500] : green[500]
-        }}
-      >
-        ${(summary.TotalPL * 100).toFixed(2)}
-      </Typography>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell> Total P/L:</TableCell>
+            <TableCell
+              align="right"
+              className={summary.TotalPL < 0 ? classes.loss : classes.win}
+            >
+              ${(summary.TotalPL * 100).toFixed(2)}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
     </>
   );
 };
 
-export default PortfolioSummaryComponent;
+export default withStyles(styles)(PortfolioSummaryComponent);
