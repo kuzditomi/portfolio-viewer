@@ -28,7 +28,7 @@ const columnDisplayers: {
   strikePrice: trade =>
     cell("strikePrice", trade.strikePrice.toFixed(1)),
   position: trade => cell("position", trade.position.toString()),
-  pl: trade => <PLColumn key={"pl"} pl={trade.pl} />,
+  pl: ()=> cell('pl',''),
   tradeDate: trade => cell('tradeDate', trade.tradeDate.toLocaleDateString()),
   expiration: trade =>
     cell("expiration", trade.expiration.toLocaleDateString()),

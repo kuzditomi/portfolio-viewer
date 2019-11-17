@@ -32,7 +32,7 @@ const PLColumn: React.FC<PLColumnProps & WithStyles<typeof styles>> = ({
   classes
 }) => {
   return (
-    <TableCell className={pl > 0 ? classes.loss : classes.win}>
+    <TableCell align="right" className={pl > 0 ? classes.win : pl < 0 ? classes.loss : ''}>
       {getPLString(pl)}
     </TableCell>
   );

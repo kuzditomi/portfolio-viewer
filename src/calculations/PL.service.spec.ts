@@ -122,7 +122,7 @@ describe('PL service', () => {
                 },
                 // TRADE A: sell to close with 10$ profit
                 {
-                    tradeDate: addDays(date,1),
+                    tradeDate: addDays(date, 1),
                     position: -1,
                     strikePrice: 100,
                     tradePrice: 100,
@@ -136,7 +136,7 @@ describe('PL service', () => {
                 },
                 // TRADE B: buy to close with 5$ loss
                 {
-                    tradeDate: addDays(date,1),
+                    tradeDate: addDays(date, 1),
                     position: 1,
                     strikePrice: 110,
                     tradePrice: 95,
@@ -149,5 +149,26 @@ describe('PL service', () => {
             // Assert
             expect(pl).toEqual(5);
         });
+
+        it('should work for strangle', () => {
+            // Arrange
+            const group: TradeGroup = {
+                underlying: "CAR",
+                expiration: new Date("2019-11-14T23:00:00.000Z"),
+                trades: [
+                    { "underlying": "CAR", "position": -1, "expiration": new Date("2019-11-14T23:00:00.000Z"), "optionType": 1, "strikePrice": 36, "pl": 0, "tradePrice": -0.2, "tradeDate": new Date("2019-10-30T23:00:00.000Z") },
+                    { "underlying": "CAR", "position": -1, "expiration": new Date("2019-11-14T23:00:00.000Z"), "optionType": 2, "strikePrice": 25, "pl": 0, "tradePrice": -0.35, "tradeDate": new Date("2019-10-30T23:00:00.000Z") },
+                    { "underlying": "CAR", "position": 1, "expiration": new Date("2019-11-14T23:00:00.000Z"), "optionType": 1, "strikePrice": 36, "pl": 0, "tradePrice": 0.05, "tradeDate": new Date("2019-10-31T23:00:00.000Z") },
+                    { "underlying": "CAR", "position": 1, "expiration": new Date("2019-11-14T23:00:00.000Z"), "optionType": 2, "strikePrice": 25, "pl": 0, "tradePrice": 0.25, "tradeDate": new Date("2019-10-31T23:00:00.000Z") }
+                ],
+                pl: 0
+            }
+
+            // Act
+            const pl = PLService.getPLForGroup(group);
+
+            // Assert
+            expect(pl).toEqual(0.25);
+        })
     });
 });

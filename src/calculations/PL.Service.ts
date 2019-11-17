@@ -6,7 +6,7 @@ const getPLForGroup = (group: TradeGroup): number => {
         const closingTrade = group.trades.find(TradesCompareService.isClosingCombinationWith(trade));
 
         if (closingTrade && closingTrade.tradeDate >= trade.tradeDate) {
-            return summary + (-closingTrade.position * closingTrade.tradePrice) + (-trade.position * trade.tradePrice);
+            return summary + (-closingTrade.position * Math.abs(closingTrade.tradePrice)) + (-trade.position * Math.abs(trade.tradePrice));
         }
 
         return summary;
