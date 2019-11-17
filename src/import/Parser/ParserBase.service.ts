@@ -57,7 +57,8 @@ export abstract class ParserBase implements IParser {
         }, {} as { [key: string]: TradeGroup })
 
         return Object.values(mapByUnderlyingAndExpiration)
-            .sort((a, b) => +a.expiration - +b.expiration);
+            .sort((a, b) => +a.expiration - +b.expiration)
+            .map(group => { group.trades.sort((a,b) => +a.tradeDate - +b.tradeDate); return group; });
     }
 
     public ParseRawData(rawText: string): Report {

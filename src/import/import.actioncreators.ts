@@ -1,6 +1,5 @@
 import { Dispatch } from "redux";
 import { ImportHistoryService } from './ImportHistory.service';
-// import { ReportParserService } from "./Parser/ReportParser.service";
 import { reportLoadedFromHistoryAction, historyLoadedAction } from './import.actions';
 import { IParser } from './Parser/IParser.service';
 import { FlexQueryParserService } from './Parser/FlexQueryParser.service';

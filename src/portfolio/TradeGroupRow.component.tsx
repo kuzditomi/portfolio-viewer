@@ -88,6 +88,7 @@ const TradeGroupRow: React.FC<TradeGroupRowProps &
         )}
       />
     ),
+    tradeDate: empty('tradeDate'),
     expiration: tradeGroup =>
       cell("expiration", tradeGroup.expiration.toLocaleDateString()),
     remainingDays: tradeGroup =>

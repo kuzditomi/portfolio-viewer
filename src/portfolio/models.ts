@@ -5,6 +5,7 @@ export const columns = [
   'optionTarget',
   'position',
   'price',
+  'tradeDate',
   'expiration',
   'remainingDays'
 ] as const;

@@ -10,6 +10,7 @@ const columnTitles: { [key in columns]: string } = {
   position: "Position",
   expiration: "Expiration",
   price: "Price",
+  tradeDate: "Trade date",
   remainingDays: "Remaining days"
 };
 

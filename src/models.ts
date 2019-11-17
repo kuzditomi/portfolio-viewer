@@ -9,6 +9,7 @@ export interface Trade {
     optionType: OptionType;
     strikePrice: number;
     tradePrice: number;
+    tradeDate: Date;
 }
 
 export interface Report {

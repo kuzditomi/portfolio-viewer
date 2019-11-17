@@ -8,15 +8,20 @@ export class FlexQueryParserService extends ParserBase {
 
         const trades: Trade[] = Array.from(xmlDoc.getElementsByTagName('Trade')).map(tradeElement => {
             const expiry = tradeElement.getAttribute('expiry')!;
+            const tradeDate = tradeElement.getAttribute('tradeDate')!;
             const position = parseInt(tradeElement.getAttribute('quantity')!);
-            return {
+
+            const trade: Trade = {
                 underlying: tradeElement.getAttribute('underlyingSymbol')!,
                 position,
                 expiration: new Date(+expiry.substr(0, 4), +expiry.substr(4, 2) - 1, +expiry.substr(6, 2)),
                 optionType: tradeElement.getAttribute('putCall') === 'P' ? OptionType.Put : OptionType.Call,
                 strikePrice: +tradeElement.getAttribute('strike')!,
-                tradePrice: (position < 0 ? -1 : 1) * (+tradeElement.getAttribute('tradePrice')!)
-            } as Trade
+                tradePrice: (position < 0 ? -1 : 1) * (+tradeElement.getAttribute('tradePrice')!),
+                tradeDate: new Date(+tradeDate.substr(0, 4), +tradeDate.substr(4, 2) - 1, +tradeDate.substr(6, 2)),
+            }
+
+            return trade;
         });
 
         return trades;

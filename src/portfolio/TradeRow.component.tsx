@@ -27,6 +27,7 @@ const columnDisplayers: {
   optionTarget: trade =>
     cell("optionTarget", trade.strikePrice.toString()),
   position: trade => cell("position", trade.position.toString()),
+  tradeDate: trade => cell('tradeDate', trade.tradeDate.toLocaleDateString()),
   expiration: trade =>
     cell("expiration", trade.expiration.toLocaleDateString()),
   price: trade => <PriceColumn key={"price"} price={trade.tradePrice} />,
