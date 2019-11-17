@@ -9,6 +9,7 @@ export interface Trade {
     optionType: OptionType;
     strikePrice: number;
     tradePrice: number;
+    pl: number;
     tradeDate: Date;
 }
 
@@ -21,4 +22,5 @@ export interface TradeGroup {
     underlying: string;
     expiration: Date;
     trades: Trade[];
+    pl: number;
 }

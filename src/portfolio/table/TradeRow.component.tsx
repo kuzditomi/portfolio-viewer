@@ -1,7 +1,8 @@
-import { OptionType, Trade } from "../models";
+import { OptionType, Trade } from "../../models";
 import React from "react";
-import { columns } from "./models";
+import { columns } from "../models";
 import PriceColumn from "./PriceColumn.component";
+import PLColumn from "./PLColumn.component";
 import { TableRow, TableCell } from '@material-ui/core';
 
 export interface TradeRowProps {
@@ -27,6 +28,7 @@ const columnDisplayers: {
   optionTarget: trade =>
     cell("optionTarget", trade.strikePrice.toString()),
   position: trade => cell("position", trade.position.toString()),
+  pl: trade => <PLColumn key={"pl"} pl={trade.pl} />,
   tradeDate: trade => cell('tradeDate', trade.tradeDate.toLocaleDateString()),
   expiration: trade =>
     cell("expiration", trade.expiration.toLocaleDateString()),

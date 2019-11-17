@@ -17,6 +17,7 @@ export class FlexQueryParserService extends ParserBase {
                 expiration: new Date(+expiry.substr(0, 4), +expiry.substr(4, 2) - 1, +expiry.substr(6, 2)),
                 optionType: tradeElement.getAttribute('putCall') === 'P' ? OptionType.Put : OptionType.Call,
                 strikePrice: +tradeElement.getAttribute('strike')!,
+                pl: 0,
                 tradePrice: (position < 0 ? -1 : 1) * (+tradeElement.getAttribute('tradePrice')!),
                 tradeDate: new Date(+tradeDate.substr(0, 4), +tradeDate.substr(4, 2) - 1, +tradeDate.substr(6, 2)),
             }

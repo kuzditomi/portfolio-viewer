@@ -19,23 +19,23 @@ const styles = createStyles({
   }
 });
 
-export interface PriceColumnProps {
-  price: number;
+export interface PLColumnProps {
+  pl: number;
 }
 
-const getPriceString = (price: number) => {
-  return price < 0 ? (price * -1).toFixed(2) : price.toFixed(2);
+const getPLString = (pl: number) => {
+  return pl < 0 ? (pl * -1).toFixed(2) : pl.toFixed(2);
 };
 
-const PriceColumn: React.FC<PriceColumnProps & WithStyles<typeof styles>> = ({
-  price,
+const PLColumn: React.FC<PLColumnProps & WithStyles<typeof styles>> = ({
+  pl,
   classes
 }) => {
   return (
-    <TableCell className={price > 0 ? classes.loss : classes.win}>
-      {getPriceString(price)}
+    <TableCell className={pl > 0 ? classes.loss : classes.win}>
+      {getPLString(pl)}
     </TableCell>
   );
 };
 
-export default withStyles(styles)(PriceColumn);
+export default withStyles(styles)(PLColumn);

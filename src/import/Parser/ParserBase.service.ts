@@ -47,7 +47,8 @@ export abstract class ParserBase implements IParser {
                 map[key] = {
                     underlying,
                     expiration,
-                    trades: []
+                    trades: [],
+                    pl: 0
                 };
             }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Report } from "../models";
+import { Report } from "../../models";
 import TradeHeader from "./TradeHeader.component";
 import TradeGroupRow from "./TradeGroupRow.component";
 import { Table, TableBody } from "@material-ui/core";

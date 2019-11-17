@@ -1,6 +1,6 @@
-import { TradeGroup } from "../models";
+import { TradeGroup } from "../../models";
 import React, { useState } from "react";
-import { columns } from "./models";
+import { columns } from "../models";
 import TradeRow from "./TradeRow.component";
 import PriceColumn from "./PriceColumn.component";
 import { TableRow, TableCell, IconButton, Theme } from "@material-ui/core";
@@ -8,6 +8,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { withStyles, createStyles, WithStyles } from "@material-ui/styles";
 import clsx from 'clsx';
 import { grey } from "@material-ui/core/colors";
+import PLColumn from "./PLColumn.component";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -84,6 +85,15 @@ const TradeGroupRow: React.FC<TradeGroupRowProps &
         key={"price"}
         price={tradeGroup.trades.reduce(
           (sum, trade) => (sum += trade.tradePrice),
+          0
+        )}
+      />
+    ),
+    pl: tradeGroup => (
+      <PLColumn
+        key={"pl"}
+        pl={tradeGroup.trades.reduce(
+          (sum, trade) => (sum += trade.pl),
           0
         )}
       />

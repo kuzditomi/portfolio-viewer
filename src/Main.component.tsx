@@ -6,7 +6,7 @@ import Filters from "./filters/Filters.component";
 import ImportHistory from "./import/ImportHistory.container";
 import Import from "./import/Import.container";
 import { Report } from "./models";
-import PortfolioTableComponent from "./portfolio/PortfolioTable.component";
+import PortfolioTableComponent from "./portfolio/table/PortfolioTable.component";
 
 const styles = (theme: Theme) =>
   createStyles({
