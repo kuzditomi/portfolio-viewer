@@ -92,10 +92,7 @@ const TradeGroupRow: React.FC<TradeGroupRowProps &
     pl: tradeGroup => (
       <PLColumn
         key={"pl"}
-        pl={tradeGroup.trades.reduce(
-          (sum, trade) => (sum += trade.pl),
-          0
-        )}
+        pl={tradeGroup.pl}
       />
     ),
     tradeDate: empty('tradeDate'),
