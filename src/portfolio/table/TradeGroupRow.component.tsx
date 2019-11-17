@@ -78,7 +78,7 @@ const TradeGroupRow: React.FC<TradeGroupRowProps &
       ),
     underlying: tradeGroup => cell("underlying", tradeGroup.underlying),
     optionType: empty("optionType"),
-    optionTarget: empty("optionTarget"),
+    strikePrice: empty("strikePrice"),
     position: empty("position"),
     price: tradeGroup => (
       <PriceColumn

@@ -25,8 +25,8 @@ const columnDisplayers: {
       "optionType",
       trade.optionType === OptionType.Call ? "CALL" : "PUT"
     ),
-  optionTarget: trade =>
-    cell("optionTarget", trade.strikePrice.toString()),
+  strikePrice: trade =>
+    cell("strikePrice", trade.strikePrice.toFixed(1)),
   position: trade => cell("position", trade.position.toString()),
   pl: trade => <PLColumn key={"pl"} pl={trade.pl} />,
   tradeDate: trade => cell('tradeDate', trade.tradeDate.toLocaleDateString()),

@@ -2,7 +2,7 @@ export const columns = [
   'action',
   'underlying',
   'optionType',
-  'optionTarget',
+  'strikePrice',
   'position',
   'price',
   'pl',

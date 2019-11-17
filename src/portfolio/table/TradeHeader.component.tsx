@@ -5,11 +5,11 @@ import { TableHead, TableCell, TableRow } from "@material-ui/core";
 const columnTitles: { [key in columns]: string } = {
   action: "",
   underlying: "Underlying",
-  optionTarget: "Option Target",
+  strikePrice: "Strike Price",
   optionType: "Option Type",
   position: "Position",
   expiration: "Expiration",
-  price: "Price",
+  price: "Trade Price",
   pl: "P/L",
   tradeDate: "Trade date",
   remainingDays: "Remaining days"

@@ -1,6 +1,7 @@
-import { Report, TradeGroup, Trade } from "../models";
+import { Report, TradeGroup } from "../models";
 import { DateFilter, PositionFilter } from './filters.models';
 import { FiltersState } from './filters.reducer';
+import TradesCompareService from "../calculations/TradesCompare.service";
 
 export class FilterService {
     public applyFilters(reportToFilter: Report, filters: FiltersState): Report {
@@ -30,16 +31,11 @@ export class FilterService {
     }
 
     private filterByPosition = (filter: PositionFilter) => (portfolio: Report): Report => {
-        const isClosingCombinationWith = (trade: Trade) =>(otherTrade: Trade) =>
-            trade.optionType === otherTrade.optionType &&
-            trade.strikePrice === otherTrade.strikePrice &&
-            trade.position === (-1 * otherTrade.position);
-
         const positionFilters = {
             [PositionFilter.All]: (tradeGroup: TradeGroup) => tradeGroup,
             [PositionFilter.Closed]: (tradeGroup: TradeGroup) => {
                 const filteredTrades = tradeGroup.trades
-                    .filter(trade => tradeGroup.trades.find(isClosingCombinationWith(trade)))
+                    .filter(trade => tradeGroup.trades.find(TradesCompareService.isClosingCombinationWith(trade)))
 
                 return {
                     ...tradeGroup,
@@ -48,7 +44,7 @@ export class FilterService {
             },
             [PositionFilter.Open]: (tradeGroup: TradeGroup) => {
                 const filteredTrades = tradeGroup.trades
-                    .filter(trade => !tradeGroup.trades.find(isClosingCombinationWith(trade)))
+                    .filter(trade => !tradeGroup.trades.find(TradesCompareService.isClosingCombinationWith(trade)))
 
                 return {
                     ...tradeGroup,
