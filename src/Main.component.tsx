@@ -7,6 +7,9 @@ import ImportHistory from "./import/ImportHistory.container";
 import Import from "./import/Import.container";
 import { Report } from "./models";
 import PortfolioTableComponent from "./portfolio/table/PortfolioTable.component";
+import ChartComponent from "./chart/Chart.component";
+import SwitcherComponent from "./switcher/Switcher.component";
+import SwitcherItemComponent from "./switcher/SwitcherItem.component";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -59,13 +62,23 @@ const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <PortfolioTableComponent report={report} />
-          </Paper>
+          <SwitcherComponent>
+            <SwitcherItemComponent switcherKey="table">
+              <Paper className={classes.paper} >
+                <PortfolioTableComponent report={report} />
+              </Paper>
+            </SwitcherItemComponent>
+            <SwitcherItemComponent switcherKey="chart">
+              <Paper className={classes.paper}>
+                <ChartComponent />
+              </Paper>
+            </SwitcherItemComponent>
+          </SwitcherComponent>
         </Grid>
       </>
     );
   };
+
   return (
     <main className={classes.content}>
       <div className={classes.appBarSpacer} />

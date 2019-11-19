@@ -2,7 +2,6 @@ import { OptionType, Trade } from "../../models";
 import React from "react";
 import { columns } from "../models";
 import PriceColumn from "./PriceColumn.component";
-import PLColumn from "./PLColumn.component";
 import { TableRow, TableCell } from '@material-ui/core';
 
 export interface TradeRowProps {
