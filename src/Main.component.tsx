@@ -62,18 +62,16 @@ const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <SwitcherComponent>
-            <SwitcherItemComponent switcherKey="table">
-              <Paper className={classes.paper} >
+          <Paper className={classes.paper} >
+            <SwitcherComponent activeKey="table">
+              <SwitcherItemComponent switcherKey="table">
                 <PortfolioTableComponent report={report} />
-              </Paper>
-            </SwitcherItemComponent>
-            <SwitcherItemComponent switcherKey="chart">
-              <Paper className={classes.paper}>
+              </SwitcherItemComponent>
+              <SwitcherItemComponent switcherKey="chart">
                 <ChartComponent />
-              </Paper>
-            </SwitcherItemComponent>
-          </SwitcherComponent>
+              </SwitcherItemComponent>
+            </SwitcherComponent>
+          </Paper>
         </Grid>
       </>
     );
