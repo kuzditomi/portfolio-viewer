@@ -7,6 +7,9 @@ import ImportHistory from "./import/ImportHistory.container";
 import Import from "./import/Import.container";
 import { Report } from "./models";
 import PortfolioTableComponent from "./portfolio/table/PortfolioTable.component";
+import Chart from "./chart/Chart.container";
+import SwitcherComponent from "./switcher/Switcher.component";
+import SwitcherItemComponent from "./switcher/SwitcherItem.component";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -33,10 +36,12 @@ const styles = (theme: Theme) =>
 
 export interface MainStateProps {
   report?: Report;
+  isChartOpen: boolean;
 }
 
 const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
   report,
+  isChartOpen,
   classes
 }) => {
   const renderPortfolio = () => {
@@ -59,13 +64,21 @@ const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <PortfolioTableComponent report={report} />
+          <Paper className={classes.paper} >
+            <SwitcherComponent activeKey={isChartOpen ? 'chart' : 'table'}>
+              <SwitcherItemComponent switcherKey="table">
+                <PortfolioTableComponent report={report} />
+              </SwitcherItemComponent>
+              <SwitcherItemComponent switcherKey="chart">
+                <Chart />
+              </SwitcherItemComponent>
+            </SwitcherComponent>
           </Paper>
         </Grid>
       </>
     );
   };
+
   return (
     <main className={classes.content}>
       <div className={classes.appBarSpacer} />
