@@ -36,10 +36,12 @@ const styles = (theme: Theme) =>
 
 export interface MainStateProps {
   report?: Report;
+  isChartOpen: boolean;
 }
 
 const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
   report,
+  isChartOpen,
   classes
 }) => {
   const renderPortfolio = () => {
@@ -63,7 +65,7 @@ const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
         </Grid>
         <Grid item xs={12}>
           <Paper className={classes.paper} >
-            <SwitcherComponent activeKey="table">
+            <SwitcherComponent activeKey={isChartOpen ? 'chart' : 'table'}>
               <SwitcherItemComponent switcherKey="table">
                 <PortfolioTableComponent report={report} />
               </SwitcherItemComponent>
