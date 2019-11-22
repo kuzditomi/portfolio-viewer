@@ -6,7 +6,7 @@ const styles = createStyles({
     item: {
         flexShrink: 0,
         width: '100%',
-        transition: 'height linear 0.2s, margin ease 0.5s',
+        transition: 'height linear 0.2s, margin ease 0.3s',
         height: 0
     },
     active: {

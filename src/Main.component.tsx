@@ -7,7 +7,7 @@ import ImportHistory from "./import/ImportHistory.container";
 import Import from "./import/Import.container";
 import { Report } from "./models";
 import PortfolioTableComponent from "./portfolio/table/PortfolioTable.component";
-import ChartComponent from "./chart/Chart.component";
+import Chart from "./chart/Chart.container";
 import SwitcherComponent from "./switcher/Switcher.component";
 import SwitcherItemComponent from "./switcher/SwitcherItem.component";
 
@@ -70,7 +70,7 @@ const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
                 <PortfolioTableComponent report={report} />
               </SwitcherItemComponent>
               <SwitcherItemComponent switcherKey="chart">
-                <ChartComponent />
+                <Chart />
               </SwitcherItemComponent>
             </SwitcherComponent>
           </Paper>

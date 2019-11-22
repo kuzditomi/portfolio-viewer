@@ -16,7 +16,7 @@ export interface SwitcherProps {
 }
 
 export function getOffsetForChildren(index: number, totalCount: number): number {
-    return 0;
+    return [-1, 1][index]; // TODO implement for real
 }
 
 const SwitcherComponent: React.FC<SwitcherProps & WithStyles<typeof styles>> = ({ children, activeKey, classes }) => {
