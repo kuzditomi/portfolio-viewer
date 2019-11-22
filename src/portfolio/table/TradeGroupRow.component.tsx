@@ -13,8 +13,10 @@ import PLColumn from "./PLColumn.component";
 
 const styles = (theme: Theme) =>
   createStyles({
-    expand: {
+    icon: {
       padding: 0,
+    },
+    expand: {
       transform: "rotate(0deg)",
       transition: theme.transitions.create("transform", {
         duration: theme.transitions.duration.shortest
@@ -74,13 +76,14 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
           <>
             <IconButton
               onClick={() => toggleIsOpen()}
-              className={clsx(classes.expand, {
+              className={clsx(classes.icon, classes.expand, {
                 [classes.expandOpen]: tradeGroup.isOpen
               })}
             >
               <ExpandMoreIcon />
             </IconButton>
             <IconButton
+              className={classes.icon}
               onClick={() => showChart()}
             >
               <BarChartIcon />
