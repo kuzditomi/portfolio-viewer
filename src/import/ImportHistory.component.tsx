@@ -8,7 +8,7 @@ import {
   ListItemIcon,
   IconButton
 } from "@material-ui/core";
-import BarChartIcon from "@material-ui/icons/BarChart";
+import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { createStyles, WithStyles, withStyles } from "@material-ui/styles";
 import red from "@material-ui/core/colors/red";
@@ -53,7 +53,7 @@ const ImportHistory: React.FC<ImportHistoryStateProps &
         {history.map(key => (
           <ListItem button onClick={() => importFromHistory(key)} key={key}>
             <ListItemIcon>
-              <BarChartIcon />
+              <FolderOpenIcon />
             </ListItemIcon>
             <ListItemText primary={key} />
             <IconButton
