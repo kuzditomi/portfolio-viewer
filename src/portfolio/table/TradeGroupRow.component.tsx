@@ -8,7 +8,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import { withStyles, createStyles, WithStyles } from "@material-ui/styles";
 import clsx from 'clsx';
-import { grey } from "@material-ui/core/colors";
+import { grey, green } from '@material-ui/core/colors';
 import PLColumn from "./PLColumn.component";
 
 const styles = (theme: Theme) =>
@@ -27,6 +27,11 @@ const styles = (theme: Theme) =>
     },
     groupRow: {
       background: grey[300]
+    },
+    chartIcon: {
+      "&:hover": {
+        color: green[700]
+      }
     }
   });
 
@@ -75,6 +80,7 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
           "action",
           <>
             <IconButton
+              title={tradeGroup.isOpen ? "Collapse trades" : "Show trades"}
               onClick={() => toggleIsOpen()}
               className={clsx(classes.icon, classes.expand, {
                 [classes.expandOpen]: tradeGroup.isOpen
@@ -83,7 +89,8 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
               <ExpandMoreIcon />
             </IconButton>
             <IconButton
-              className={classes.icon}
+              title="Draw on chart"
+              className={clsx(classes.icon, classes.chartIcon)}
               onClick={() => showChart()}
             >
               <BarChartIcon />
