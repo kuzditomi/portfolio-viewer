@@ -16,4 +16,5 @@ export const filteredPortfolioSummary = (state: AppState) => {
     }
 };
 
-export const isChartOpenSelector = (state: AppState) => state.portfolio.isChartOpened;
+export const isChartOpenSelector = (state: AppState) => !!state.portfolio.chartData;
+export const chartDataSelector = (state: AppState) => state.portfolio.chartData;

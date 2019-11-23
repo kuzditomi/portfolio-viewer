@@ -70,7 +70,7 @@ const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
                 <PortfolioTableComponent report={report} />
               </SwitcherItemComponent>
               <SwitcherItemComponent switcherKey="chart">
-                <Chart />
+                {isChartOpen ? <Chart /> : null}
               </SwitcherItemComponent>
             </SwitcherComponent>
           </Paper>

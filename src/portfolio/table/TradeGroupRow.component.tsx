@@ -40,7 +40,7 @@ export interface TradeGroupRowOwnProps {
 }
 
 export interface TradeGroupRowDispatchProps {
-  showChart: () => void;
+  showChart: (tradeGroup: TradeGroup) => void;
 }
 
 interface CollapseableTradeGroup extends TradeGroup {
@@ -91,7 +91,7 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
             <IconButton
               title="Draw on chart"
               className={clsx(classes.icon, classes.chartIcon)}
-              onClick={() => showChart()}
+              onClick={() => showChart(tradeGroup)}
             >
               <BarChartIcon />
             </IconButton>

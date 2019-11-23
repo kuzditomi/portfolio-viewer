@@ -4,9 +4,10 @@ import { TradeGroupRowDispatchProps, TradeGroupRowOwnProps } from './TradeGroupR
 import { Dispatch } from "redux";
 import { AppState } from "../../store";
 import { openChart } from '../portfolio.actions';
+import { TradeGroup } from '../../models';
 
 const mapDispatchToProps = (dispatch: Dispatch): TradeGroupRowDispatchProps => ({
-    showChart: () => { dispatch(openChart(undefined)) }
+    showChart: (tradeGroup: TradeGroup) => { dispatch(openChart(tradeGroup)) }
 })
 
 export default connect<{}, TradeGroupRowDispatchProps, TradeGroupRowOwnProps, AppState>(

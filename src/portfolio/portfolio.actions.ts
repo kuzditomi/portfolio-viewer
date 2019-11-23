@@ -1,5 +1,5 @@
 import { AppAction } from '../actions';
-import { Report } from '../models';
+import { Report, TradeGroup } from '../models';
 
 export enum PORTFOLIO_ACTIONS {
     PORTFOLIO_FILTERED,
@@ -12,9 +12,9 @@ export const portfolioFilteredAction: AppAction<PORTFOLIO_ACTIONS.PORTFOLIO_FILT
     payload
 });
 
-export const openChart: AppAction<PORTFOLIO_ACTIONS.OPEN_CHART> = () => ({
+export const openChart: AppAction<PORTFOLIO_ACTIONS.OPEN_CHART, TradeGroup> = (payload) => ({
     type: PORTFOLIO_ACTIONS.OPEN_CHART,
-    payload: undefined
+    payload
 });
 
 export const closeChart: AppAction<PORTFOLIO_ACTIONS.CLOSE_CHART> = () => ({
