@@ -3,7 +3,20 @@
 <FlexStatement accountId="xxxxxxxxx" fromDate="20190101" toDate="20191110" period="YearToDate" whenGenerated="20191116;064537">
 <AccountInformation accountId="xxxxxxxxx" name="Individual Demo" />
 <Trades>
+<!-- long call AAA -->
 <Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="C" tradeDate="20191031" quantity="1" tradePrice="0.1" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="AAA" />
+
+<!-- short call BBB -->
+<Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="C" tradeDate="20191031" quantity="-1" tradePrice="0.1" ibCommission="-0.296214" buySell="SELL" underlyingSymbol="BBB" />
+
+<!-- long put CCC -->
+<Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="P" tradeDate="20191031" quantity="1" tradePrice="0.1" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="CCC" />
+
+<!-- short put DDD -->
+<Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="P" tradeDate="20191031" quantity="-1" tradePrice="0.1" ibCommission="-0.296214" buySell="SELL" underlyingSymbol="DDD" />
+
+
+<!-- credit spread -->
 <Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="C" tradeDate="20191031" quantity="-1" tradePrice="0.1" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="ABC" />
 <Trade accountId="xxxxxxxxx" strike="20" expiry="20191115" putCall="C" tradeDate="20191101" quantity="-1" tradePrice="0.2" ibCommission="-0.2938" buySell="SELL" underlyingSymbol="ABC" />
 </Trades>

@@ -5,10 +5,20 @@ export interface ChartPoints {
 }
 
 function getTradePLAtExpiry(underLyingPrice: number, trade: Trade): number {
-    if (trade.strikePrice >= underLyingPrice) {
+    const isLong = trade.position > 0;
+    const isCall = trade.optionType === OptionType.Call;
+    const isOverStrikePrice = trade.strikePrice < underLyingPrice;
+
+    const isFixed =
+        (isLong && isCall && !isOverStrikePrice) ||
+        (isLong && !isCall && isOverStrikePrice) ||
+        (!isLong && isCall && isOverStrikePrice) ||
+        (!isLong && !isCall && !isOverStrikePrice)
+
+    if (isFixed) {
         return trade.position * trade.tradePrice * 100 * (trade.optionType === OptionType.Call ? -1 : 1);
     } else {
-        return trade.position * (trade.optionType === OptionType.Call ? underLyingPrice - trade.strikePrice -trade.tradePrice*100 : trade.strikePrice - underLyingPrice + trade.tradePrice*100);
+        return trade.position * (trade.optionType === OptionType.Call ? underLyingPrice - trade.strikePrice - trade.tradePrice * 100 : trade.strikePrice - underLyingPrice + trade.tradePrice * 100);
     }
 }
 
