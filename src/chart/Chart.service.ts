@@ -6,9 +6,9 @@ export interface ChartPoints {
 
 function getTradePLAtExpiry(underLyingPrice: number, trade: Trade): number {
     if (trade.strikePrice >= underLyingPrice) {
-        return trade.position * trade.tradePrice * (trade.optionType === OptionType.Call ? -1 : 1);
+        return trade.position * trade.tradePrice * 100 * (trade.optionType === OptionType.Call ? -1 : 1);
     } else {
-        return trade.position * (trade.optionType === OptionType.Call ? underLyingPrice - trade.strikePrice : trade.strikePrice - underLyingPrice);
+        return trade.position * (trade.optionType === OptionType.Call ? underLyingPrice - trade.strikePrice -trade.tradePrice*100 : trade.strikePrice - underLyingPrice + trade.tradePrice*100);
     }
 }
 
@@ -17,15 +17,23 @@ function getGroupPLAtExpiry(underLyingPrice: number, tradeGroup: TradeGroup): nu
 }
 
 function getChartPointList(tradegroup: TradeGroup): ChartPoints {
-    const middlePoint = tradegroup.trades.reduce((sum, t) => sum + t.strikePrice, 0) / tradegroup.trades.length;
-    const strikes = tradegroup.trades.map(t => t.strikePrice);
-    const min = Math.min(...strikes)
-    const max = Math.max(...strikes)
+    let from = 0;
+    let to = 0;
 
+    if (tradegroup.trades.length > 1) {
+        const middlePoint = tradegroup.trades.reduce((sum, t) => sum + t.strikePrice, 0) / tradegroup.trades.length;
+        const strikes = tradegroup.trades.map(t => t.strikePrice);
+        const min = Math.min(...strikes)
+        const max = Math.max(...strikes)
 
-    const from = min - ((middlePoint - min) / 2);
-    const to = max + ((max - middlePoint) / 2);
+        from = min - ((middlePoint - min) / 2);
+        to = max + ((max - middlePoint) / 2);
+    } else {
+        const distance = Math.abs(tradegroup.trades[0].tradePrice * 100)
+        from = tradegroup.trades[0].strikePrice - 2 * distance;
+        to = tradegroup.trades[0].strikePrice + 2 * distance;
 
+    }
     const points: [number, number][] = [];
     const d = Math.abs(to - from) / 500;
 

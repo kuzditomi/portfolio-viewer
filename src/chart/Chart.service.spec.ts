@@ -26,7 +26,7 @@ describe('Chart service', () => {
             const tradeGroup: TradeGroup = mockTradeGroup([{ optionType: OptionType.Call, strikePrice: strikePrice }]);
 
             // Act
-            const PLs = prices.map(p => ChartService.getPLAtExpiryWithPrice(p, tradeGroup));
+            const PLs = prices.map(p => ChartService.getGroupPLAtExpiry(p, tradeGroup));
 
             // Assert
             expect(PLs).toEqual([-10, 0, 10]);
@@ -39,7 +39,7 @@ describe('Chart service', () => {
             const tradeGroup: TradeGroup = mockTradeGroup([{ optionType: OptionType.Put, strikePrice: strikePrice }]);
 
             // Act
-            const PLs = prices.map(p => ChartService.getPLAtExpiryWithPrice(p, tradeGroup));
+            const PLs = prices.map(p => ChartService.getGroupPLAtExpiry(p, tradeGroup));
 
             // Assert
             expect(PLs).toEqual([10, 0, -10]);
@@ -54,7 +54,7 @@ describe('Chart service', () => {
             ]);
 
             // Act
-            const PLs = prices.map(p => ChartService.getPLAtExpiryWithPrice(p, tradeGroup));
+            const PLs = prices.map(p => ChartService.getGroupPLAtExpiry(p, tradeGroup));
 
             // Assert
             expect(PLs).toEqual([-10,-10, -5, 0, 5, 10,10]);
