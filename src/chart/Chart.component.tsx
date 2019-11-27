@@ -1,37 +1,43 @@
 import React from "react";
 import { createStyles, WithStyles, withStyles } from "@material-ui/styles";
-import { Typography, IconButton } from "@material-ui/core";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { TradeGroup } from '../models';
+import { Chart } from "react-google-charts";
+import ChartService from "./Chart.service";
 
 const styles = createStyles({
-  backIcon: {
-    padding: 5
-  }
 });
 
-export interface ChartStateProps {
-  chartData?: TradeGroup;
+export interface ChartProps {
+    chartData: TradeGroup;
 }
 
-export interface ChartDispatchProps {
-  closeChart: () => void;
-}
+const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ chartData, classes }) => {
+    const pointlist = ChartService.getChartPointList(chartData);
 
-const ChartComponent: React.FC<ChartStateProps & ChartDispatchProps & WithStyles<typeof styles>> = ({ chartData, closeChart, classes }) => {
-  if (!chartData) {
-    throw Error('No chart data to show');
-  }
+    return <Chart
+        width={'100%'}
+        height={'500px'}
+        chartType="LineChart"
+        data={[
+            ['x', chartData.underlying],
+            ...pointlist.points
+        ]}
+        options={{
+            hAxis: {
+                title: 'Underlying price',
+            },
+            vAxis: {
+                title: 'P/L',
+            },
+            series: {
+                0: {
+                    curveType: 'function'
+                }
+            }
+        }}
+        rootProps={{ 'data-testid': '1' }}
+    />
 
-  return <>
-    <Typography variant="h6" component="h2" color="primary">
-      <IconButton className={classes.backIcon} onClick={() => { closeChart() }}>
-        <ArrowBackIcon />
-      </IconButton>
-      Chart
-    </Typography>
-    
-  </>
 };
 
 export default withStyles(styles)(ChartComponent);
