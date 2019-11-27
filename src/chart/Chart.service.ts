@@ -1,14 +1,19 @@
-import { TradeGroup, OptionType } from "../models";
+import { TradeGroup, OptionType, Trade } from "../models";
 
 export interface ChartPoints {
     points: [number, number][]
 }
 
-function getPLAtExpiryWithPrice(price: number, tradeGroup: TradeGroup): number {
-    return tradeGroup.trades.reduce((sum, trade) => {
-        const plOfTrade = trade.optionType === OptionType.Call ? price - trade.strikePrice : trade.strikePrice - price;
-        return sum + plOfTrade;
-    }, 0);
+function getTradePLAtExpiry(underLyingPrice: number, trade: Trade): number {
+    if (trade.strikePrice >= underLyingPrice) {
+        return trade.position * trade.tradePrice * (trade.optionType === OptionType.Call ? -1 : 1);
+    } else {
+        return trade.position * (trade.optionType === OptionType.Call ? underLyingPrice - trade.strikePrice : trade.strikePrice - underLyingPrice);
+    }
+}
+
+function getGroupPLAtExpiry(underLyingPrice: number, tradeGroup: TradeGroup): number {
+    return tradeGroup.trades.reduce((sum, trade) => sum + getTradePLAtExpiry(underLyingPrice, trade), 0)
 }
 
 function getChartPointList(tradegroup: TradeGroup): ChartPoints {
@@ -22,10 +27,10 @@ function getChartPointList(tradegroup: TradeGroup): ChartPoints {
     const to = max + ((max - middlePoint) / 2);
 
     const points: [number, number][] = [];
-    for (let price = from; price < to; price++) {
+    const d = Math.abs(to - from) / 500;
 
-        const pl = getPLAtExpiryWithPrice(price, tradegroup);
-
+    for (let price = from; price < to; price += d) {
+        const pl = getGroupPLAtExpiry(price, tradegroup);
         points.push([price, pl])
     }
 
@@ -36,5 +41,6 @@ function getChartPointList(tradegroup: TradeGroup): ChartPoints {
 
 export default {
     getChartPointList,
-    getPLAtExpiryWithPrice
+    getGroupPLAtExpiry,
+    getTradePLAtExpiry
 }
