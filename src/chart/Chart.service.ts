@@ -9,11 +9,7 @@ function getTradePLAtExpiry(underLyingPrice: number, trade: Trade): number {
     const isCall = trade.optionType === OptionType.Call;
     const isOverStrikePrice = trade.strikePrice < underLyingPrice;
 
-    const isFixed =
-        (isLong && isCall && !isOverStrikePrice) ||
-        (isLong && !isCall && isOverStrikePrice) ||
-        (!isLong && isCall && isOverStrikePrice) ||
-        (!isLong && !isCall && !isOverStrikePrice)
+    const isFixed = (isCall && !isOverStrikePrice) || (!isCall && isOverStrikePrice);
 
     if (isFixed) {
         return trade.position * trade.tradePrice * 100 * (trade.optionType === OptionType.Call ? -1 : 1);
