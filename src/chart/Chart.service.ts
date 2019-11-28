@@ -1,20 +1,22 @@
-import { TradeGroup, OptionType, Trade } from "../models";
+import { TradeGroup, OptionType, Trade } from '../models';
 
 export interface ChartPoints {
     points: [number, number][]
 }
 
 function getTradePLAtExpiry(underLyingPrice: number, trade: Trade): number {
-    const isLong = trade.position > 0;
     const isCall = trade.optionType === OptionType.Call;
     const isOverStrikePrice = trade.strikePrice < underLyingPrice;
+    const tradeAbsPrice = Math.abs(trade.tradePrice);
 
     const isFixed = (isCall && !isOverStrikePrice) || (!isCall && isOverStrikePrice);
 
+    const ITMprice = -trade.position * tradeAbsPrice * 100;
+
     if (isFixed) {
-        return trade.position * trade.tradePrice * 100 * (trade.optionType === OptionType.Call ? -1 : 1);
+        return ITMprice;
     } else {
-        return trade.position * (trade.optionType === OptionType.Call ? underLyingPrice - trade.strikePrice - trade.tradePrice * 100 : trade.strikePrice - underLyingPrice + trade.tradePrice * 100);
+        return ITMprice - ((trade.strikePrice - underLyingPrice) * trade.position * (trade.optionType === OptionType.Call ? 1 : -1))
     }
 }
 
