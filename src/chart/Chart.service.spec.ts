@@ -3,12 +3,12 @@ import { TradeGroup, OptionType } from '../models';
 
 describe('Chart service', () => {
     describe('PL calculation', () => {
-        const mockTradeGroup = (trades: { optionType: OptionType, strikePrice: number }[]): TradeGroup => ({
+        const mockTradeGroup = (trades: { optionType: OptionType, strikePrice: number, position?: number }[]): TradeGroup => ({
             expiration: new Date(),
             pl: 1,
             trades: trades.map(trade => ({
                 underlying: 'abc',
-                position: 1,
+                position: trade.position || 1,
                 expiration: new Date(),
                 optionType: trade.optionType,
                 strikePrice: trade.strikePrice,
@@ -49,8 +49,8 @@ describe('Chart service', () => {
             // Arrange
             const prices = [10, 20, 25, 30, 35, 40, 50];
             const tradeGroup: TradeGroup = mockTradeGroup([
-                { optionType: OptionType.Call, strikePrice: 20 },
-                { optionType: OptionType.Call, strikePrice: 40 }
+                { optionType: OptionType.Call, strikePrice: 20, position: -1 },
+                { optionType: OptionType.Call, strikePrice: 40, position: 1 }
             ]);
 
             // Act

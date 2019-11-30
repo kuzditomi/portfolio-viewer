@@ -22,39 +22,7 @@ function getGroupPLAtExpiry(underLyingPrice: number, tradeGroup: TradeGroup): nu
     return tradeGroup.trades.reduce((sum, trade) => sum + getTradePLAtExpiry(underLyingPrice, trade), 0)
 }
 
-function getChartPointList(tradegroup: TradeGroup): ChartPoints {
-    let from = 0;
-    let to = 0;
-
-    if (tradegroup.trades.length > 1) {
-        const middlePoint = tradegroup.trades.reduce((sum, t) => sum + t.strikePrice, 0) / tradegroup.trades.length;
-        const strikes = tradegroup.trades.map(t => t.strikePrice);
-        const min = Math.min(...strikes)
-        const max = Math.max(...strikes)
-
-        from = min - ((middlePoint - min) / 2);
-        to = max + ((max - middlePoint) / 2);
-    } else {
-        const distance = Math.abs(tradegroup.trades[0].tradePrice * 100)
-        from = tradegroup.trades[0].strikePrice - 2 * distance;
-        to = tradegroup.trades[0].strikePrice + 2 * distance;
-
-    }
-    const points: [number, number][] = [];
-    const d = Math.abs(to - from) / 500;
-
-    for (let price = from; price < to; price += d) {
-        const pl = getGroupPLAtExpiry(price, tradegroup);
-        points.push([price, pl])
-    }
-
-    return {
-        points
-    }
-}
-
 export default {
-    getChartPointList,
     getGroupPLAtExpiry,
     getTradePLAtExpiry
 }

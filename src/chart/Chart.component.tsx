@@ -17,9 +17,35 @@ const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ char
 
     const getHeaderFromTrade = (trade: Trade) => `${trade.underlying} ${trade.strikePrice}`;
 
+    const getBoundaries = () => {
+        let from = 0;
+        let to = 0;
+        const tradeGroup = chartData;
+
+        if (tradeGroup.trades.length > 1) {
+            const middlePoint = tradeGroup.trades.reduce((sum, t) => sum + t.strikePrice, 0) / tradeGroup.trades.length;
+            const strikes = tradeGroup.trades.map(t => t.strikePrice);
+            const min = Math.min(...strikes)
+            const max = Math.max(...strikes)
+
+            from = min - ((middlePoint - min) / 2);
+            to = max + ((max - middlePoint) / 2);
+        } else {
+            const distance = Math.abs(tradeGroup.trades[0].tradePrice * 100)
+            from = tradeGroup.trades[0].strikePrice - 2 * distance;
+            to = tradeGroup.trades[0].strikePrice + 2 * distance;
+
+        }
+
+        return [from, to];
+    }
+
     const getChartPoints = () => {
+        const [from,to] = getBoundaries();
         const points: number[][] = [];
-        for (let x = 60; x < 90; x += 0.1) {
+
+
+        for (let x = from; x <= to; x += 0.1) {
             const valuesForX = chartData.trades.map(t => ChartService.getTradePLAtExpiry(x, t));
             const strategyValue = ChartService.getGroupPLAtExpiry(x, chartData);
 
