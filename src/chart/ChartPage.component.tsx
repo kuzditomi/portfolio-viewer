@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { createStyles, WithStyles, withStyles } from "@material-ui/styles";
-import { Typography, IconButton } from "@material-ui/core";
+import { Typography, IconButton, FormControlLabel, Switch } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { TradeGroup } from '../models';
 import ChartComponent from "./Chart.component";
@@ -24,6 +24,8 @@ const ChartPageComponent: React.FC<ChartPageStateProps & ChartPageDispatchProps 
     throw Error('No chart data to show');
   }
 
+  const [showMainStrategyOnly, setShowMainStrategyOnly] = useState(true);
+
   return <>
     <Typography variant="h6" component="h2" color="primary">
       <IconButton className={classes.backIcon} onClick={() => { closeChart() }}>
@@ -31,7 +33,18 @@ const ChartPageComponent: React.FC<ChartPageStateProps & ChartPageDispatchProps 
       </IconButton>
       Chart
     </Typography>
-    <ChartComponent chartData={chartData}/>
+    <FormControlLabel
+      control={
+        <Switch
+          checked={showMainStrategyOnly}
+          onChange={event => setShowMainStrategyOnly(event.target.checked)}
+          value="checkedB"
+          color="primary"
+        />
+      }
+      label="Hide legs"
+    />
+    <ChartComponent chartData={chartData} showMainStrategyOnly={showMainStrategyOnly} />
   </>
 };
 

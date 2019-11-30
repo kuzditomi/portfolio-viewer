@@ -1,6 +1,6 @@
 import React from "react";
 import { createStyles, WithStyles, withStyles } from "@material-ui/styles";
-import { TradeGroup } from '../models';
+import { TradeGroup, Trade } from '../models';
 import { Chart } from "react-google-charts";
 import ChartService from "./Chart.service";
 
@@ -9,18 +9,54 @@ const styles = createStyles({
 
 export interface ChartProps {
     chartData: TradeGroup;
+    showMainStrategyOnly: boolean;
 }
 
-const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ chartData, classes }) => {
-    const pointlist = ChartService.getChartPointList(chartData);
+const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ chartData, showMainStrategyOnly, classes }) => {
+    const isStrategy = chartData.trades.length > 1;
+
+    const getHeaderFromTrade = (trade: Trade) => `${trade.underlying} ${trade.strikePrice}`;
+
+    const getChartPoints = () => {
+        const points: number[][] = [];
+        for (let x = 60; x < 90; x += 0.1) {
+            const valuesForX = chartData.trades.map(t => ChartService.getTradePLAtExpiry(x, t));
+            const strategyValue = ChartService.getGroupPLAtExpiry(x, chartData);
+
+            if (showMainStrategyOnly) {
+                points.push([x, strategyValue]);
+            } else if (isStrategy) {
+                points.push([x, ...valuesForX, strategyValue]);
+            } else {
+                points.push([x, ...valuesForX]);
+            }
+        }
+
+        return points;
+    }
+
+    const getHeaders = () => {
+        const headers = ['x'];
+
+        if (showMainStrategyOnly) {
+            headers.push(chartData.trades[0].underlying);
+        } else {
+            headers.push(...chartData.trades.map(getHeaderFromTrade));
+            if (isStrategy) {
+                headers.push('Trade');
+            }
+        }
+
+        return headers;
+    }
 
     return <Chart
         width={'100%'}
         height={'500px'}
         chartType="LineChart"
         data={[
-            ['x', chartData.underlying],
-            ...pointlist.points
+            getHeaders(),
+            ...getChartPoints()
         ]}
         options={{
             hAxis: {
@@ -28,14 +64,8 @@ const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ char
             },
             vAxis: {
                 title: 'P/L',
-            },
-            series: {
-                0: {
-                    curveType: 'function'
-                }
             }
         }}
-        rootProps={{ 'data-testid': '1' }}
     />
 
 };
