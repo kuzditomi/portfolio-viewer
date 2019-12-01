@@ -8,6 +8,10 @@ import ChartComponent from "./Chart.component";
 const styles = createStyles({
   backIcon: {
     padding: 5
+  },
+  controls: {
+    margin: '0 auto',
+    textAlign: 'center'
   }
 });
 
@@ -33,17 +37,19 @@ const ChartPageComponent: React.FC<ChartPageStateProps & ChartPageDispatchProps 
       </IconButton>
       Chart
     </Typography>
-    <FormControlLabel
-      control={
-        <Switch
-          checked={showMainStrategyOnly}
-          onChange={event => setShowMainStrategyOnly(event.target.checked)}
-          value="checkedB"
-          color="primary"
-        />
-      }
-      label="Hide legs"
-    />
+    <div className={classes.controls}>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={showMainStrategyOnly}
+            onChange={event => setShowMainStrategyOnly(event.target.checked)}
+            value="checkedB"
+            color="primary"
+          />
+        }
+        label="Hide legs"
+      />
+    </div>
     <ChartComponent chartData={chartData} showMainStrategyOnly={showMainStrategyOnly} />
   </>
 };

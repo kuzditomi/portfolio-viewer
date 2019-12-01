@@ -78,7 +78,7 @@ const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ char
 
     return <Chart
         width={'100%'}
-        height={'500px'}
+        height={'300px'}
         chartType="LineChart"
         data={[
             getHeaders(),
