@@ -7,16 +7,21 @@ export interface ImportDispatchProps {
 }
 
 const Import: React.FC<ImportDispatchProps> = ({ importFile }) => {
-  const onImportExample = () => {
-    const exampleFileUrl = "example.xml";
-
+  const importFileFromPath = (filepath: string) => {
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", exampleFileUrl);
+    xhr.open("GET", filepath);
     xhr.responseType = "blob";
-    xhr.onload = function() {
+    xhr.onload = function () {
       importFile(xhr.response);
     };
     xhr.send();
+  }
+
+  const onImportExample = () => {
+    importFileFromPath("example.xml")
+  };
+  const onImportMock = () => {
+    importFileFromPath("mock.xml");
   };
 
   return (
@@ -36,6 +41,14 @@ const Import: React.FC<ImportDispatchProps> = ({ importFile }) => {
             variant="contained"
           >
             Load example
+          </Button>
+          &nbsp;or&nbsp;
+          <Button
+            onClick={() => onImportMock()}
+            color="primary"
+            variant="contained"
+          >
+            Load mock
           </Button>
         </Grid>
       </Grid>

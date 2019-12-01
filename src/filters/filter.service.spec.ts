@@ -1,4 +1,3 @@
-import React from 'react';
 import { FilterService } from './filter.service';
 import { PositionFilter, DateFilter } from './filters.models';
 import { Report, Trade, OptionType } from '../models';
@@ -10,7 +9,9 @@ const mockTrade: Trade = {
     optionType: OptionType.Call,
     position: 1,
     tradePrice: 50,
-    underlying: 'ABC'
+    underlying: 'ABC',
+    pl: 1,
+    tradeDate: new Date()
 }
 
 describe('Filter Service', () => {

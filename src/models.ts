@@ -8,7 +8,7 @@ export interface Trade {
     expiration: Date;
     optionType: OptionType;
     strikePrice: number;
-    tradePrice: number;
+    tradePrice: number; // signed with positions sign
     pl: number;
     tradeDate: Date;
 }
