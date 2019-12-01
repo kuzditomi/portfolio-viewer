@@ -41,7 +41,7 @@ const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ char
     }
 
     const getChartPoints = () => {
-        const [from,to] = getBoundaries();
+        const [from, to] = getBoundaries();
         const points: number[][] = [];
 
 
@@ -76,6 +76,20 @@ const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ char
         return headers;
     }
 
+    const getSeriesOptions = () => {
+        if (showMainStrategyOnly) {
+            return {};
+        } else {
+            let i = 0;
+            return chartData.trades.reduce((options, _) => {
+                options[i++] = {
+                    lineDashStyle: [2, 2]
+                };
+                return options;
+            }, {} as { [key: number]: any });
+        }
+    }
+
     return <Chart
         width={'100%'}
         height={'300px'}
@@ -90,7 +104,8 @@ const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ char
             },
             vAxis: {
                 title: 'P/L',
-            }
+            },
+            series: getSeriesOptions()
         }}
     />
 

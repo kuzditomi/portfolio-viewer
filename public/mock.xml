@@ -23,10 +23,6 @@
 <Trade accountId="xxxxxxxxx" strike="75" expiry="20191115" putCall="C" tradeDate="20191101" quantity="1" tradePrice="0.5" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="AC" /> -->
 <Trade accountId="xxxxxxxxx" strike="100" expiry="20191115" putCall="P" tradeDate="20191101" quantity="1" tradePrice="0.5" ibCommission="-0.2938" buySell="BUY" underlyingSymbol="AC" />
 
-<!-- mock credit spread -->
-<Trade accountId="xxxxxxxxx" strike="25" expiry="20191115" putCall="C" tradeDate="20191101" quantity="-1" tradePrice="0.6" ibCommission="-0.296214" buySell="SELL" underlyingSymbol="ABC" /> -->
-<Trade accountId="xxxxxxxxx" strike="35" expiry="20191115" putCall="C" tradeDate="20191101" quantity="1" tradePrice="0.1" ibCommission="-0.2938" buySell="BUY" underlyingSymbol="ABC" />
-
 </Trades>
 </FlexStatement>
 </FlexStatements>
