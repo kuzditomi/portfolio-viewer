@@ -1,19 +1,6 @@
 import React from "react";
-import { columns } from "../models";
 import { TableHead, TableCell, TableRow } from "@material-ui/core";
-
-const columnTitles: { [key in columns]: string } = {
-  action: "",
-  underlying: "Underlying",
-  strikePrice: "Strike Price",
-  optionType: "Option Type",
-  position: "Position",
-  expiration: "Expiration",
-  price: "Trade Price",
-  pl: "Realized P/L",
-  tradeDate: "Trade date",
-  remainingDays: "Remaining days"
-};
+import { columnTitles, columns } from './../../column-picker/models';
 
 const TradeHeader: React.FC = () => {
   return (

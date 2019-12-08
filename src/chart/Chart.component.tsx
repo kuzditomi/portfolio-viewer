@@ -45,7 +45,7 @@ const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ char
         const points: number[][] = [];
 
 
-        for (let x = from; x <= to; x += 0.1) {
+        for (let x = from; x <= to; x += 0.01) {
             const valuesForX = chartData.trades.map(t => ChartService.getTradePLAtExpiry(x, t));
             const strategyValue = ChartService.getGroupPLAtExpiry(x, chartData);
 

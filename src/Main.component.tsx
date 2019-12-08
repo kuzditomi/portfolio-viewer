@@ -3,6 +3,7 @@ import { withStyles, createStyles, WithStyles } from "@material-ui/styles";
 import { Theme, Container, Grid, Paper } from "@material-ui/core";
 import PortfolioSummary from "./portfolio/PortfolioSummary.container";
 import Filters from "./filters/Filters.component";
+import ColumnPicker from "./column-picker/ColumnPicker.container";
 import ImportHistory from "./import/ImportHistory.container";
 import Import from "./import/Import.container";
 import { Report } from "./models";
@@ -59,6 +60,9 @@ const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
               </Grid>
               <Grid item xs={12} md={4}>
                 <Filters />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <ColumnPicker />
               </Grid>
             </Grid>
           </Paper>

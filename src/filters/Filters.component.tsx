@@ -1,7 +1,6 @@
 import React from "react";
 import DateFilter from "./DateFilter.container";
 import PositionFilter from "./PositionFilter.container";
-import "./filters.scss";
 import { Grid, Typography } from "@material-ui/core";
 
 const Filters: React.FC = () => {

@@ -1,6 +1,6 @@
 import { OptionType, Trade } from "../../models";
 import React from "react";
-import { columns } from "../models";
+import { ColumnsType, columns } from "../../column-picker/models";
 import PriceColumn from "./PriceColumn.component";
 import { TableRow, TableCell } from '@material-ui/core';
 
@@ -15,7 +15,7 @@ const cell = (key: string, node: React.ReactNode) => (
 );
 
 const columnDisplayers: {
-  [key in columns]: (trade: Trade) => React.ReactNode;
+  [key in ColumnsType]: (trade: Trade) => React.ReactNode;
 } = {
   action: () => cell("action", ""),
   underlying: trade => cell("underlying", trade.underlying),

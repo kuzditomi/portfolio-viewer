@@ -1,6 +1,6 @@
 import { TradeGroup } from "../../models";
 import React, { useState } from "react";
-import { columns } from "../models";
+import { columns, ColumnsType } from "../../column-picker/models";
 import TradeRow from "./TradeRow.component";
 import PriceColumn from "./PriceColumn.component";
 import { TableRow, TableCell, IconButton, Theme } from "@material-ui/core";
@@ -73,7 +73,7 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
     };
 
     const columnDisplayers: {
-      [key in columns]: (tradeGroup: CollapseableTradeGroup) => React.ReactNode;
+      [key in ColumnsType]: (tradeGroup: CollapseableTradeGroup) => React.ReactNode;
     } = {
       action: tradeGroup =>
         cell(
