@@ -11,6 +11,7 @@ import PortfolioTableComponent from "./portfolio/table/PortfolioTable.component"
 import ChartPage from "./chart/ChartPage.container";
 import SwitcherComponent from "./switcher/Switcher.component";
 import SwitcherItemComponent from "./switcher/SwitcherItem.component";
+import { ColumnsType } from './column-picker/models';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -38,11 +39,13 @@ const styles = (theme: Theme) =>
 export interface MainStateProps {
   report?: Report;
   isChartOpen: boolean;
+  columnsToShow: ColumnsType[]
 }
 
 const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
   report,
   isChartOpen,
+  columnsToShow,
   classes
 }) => {
   const renderPortfolio = () => {
@@ -71,7 +74,7 @@ const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
           <Paper className={classes.paper} >
             <SwitcherComponent activeKey={isChartOpen ? 'chart' : 'table'}>
               <SwitcherItemComponent switcherKey="table">
-                <PortfolioTableComponent report={report} />
+                <PortfolioTableComponent report={report} columnsToShow={columnsToShow} />
               </SwitcherItemComponent>
               <SwitcherItemComponent switcherKey="chart">
                 {isChartOpen ? <ChartPage /> : null}

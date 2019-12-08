@@ -1,6 +1,6 @@
 import { TradeGroup } from "../../models";
 import React, { useState } from "react";
-import { columns, ColumnsType } from "../../column-picker/models";
+import { ColumnsType } from "../../column-picker/models";
 import TradeRow from "./TradeRow.component";
 import PriceColumn from "./PriceColumn.component";
 import { TableRow, TableCell, IconButton, Theme } from "@material-ui/core";
@@ -36,6 +36,7 @@ const styles = (theme: Theme) =>
   });
 
 export interface TradeGroupRowOwnProps {
+  columnsToShow: ColumnsType[];
   tradeGroup: TradeGroup;
 }
 
@@ -62,10 +63,10 @@ const cell = (key: string, child: React.ReactNode) => (
     {child}
   </TableCell>
 );
-const empty = (key: string) => (_tradeGroup: TradeGroup) => cell(key, "");
+const empty = (key: string) => () => cell(key, "");
 
 const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps &
-  WithStyles<typeof styles>> = ({ tradeGroup, classes, showChart }) => {
+  WithStyles<typeof styles>> = ({ tradeGroup, classes, showChart, columnsToShow }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleIsOpen = () => {
@@ -128,11 +129,11 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
     return (
       <>
         <TableRow className={classes.groupRow}>
-          {columns.map(column => columnDisplayers[column](group))}
+          {columnsToShow.map(column => columnDisplayers[column](group))}
         </TableRow>
         {isOpen
           ? tradeGroup.trades.map((trade, i) => (
-            <TradeRow trade={trade} key={i} />
+            <TradeRow trade={trade} key={i} columnsToShow={columnsToShow} />
           ))
           : null}
       </>

@@ -31,7 +31,6 @@ const ColumnPickerComponent: React.FC<ColumnPickerStateProps & ColumnPickerDispa
           onChange={(evt) => { onColumnsSelected(evt.target.value as any as ColumnsType[]) }}
           input={<Input />}
           renderValue={columnsDisplay}
-        // MenuProps={MenuProps}
         >
           {
             columns.filter(c => c !== 'action').map(column => (

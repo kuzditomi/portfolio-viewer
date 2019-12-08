@@ -1,11 +1,12 @@
 import { OptionType, Trade } from "../../models";
 import React from "react";
-import { ColumnsType, columns } from "../../column-picker/models";
+import { ColumnsType } from "../../column-picker/models";
 import PriceColumn from "./PriceColumn.component";
 import { TableRow, TableCell } from '@material-ui/core';
 
 export interface TradeRowProps {
   trade: Trade;
+  columnsToShow: ColumnsType[];
 }
 
 const cell = (key: string, node: React.ReactNode) => (
@@ -27,7 +28,7 @@ const columnDisplayers: {
   strikePrice: trade =>
     cell("strikePrice", trade.strikePrice.toFixed(1)),
   position: trade => cell("position", trade.position.toString()),
-  pl: ()=> cell('pl',''),
+  pl: () => cell('pl', ''),
   tradeDate: trade => cell('tradeDate', trade.tradeDate.toLocaleDateString()),
   expiration: trade =>
     cell("expiration", trade.expiration.toLocaleDateString()),
@@ -35,8 +36,13 @@ const columnDisplayers: {
   remainingDays: () => cell("remainingDays", "")
 };
 
-const TradeRow: React.FC<TradeRowProps> = ({ trade }) => {
-  return <TableRow>{columns.map(column => columnDisplayers[column](trade))}</TableRow>;
-};
+const TradeRow: React.FC<TradeRowProps> = ({ trade, columnsToShow }) =>
+  (
+    <TableRow>
+      {
+        columnsToShow.map(column => columnDisplayers[column](trade))
+      }
+    </TableRow>
+  )
 
 export default TradeRow;
