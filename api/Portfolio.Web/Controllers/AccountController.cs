@@ -18,5 +18,17 @@ namespace Portfolio.Web.Controllers
 
             return RedirectToAction("Get", "Test");
         }
+
+        [HttpGet]
+        [Route("me")]
+        public IActionResult Me()
+        {
+            if (!HttpContext.User.Identity.IsAuthenticated)
+            {
+                return Challenge(OpenIdConnectDefaults.AuthenticationScheme);
+            }
+
+            return RedirectToAction("Get", "Test");
+        }
     }
 }

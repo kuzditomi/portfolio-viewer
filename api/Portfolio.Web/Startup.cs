@@ -35,12 +35,13 @@ namespace Portfolio.Web
             services.AddControllers();
 
             // DB
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=kuzditomi-portfolio-test-53bc9b9d-9d6a-45d4-8429-2a2761773502;Trusted_Connection=True;MultipleActiveResultSets=true"));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=kuzditomi-portfolio-test-53bc9b9d-9d6a-45d4-8429-2a2761773502;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                //.AddUserManager<AppUserManager>()
+                .AddDefaultTokenProviders();
 
             // Auth
             services.AddAuthentication(options =>
@@ -55,9 +56,10 @@ namespace Portfolio.Web
                 // required or else it will result in an endless-login / redirect loop if it's called from an iframe in sharepoint
                 options.SlidingExpiration = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["Authentication:SessionCookieLifeTimeInMinutes"]));
-                
+
                 options.Cookie.HttpOnly = false;
                 options.Cookie.SameSite = SameSiteMode.None;
+                options.LoginPath = "/account/login";
             })
             .AddOpenIdConnect(authenticationScheme: OpenIdConnectDefaults.AuthenticationScheme, displayName: "Google", options =>
              {
@@ -71,7 +73,7 @@ namespace Portfolio.Web
 
                  options.GetClaimsFromUserInfoEndpoint = true;
                  options.SaveTokens = true;
-                 //options.UseTokenLifetime = false;
+                 options.UseTokenLifetime = false;
                  //options.UsePkce = true;
 
                  options.Scope.Add("openid");
@@ -81,44 +83,36 @@ namespace Portfolio.Web
                  options.TokenValidationParameters = new TokenValidationParameters
                  {
                      NameClaimType = "name",
-                     // RoleClaimType = "role"
                  };
 
+                 options.Events = new OpenIdConnectEvents()
+                 {
+                     OnUserInformationReceived = async userInfo =>
+                     {
+                         var identity = (ClaimsIdentity)userInfo.Principal.Identity;
+                         var email = identity.Claims.First(c => c.Type == ClaimTypes.Email).Value;
 
-                 //options.Events = new OpenIdConnectEvents()
-                 //{
-                 //    //OnUserInformationReceived = async userInfo =>
-                 //    //{
-                 //    //    var a = userInfo.Result;
+                         var userManager = userInfo.HttpContext.RequestServices.GetService<UserManager<ApplicationUser>>();
+                         var user = await userManager.FindByEmailAsync(email);
 
-                 //    //    await Task.FromResult(0);
-                 //    //}
-                 //    //On
+                         if (user == null)
+                         {
+                             var newIdentity = await userManager.CreateAsync(new ApplicationUser
+                             {
+                                 UserName = email,
+                                 Email = email,
+                                 EmailConfirmed = true
+                             });
 
-                 //    //OnAuthenticationValidated = async y =>
-                 //    //{
-                 //    //    var identity = y.AuthenticationTicket.Principal.Identity as ClaimsIdentity;
+                             user = await userManager.FindByEmailAsync(email);
+                         }
 
-                 //    //    var subject = identity.Claims.FirstOrDefault(z => z.Type == "sub");
+                         var signInManager = userInfo.HttpContext.RequestServices.GetService<SignInManager<ApplicationUser>>();
+                         await signInManager.SignInAsync(user, false);
 
-                 //    //    // Do something with subject like lookup in local users DB.
-
-                 //    //    var newIdentity = new ClaimsIdentity(
-                 //    //        y.AuthenticationTicket.AuthenticationScheme,
-                 //    //        "given_name",
-                 //    //        "role");
-
-                 //    //    // Do some stuff to `newIdentity` like adding claims.
-
-                 //    //    // Create a new ticket with `newIdentity`.
-                 //    //    x.AuthenticationTicket = new AuthenticationTicket(
-                 //    //        new ClaimsPrincipal(newIdentity),
-                 //    //        y.AuthenticationTicket.Properties,
-                 //    //        y.AuthenticationTicket.AuthenticationScheme);
-
-                 //    //    await Task.FromResult(0);
-                 //    //}
-                 //};
+                         await Task.FromResult(0);
+                     },
+                 };
              });
 
             services.AddAuthorization();
@@ -135,7 +129,7 @@ namespace Portfolio.Web
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
 
