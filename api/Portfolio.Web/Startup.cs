@@ -36,7 +36,9 @@ namespace Portfolio.Web
 
             // DB
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=kuzditomi-portfolio-test-53bc9b9d-9d6a-45d4-8429-2a2761773502;Trusted_Connection=True;MultipleActiveResultSets=true"));
+             options.UseSqlite("Data Source=portfolio.db")
+            );
+            //options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=kuzditomi-portfolio-test-53bc9b9d-9d6a-45d4-8429-2a2761773502;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -55,7 +57,7 @@ namespace Portfolio.Web
             {
                 // required or else it will result in an endless-login / redirect loop if it's called from an iframe in sharepoint
                 options.SlidingExpiration = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["Authentication:SessionCookieLifeTimeInMinutes"]));
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(int.Parse(Configuration["SessionCookieLifeTimeInMinutes"]));
 
                 options.Cookie.HttpOnly = false;
                 options.Cookie.SameSite = SameSiteMode.None;
@@ -66,8 +68,8 @@ namespace Portfolio.Web
                  options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
                  options.Authority = "https://accounts.google.com";
-                 options.ClientId = Configuration["Authentication:Google:ClientId"];
-                 options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                 options.ClientId = Configuration["PORTFOLIO_ClientId"];
+                 options.ClientSecret = Configuration["PORTFOLIO_ClientSecret"];
                  options.CallbackPath = "/signin-google";
                  options.ResponseType = OpenIdConnectResponseType.Code;
 
@@ -126,7 +128,13 @@ namespace Portfolio.Web
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.Use((context, next) =>
+            {
+                context.Request.Scheme = "https";
+                return next();
+            });
+
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
