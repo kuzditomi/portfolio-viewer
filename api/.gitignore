@@ -4,3 +4,4 @@ obj
 bin
 PublishProfiles
 portfolio.db
+*.csproj.user

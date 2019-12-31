@@ -17,6 +17,7 @@ using System.Security.Claims;
 using Portfolio.Web.Data;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Portfolio.Web
 {
@@ -48,8 +49,6 @@ namespace Portfolio.Web
             // Auth
             services.AddAuthentication(options =>
             {
-                //options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
@@ -130,11 +129,9 @@ namespace Portfolio.Web
 
             app.Use((context, next) =>
             {
-                context.Request.Scheme = "https";
+                context.Request.Scheme = "https"; // it was needed for the reverse-proxy despite X-Forwarded-Proto
                 return next();
             });
-
-            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
