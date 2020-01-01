@@ -18,6 +18,7 @@ using Portfolio.Web.Data;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.HttpOverrides;
+using System.Net;
 
 namespace Portfolio.Web
 {
@@ -60,7 +61,8 @@ namespace Portfolio.Web
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
@@ -70,7 +72,17 @@ namespace Portfolio.Web
 
                 options.Cookie.HttpOnly = false;
                 options.Cookie.SameSite = SameSiteMode.None;
-                options.LoginPath = "/account/login";
+
+                options.Events = new CookieAuthenticationEvents
+                {
+                    // prevent automatic redirect to login for unauthorized requests
+                    OnRedirectToLogin = ctx =>
+                    {
+                        ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+                        return Task.CompletedTask;
+                    }
+                };
             })
             .AddOpenIdConnect(authenticationScheme: OpenIdConnectDefaults.AuthenticationScheme, displayName: "Google", options =>
              {
@@ -150,7 +162,7 @@ namespace Portfolio.Web
             });
 
             app.UseRouting();
-            
+
             app.UseAuthentication();
             app.UseAuthorization();
 

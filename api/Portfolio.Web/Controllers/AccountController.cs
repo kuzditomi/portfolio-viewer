@@ -16,7 +16,7 @@ namespace Portfolio.Web.Controllers
                 return Challenge(OpenIdConnectDefaults.AuthenticationScheme);
             }
 
-            return RedirectToAction("Get", "Test");
+            return Redirect("/");
         }
 
         [HttpGet]
@@ -25,10 +25,10 @@ namespace Portfolio.Web.Controllers
         {
             if (!HttpContext.User.Identity.IsAuthenticated)
             {
-                return Challenge(OpenIdConnectDefaults.AuthenticationScheme);
+                return Unauthorized();
             }
 
-            return RedirectToAction("Get", "Test");
+            return Ok(HttpContext.User.Identity.Name);
         }
     }
 }
