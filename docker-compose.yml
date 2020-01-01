@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+    reverseproxy:
+        build:
+            context: ./reverse-proxy
+        container_name: porfolio-reverse-proxy
+        ports:
+            - 80:80
+        restart: always
+
+networks: 
+    default:
+        external:
+            name: "nat"
+        
