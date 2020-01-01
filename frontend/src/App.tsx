@@ -6,6 +6,7 @@ import AppThemeComponent from "./AppTheme.component";
 import Main from "./Main.container";
 import store from "./store";
 import { Provider } from "react-redux";
+import AuthenticationWrapperComponent from "./authentication/AuthenticationWrapper.component";
 
 const App: React.FC = () => (
   <AppThemeComponent>
@@ -13,7 +14,9 @@ const App: React.FC = () => (
       <div className="app">
         <CssBaseline />
         <HeaderComponent />
-        <Main />
+        <AuthenticationWrapperComponent>
+          <Main />
+        </AuthenticationWrapperComponent>
       </div>
     </Provider>
   </AppThemeComponent>
