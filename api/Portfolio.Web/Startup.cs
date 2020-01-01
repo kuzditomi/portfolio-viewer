@@ -35,6 +35,16 @@ namespace Portfolio.Web
         {
             services.AddControllers();
 
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                // Only loopback proxies are allowed by default.
+                // Clear that restriction because forwarders are enabled by explicit 
+                // configuration.
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
+
             // DB
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlite("Data Source=portfolio.db")
@@ -129,17 +139,18 @@ namespace Portfolio.Web
 
             app.Use((context, next) =>
             {
-                context.Request.Scheme = "https"; // it was needed for the reverse-proxy despite X-Forwarded-Proto
+                context.Request.PathBase = new PathString("/api");
+                context.Request.Scheme = "https";
+                if (context.Request.Path.StartsWithSegments("/api", out var remainder))
+                {
+                    context.Request.Path = remainder;
+                }
+
                 return next();
             });
 
             app.UseRouting();
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
-
+            
             app.UseAuthentication();
             app.UseAuthorization();
 

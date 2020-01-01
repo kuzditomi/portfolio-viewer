@@ -33,4 +33,4 @@ ASP.NET core application in the `api` folder.
     ```
     docker-compose up -d
     ```
-You can finally access the app on http://localhost
+You can finally access the app on https://localhost
