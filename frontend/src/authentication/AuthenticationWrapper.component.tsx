@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { createStyles, WithStyles, withStyles } from "@material-ui/core";
-import LoginPageComponent from "../login/LoginPage.component";
-import { authService } from "./Auth.service";
+import LoginPageComponent from "./LoginPage.component";
 
 const styles = () =>
     createStyles({
@@ -10,33 +9,29 @@ const styles = () =>
         }
     });
 
-const AuthenticationWrapperComponent: React.FC<WithStyles<typeof styles>> = ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState<string | false | null>(null);
+export interface AuthenticationWrapperStateProps {
+    isAuthenticated: boolean;
+}
 
-    const startAuthentication = async () => {
-        try {
-            const user = await authService.GetUser();
-            setIsAuthenticated(user);
-        } catch {
-            setIsAuthenticated(false);
-        }
-    }
+export interface AuthenticationWrapperDispatchProps {
+    startAuthentication(): void;
+}
+
+const AuthenticationWrapperComponent: React.FC<AuthenticationWrapperStateProps & AuthenticationWrapperDispatchProps & WithStyles<typeof styles>> = (
+    { startAuthentication, isAuthenticated, children }) => {
 
     useEffect(() => {
-        startAuthentication();
+        if (!isAuthenticated) {
+            startAuthentication();
+        }
     });
 
     if (isAuthenticated) {
-        return (
-            <>
-                <h1 style={{marginTop: 200}}>Hello {isAuthenticated}</h1>
-                {children}
-            </>
-        );
-    } else if (isAuthenticated === false) {
-        return <LoginPageComponent />;
+        return <>
+            {children}
+        </>;
     } else {
-        return <>Authenticating...</>
+        return <LoginPageComponent />;
     }
 };
 

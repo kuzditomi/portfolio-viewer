@@ -1,5 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import UserWelcome from './authentication/UserWelcome.container';
 
 const HeaderComponent: React.FC = () => (
   <AppBar position="absolute">
@@ -7,6 +8,7 @@ const HeaderComponent: React.FC = () => (
       <Typography component="h1" variant="h6" color="inherit" noWrap>
         IBKR portfolio viewer
       </Typography>
+      <UserWelcome/>
     </Toolbar>
   </AppBar>
 );
