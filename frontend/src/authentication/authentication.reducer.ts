@@ -29,6 +29,12 @@ export default function (state = initialState, action: AppActionTypes): Authenti
                 hasError: true
             }
         }
+        case AUTHENTICATION_ACTIONS.LOGGED_OUT: {
+            return {
+                user: undefined,
+                hasError: false
+            }
+        }
         default:
             return state;
     }

@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Portfolio.Web.Data;
 
 namespace Portfolio.Web.Controllers
 {
@@ -7,6 +11,12 @@ namespace Portfolio.Web.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
+        private SignInManager<ApplicationUser> _signInManager;
+        public AccountController(SignInManager<ApplicationUser> signInManager)
+        {
+            this._signInManager = signInManager;
+        }
+
         [HttpGet]
         [Route("login")]
         public IActionResult Login()
@@ -17,6 +27,15 @@ namespace Portfolio.Web.Controllers
             }
 
             return Redirect("/");
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
+        { 
+            await _signInManager.SignOutAsync();
+            return Ok();
         }
 
         [HttpGet]

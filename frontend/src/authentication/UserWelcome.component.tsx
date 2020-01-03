@@ -1,19 +1,31 @@
 import React from "react";
+import { Typography, IconButton } from '@material-ui/core';
+import LogoutIcon from "@material-ui/icons/ExitToApp";
 
 export interface UserWelcomeComponentStateProps {
     isAuthenticated: boolean;
     userName?: string;
 }
 
-const UserWelcomeComponent: React.FC<UserWelcomeComponentStateProps> = ({ isAuthenticated, userName }) => {
+export interface UserWelcomeComponentDispatchProps {
+    signOut(): void;
+}
+
+const UserWelcomeComponent: React.FC<UserWelcomeComponentStateProps & UserWelcomeComponentDispatchProps> = ({ isAuthenticated, userName, signOut }) => {
     if (!isAuthenticated) {
         return null;
     }
 
     return (
-        <span>
-            Hello, {userName} !
-        </span>
+        <>
+            <Typography>
+                Hello, {userName}!
+            </Typography>
+            <IconButton title="Log out" onClick={() => signOut()}>
+                <LogoutIcon />
+            </IconButton>
+
+        </>
     );
 };
 

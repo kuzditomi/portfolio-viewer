@@ -1,6 +1,7 @@
 import React from "react";
 import { withStyles, createStyles, WithStyles } from "@material-ui/styles";
-import { Theme, Container } from "@material-ui/core";
+import { Theme, Container, Button } from '@material-ui/core';
+import { authService } from './Auth.service';
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -31,7 +32,9 @@ const LoginPageComponent: React.FC<WithStyles<typeof styles>> = ({ classes }) =>
         <main className={classes.content} >
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container} >
-                login
+                <Button color="primary" variant="contained" onClick={() => { authService.LogIn() }} >
+                    Login with google account
+                </Button>
             </Container>
         </main>
     );

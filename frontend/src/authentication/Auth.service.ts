@@ -9,6 +9,14 @@ class AuthService {
 
         return this.user;
     }
+
+    async LogIn() {
+        window.location.replace('/api/account/login');
+    }
+
+    async SignOut() {
+        await axios.get('/api/account/logout');
+    }
 }
 
 export const authService = new AuthService();
