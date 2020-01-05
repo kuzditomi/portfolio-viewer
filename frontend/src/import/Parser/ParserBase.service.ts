@@ -3,16 +3,12 @@ import { Report, Trade, TradeGroup } from '../../models';
 import PLService from '../../calculations/PL.Service';
 
 export abstract class ParserBase implements IParser {
-    private rawImport: string = "";
-
-    public Parse(file: File): Promise<string> {
-        let resolve: (raw: string) => void;
+    public Parse(file: File): Promise<Trade[]> {
+        let resolve: (trades: Trade[]) => void;
         let reject: (error: string) => void;
 
-        this.rawImport = "";
-
-        const result = new Promise<string>(
-            (_resolve: (raw: string) => void, _reject) => {
+        const result = new Promise<Trade[]>(
+            (_resolve: (trades: Trade[]) => void, _reject) => {
                 [resolve, reject] = [_resolve, _reject];
             }
         );
@@ -24,12 +20,11 @@ export abstract class ParserBase implements IParser {
         reader.onload = () => {
             console.debug("File loaded.");
             const rawCsv = reader.result as string;
-            this.rawImport = rawCsv;
 
             try {
-                resolve(this.rawImport);
+                const trades = this.ParseMyTrades(rawCsv);
+                resolve(trades);
             } catch {
-                this.rawImport = "";
                 reject("Error while parsing...");
             }
         };

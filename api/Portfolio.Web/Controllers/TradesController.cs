@@ -24,11 +24,11 @@ namespace Portfolio.Web.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<IActionResult> AddTrades(string rawTrade)
+        public async Task<IActionResult> AddTrades(AddTradeViewModel tradeToAdd)
         {
             var trade = new Trade {
                 Id = Guid.NewGuid().ToString(),
-                Raw = rawTrade,
+                Raw = tradeToAdd.Raw,
                 UserId = GetUserId()
             };
 
