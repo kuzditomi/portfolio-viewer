@@ -9,7 +9,7 @@ namespace Portfolio.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
         private SignInManager<ApplicationUser> _signInManager;
         public AccountController(SignInManager<ApplicationUser> signInManager)

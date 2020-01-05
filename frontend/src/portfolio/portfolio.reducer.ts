@@ -17,7 +17,7 @@ const initialState: PortfolioState = {
 
 export default function (state = initialState, action: AppActionTypes): PortfolioState {
     switch (action.type) {
-        case IMPORT_ACTIONS.REPORT_LOADED_FROM_HISTORY: {
+        case IMPORT_ACTIONS.REPORT_LOADED: {
             return {
                 ...initialState,
                 portfolio: action.payload,

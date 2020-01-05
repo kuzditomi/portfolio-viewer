@@ -4,7 +4,6 @@ import { Theme, Container, Grid, Paper } from "@material-ui/core";
 import PortfolioSummary from "./portfolio/PortfolioSummary.container";
 import Filters from "./filters/Filters.component";
 import ColumnPicker from "./column-picker/ColumnPicker.container";
-import ImportHistory from "./import/ImportHistory.container";
 import Import from "./import/Import.container";
 import { Report } from "./models";
 import PortfolioTableComponent from "./portfolio/table/PortfolioTable.component";
@@ -42,12 +41,22 @@ export interface MainStateProps {
   columnsToShow: ColumnsType[]
 }
 
-const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
+export interface MainDispatchProps {
+  loadReport(): void;
+}
+
+const MainComponent: React.FC<MainStateProps & MainDispatchProps & WithStyles<typeof styles>> = ({
   report,
   isChartOpen,
   columnsToShow,
+  loadReport,
   classes
 }) => {
+  if (!report) {
+    loadReport();
+    return null;
+  }
+
   const renderPortfolio = () => {
     if (!report) {
       return null;
@@ -91,12 +100,7 @@ const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
       <div className={classes.appBarSpacer} />
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <Paper className={classes.paper}>
-              <ImportHistory />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
             <Paper className={classes.paper}>
               <Import />
             </Paper>

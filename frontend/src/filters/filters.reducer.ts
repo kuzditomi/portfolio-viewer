@@ -27,7 +27,7 @@ export default function (state = initialState, action: AppActionTypes): FiltersS
                 positionFilter: action.payload
             }
         }
-        case IMPORT_ACTIONS.REPORT_LOADED_FROM_HISTORY:{
+        case IMPORT_ACTIONS.REPORT_LOADED:{
             return initialState;
         }
         default:

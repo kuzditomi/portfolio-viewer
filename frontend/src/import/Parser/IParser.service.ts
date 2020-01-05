@@ -1,6 +1,6 @@
-import { Report } from "../../models";
+import { Report, Trade } from '../../models';
 
 export interface IParser {
-    Parse(file: File): Promise<string>;
-    ParseRawData(rawText: string): Report;
+    Parse(file: File): Promise<Trade[]>;
+    CreateReportFromTrades(trades: Trade[]): Report;
 }
