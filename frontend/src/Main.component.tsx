@@ -41,12 +41,22 @@ export interface MainStateProps {
   columnsToShow: ColumnsType[]
 }
 
-const MainComponent: React.FC<MainStateProps & WithStyles<typeof styles>> = ({
+export interface MainDispatchProps {
+  loadReport(): void;
+}
+
+const MainComponent: React.FC<MainStateProps & MainDispatchProps & WithStyles<typeof styles>> = ({
   report,
   isChartOpen,
   columnsToShow,
+  loadReport,
   classes
 }) => {
+  if (!report) {
+    loadReport();
+    return null;
+  }
+
   const renderPortfolio = () => {
     if (!report) {
       return null;

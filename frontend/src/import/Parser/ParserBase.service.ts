@@ -59,10 +59,8 @@ export abstract class ParserBase implements IParser {
             .map(PLService.setPLForGroup);
     }
 
-    public ParseRawData(rawText: string): Report {
-        const myTrades = this.ParseMyTrades(rawText);
-
-        const tradeGroups = this.getGroupsFromTrades(myTrades);
+    public CreateReportFromTrades(trades: Trade[]): Report {
+        const tradeGroups = this.getGroupsFromTrades(trades);
 
         return {
             name: "ok",
