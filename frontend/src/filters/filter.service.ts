@@ -1,4 +1,4 @@
-import { Report, TradeGroup } from '../models';
+import { Report, TradeGroup, Trade } from '../models';
 import { DateFilter, PositionFilter } from './filters.models';
 import { FiltersState } from './filters.reducer';
 import TradesCompareService from "../calculations/TradesCompare.service";
@@ -26,9 +26,11 @@ export class FilterService {
             [DateFilter.Open]: (tradeGroup: TradeGroup) => tradeGroup.expiration > new Date(),
         }
 
+        const tradeGroups = portfolio.tradeGroups.filter(dateFilters[filter]);
         const filteredPortfolio: Report = {
             ...portfolio,
-            tradeGroups: portfolio.tradeGroups.filter(dateFilters[filter])
+            tradeGroups,
+            trades: tradeGroups.reduce((trades, tradeGroup) => trades.concat(tradeGroup.trades), [] as Trade[])
         };
 
         return filteredPortfolio;
@@ -57,11 +59,14 @@ export class FilterService {
             }
         }
 
+        const tradeGroups = portfolio.tradeGroups
+            .map(positionFilters[filter])
+            .filter(tg => tg.trades.length > 0);
+
         const filteredPortfolio: Report = {
             ...portfolio,
-            tradeGroups: portfolio.tradeGroups
-                .map(positionFilters[filter])
-                .filter(tg => tg.trades.length > 0)
+            tradeGroups,
+            trades: tradeGroups.reduce((trades, tradeGroup) => trades.concat(tradeGroup.trades), [] as Trade[])
         };
 
         return filteredPortfolio;
