@@ -21,6 +21,7 @@ export const loadTrades = async (dispatch: Dispatch) => {
         
         return {
             ...trade,
+            id: t.id,
             expiration: new Date(trade.expiration),
             tradeDate: new Date(trade.tradeDate)
         } as Trade;

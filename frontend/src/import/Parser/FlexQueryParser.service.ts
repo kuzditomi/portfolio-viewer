@@ -12,6 +12,7 @@ export class FlexQueryParserService extends ParserBase {
             const position = parseInt(tradeElement.getAttribute('quantity')!);
 
             const trade: Trade = {
+                id: '',
                 underlying: tradeElement.getAttribute('underlyingSymbol')!,
                 position,
                 expiration: new Date(+expiry.substr(0, 4), +expiry.substr(4, 2) - 1, +expiry.substr(6, 2)),

@@ -3,6 +3,7 @@ export enum OptionType {
     Put = 2
 }
 export interface Trade {
+    id: string;
     underlying: string;
     position: number;
     expiration: Date;
