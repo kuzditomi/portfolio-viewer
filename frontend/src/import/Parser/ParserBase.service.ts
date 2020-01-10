@@ -65,6 +65,7 @@ export abstract class ParserBase implements IParser {
         return {
             name: "ok",
             tradeGroups,
+            trades: trades
         };
     }
 

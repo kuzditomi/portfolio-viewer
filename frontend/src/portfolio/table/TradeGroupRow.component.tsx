@@ -1,4 +1,4 @@
-import { TradeGroup } from "../../models";
+import { TradeGroup, Trade } from "../../models";
 import React, { useState } from "react";
 import { ColumnsType } from "../../column-picker/models";
 import TradeRow from "./TradeRow.component";
@@ -42,6 +42,7 @@ export interface TradeGroupRowOwnProps {
 
 export interface TradeGroupRowDispatchProps {
   showChart: (tradeGroup: TradeGroup) => void;
+  onRemoveTrade: (trade: Trade) => void;
 }
 
 interface CollapseableTradeGroup extends TradeGroup {
@@ -66,7 +67,7 @@ const cell = (key: string, child: React.ReactNode) => (
 const empty = (key: string) => () => cell(key, "");
 
 const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps &
-  WithStyles<typeof styles>> = ({ tradeGroup, classes, showChart, columnsToShow }) => {
+  WithStyles<typeof styles>> = ({ tradeGroup, classes, showChart, columnsToShow, onRemoveTrade }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleIsOpen = () => {
@@ -133,7 +134,7 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
         </TableRow>
         {isOpen
           ? tradeGroup.trades.map((trade, i) => (
-            <TradeRow trade={trade} key={i} columnsToShow={columnsToShow} />
+            <TradeRow trade={trade} key={i} columnsToShow={columnsToShow} onRemoveTrade={onRemoveTrade} />
           ))
           : null}
       </>
