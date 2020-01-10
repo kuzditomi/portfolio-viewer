@@ -54,24 +54,25 @@ namespace Portfolio.Web.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> DeleteTrade(string id)
+        [Route("")]
+        public async Task<IActionResult> DeleteTrade([FromQuery]string[] ids)
         {
             var userId = this.GetUserId();
-            var trade = await _dbContext.Trades
-                .SingleOrDefaultAsync(trade => trade.Id == id);
+            var trades = await _dbContext.Trades
+                .Where(trade => ids.Contains(trade.Id))
+                .ToListAsync();
 
-            if (trade == null)
+            if (trades.Count != ids.Length)
             {
                 return NotFound();
             }
 
-            if (trade.UserId != userId)
+            if (trades.Any(trade => trade.UserId != userId))
             {
                 return Forbid();
             }
 
-            _dbContext.Trades.Remove(trade);
+            _dbContext.Trades.RemoveRange(trades);
             await _dbContext.SaveChangesAsync();
 
             return Ok();

@@ -5,11 +5,11 @@ import { Dispatch } from "redux";
 import { AppState } from "../../store";
 import { openChart } from '../portfolio.actions';
 import { TradeGroup, Trade } from '../../models';
-import { removeTrade } from "../portfolio.actioncreators";
+import { removeTrades } from "../portfolio.actioncreators";
 
 const mapDispatchToProps = (dispatch: Dispatch): TradeGroupRowDispatchProps => ({
     showChart: (tradeGroup: TradeGroup) => { dispatch(openChart(tradeGroup)) },
-    onRemoveTrade: (trade: Trade) => removeTrade(trade)(dispatch)
+    onRemoveTrades: (trades: Trade[]) => removeTrades(trades)(dispatch)
 })
 
 export default connect<{}, TradeGroupRowDispatchProps, TradeGroupRowOwnProps, AppState>(

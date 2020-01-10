@@ -8,8 +8,9 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import { withStyles, createStyles, WithStyles } from "@material-ui/styles";
 import clsx from 'clsx';
-import { grey, green } from '@material-ui/core/colors';
+import { grey, green, red } from '@material-ui/core/colors';
 import PLColumn from "./PLColumn.component";
+import TrashIcon from "@material-ui/icons/Delete";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -32,6 +33,11 @@ const styles = (theme: Theme) =>
       "&:hover": {
         color: green[700]
       }
+    },
+    deleteIcon: {
+      "&:hover": {
+        color: red[700]
+      }
     }
   });
 
@@ -42,7 +48,7 @@ export interface TradeGroupRowOwnProps {
 
 export interface TradeGroupRowDispatchProps {
   showChart: (tradeGroup: TradeGroup) => void;
-  onRemoveTrade: (trade: Trade) => void;
+  onRemoveTrades: (trades: Trade[]) => void;
 }
 
 interface CollapseableTradeGroup extends TradeGroup {
@@ -67,7 +73,7 @@ const cell = (key: string, child: React.ReactNode) => (
 const empty = (key: string) => () => cell(key, "");
 
 const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps &
-  WithStyles<typeof styles>> = ({ tradeGroup, classes, showChart, columnsToShow, onRemoveTrade }) => {
+  WithStyles<typeof styles>> = ({ tradeGroup, classes, showChart, columnsToShow, onRemoveTrades }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleIsOpen = () => {
@@ -96,6 +102,13 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
               onClick={() => showChart(tradeGroup)}
             >
               <BarChartIcon />
+            </IconButton>
+            <IconButton
+              title="Remove tradegroup"
+              className={clsx(classes.icon, classes.deleteIcon)}
+              onClick={() => onRemoveTrades(tradeGroup.trades)}
+            >
+              <TrashIcon />
             </IconButton>
           </>
         ),
@@ -134,7 +147,7 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
         </TableRow>
         {isOpen
           ? tradeGroup.trades.map((trade, i) => (
-            <TradeRow trade={trade} key={i} columnsToShow={columnsToShow} onRemoveTrade={onRemoveTrade} />
+            <TradeRow trade={trade} key={i} columnsToShow={columnsToShow} onRemoveTrade={() => onRemoveTrades([trade])} />
           ))
           : null}
       </>

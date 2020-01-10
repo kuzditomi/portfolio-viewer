@@ -58,7 +58,10 @@ const TradeRow: React.FC<TradeRowProps & WithStyles<typeof styles>> = ({ trade, 
 
   const removeTradeCell = (trade: Trade) => (
     <TableCell className="action" key="action">
-      <IconButton className={classes.deleteIconButton} onClick={() => onRemoveTrade(trade)}>
+      <IconButton
+        title="Remove trade"
+        className={classes.deleteIconButton}
+        onClick={() => onRemoveTrade(trade)}>
         <TrashIcon className={classes.deleteIcon} />
       </IconButton>
     </TableCell >
