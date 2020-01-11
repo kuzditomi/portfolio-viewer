@@ -31,7 +31,8 @@ const styles = (theme: Theme) =>
       padding: theme.spacing(2),
       display: "flex",
       overflow: "auto",
-      flexDirection: "column"
+      flexDirection: "column",
+      position: "relative"
     }
   });
 

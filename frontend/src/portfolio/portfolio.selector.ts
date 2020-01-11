@@ -1,5 +1,6 @@
 import { AppState } from '../store';
 
+export const portfolioLoadingSelector = (state: AppState) => state.portfolio.isPortfolioLoading;
 export const originalPortfolioSelector = (state: AppState) => state.portfolio.portfolio;
 export const filteredPortfolioSelector = (state: AppState) => state.portfolio.filteredPortfolio;
 export const filteredPortfolioSummary = (state: AppState) => {
