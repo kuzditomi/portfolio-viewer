@@ -4,24 +4,24 @@
 <AccountInformation accountId="xxxxxxxxx" name="Individual Demo" />
 <Trades>
 <!-- long call A -->
-<Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="C" tradeDate="20191031" quantity="1" tradePrice="0.2" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="A" />
+<Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="C" tradeDate="20191031" quantity="1" tradePrice="0.2" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="mockA" />
 
 <!-- short call B -->
-<Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="C" tradeDate="20191031" quantity="-1" tradePrice="0.1" ibCommission="-0.296214" buySell="SELL" underlyingSymbol="B" />
+<Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="C" tradeDate="20191031" quantity="-1" tradePrice="0.1" ibCommission="-0.296214" buySell="SELL" underlyingSymbol="mockB" />
 
 <!-- long put C -->
-<Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="P" tradeDate="20191031" quantity="1" tradePrice="0.1" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="C" />
+<Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="P" tradeDate="20191031" quantity="1" tradePrice="0.1" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="mockC" />
 
 <!-- short put D -->
-<Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="P" tradeDate="20191031" quantity="-1" tradePrice="0.1" ibCommission="-0.296214" buySell="SELL" underlyingSymbol="D" />
+<Trade accountId="xxxxxxxxx" strike="10" expiry="20191115" putCall="P" tradeDate="20191031" quantity="-1" tradePrice="0.1" ibCommission="-0.296214" buySell="SELL" underlyingSymbol="mockD" />
 
 <!-- credit spread AB -->
-<Trade accountId="xxxxxxxxx" strike="50" expiry="20191115" putCall="C" tradeDate="20191101" quantity="1" tradePrice="0.15" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="AB" /> -->
-<Trade accountId="xxxxxxxxx" strike="100" expiry="20191115" putCall="C" tradeDate="20191101" quantity="-1" tradePrice="0.1" ibCommission="-0.2938" buySell="SELL" underlyingSymbol="AB" />
+<Trade accountId="xxxxxxxxx" strike="50" expiry="20191115" putCall="C" tradeDate="20191101" quantity="1" tradePrice="0.15" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="mockAB" /> -->
+<Trade accountId="xxxxxxxxx" strike="100" expiry="20191115" putCall="C" tradeDate="20191101" quantity="-1" tradePrice="0.1" ibCommission="-0.2938" buySell="SELL" underlyingSymbol="mockAB" />
 
 <!-- strangle AC -->
-<Trade accountId="xxxxxxxxx" strike="75" expiry="20191115" putCall="C" tradeDate="20191101" quantity="1" tradePrice="0.5" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="AC" /> -->
-<Trade accountId="xxxxxxxxx" strike="100" expiry="20191115" putCall="P" tradeDate="20191101" quantity="1" tradePrice="0.5" ibCommission="-0.2938" buySell="BUY" underlyingSymbol="AC" />
+<Trade accountId="xxxxxxxxx" strike="75" expiry="20191115" putCall="C" tradeDate="20191101" quantity="1" tradePrice="0.5" ibCommission="-0.296214" buySell="BUY" underlyingSymbol="mockAC" /> -->
+<Trade accountId="xxxxxxxxx" strike="100" expiry="20191115" putCall="P" tradeDate="20191101" quantity="1" tradePrice="0.5" ibCommission="-0.2938" buySell="BUY" underlyingSymbol="mockAC" />
 
 </Trades>
 </FlexStatement>

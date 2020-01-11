@@ -17,9 +17,6 @@ const Import: React.FC<ImportDispatchProps> = ({ importFile }) => {
     xhr.send();
   }
 
-  const onImportExample = () => {
-    importFileFromPath("example.xml")
-  };
   const onImportMock = () => {
     importFileFromPath("mock.xml");
   };
@@ -35,14 +32,6 @@ const Import: React.FC<ImportDispatchProps> = ({ importFile }) => {
         </Grid>
         <Grid item xs={12}>
           If you have no flex queries exported yet:&nbsp;
-          <Button
-            onClick={() => onImportExample()}
-            color="primary"
-            variant="contained"
-          >
-            Load example
-          </Button>
-          &nbsp;or&nbsp;
           <Button
             onClick={() => onImportMock()}
             color="primary"

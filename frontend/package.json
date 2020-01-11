@@ -1,7 +1,6 @@
 {
   "name": "portfolio-viewer",
   "version": "0.1.0",
-  "homepage": "https://kuzditomi.github.io/portfolio-viewer",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
