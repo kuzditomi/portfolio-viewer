@@ -1,0 +1,50 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build application",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": [
+                "Build frontend",
+                "Build api"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Build frontend",
+            "type": "shell",
+            "options": {
+                "cwd": "frontend"
+            },
+            "command": "npm run build",
+            "group": "build",
+            "presentation": {
+                "panel": "shared",
+                "reveal": "always",
+                "focus": true,
+                "group": "build"
+            }
+        },
+        {
+            "label": "Build api",
+            "type": "shell",
+            "options": {
+                "cwd": "api/Portfolio.Web"
+            },
+            "command": "dotnet publish -c Release",
+            "group": "build",
+            "presentation": {
+                "panel": "shared",
+                "reveal": "always",
+                "focus": true,
+                "group": "build"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
