@@ -26,6 +26,15 @@ namespace Portfolio.Web.Controllers
         [Route("")]
         public async Task<IActionResult> AddTrades(AddTradeViewModel tradeToAdd)
         {
+            if (tradeToAdd.SkipDuplicate)
+            {
+                var existingTrade = await _dbContext.Trades.SingleOrDefaultAsync(trade => trade.Raw == tradeToAdd.Raw);
+                if (existingTrade != null)
+                {
+                    return Ok();
+                }
+            }
+
             var trade = new Trade
             {
                 Id = Guid.NewGuid().ToString(),

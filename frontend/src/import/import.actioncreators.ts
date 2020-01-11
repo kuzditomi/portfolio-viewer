@@ -7,13 +7,13 @@ import { reportLoaded, reportLoading, reportLoadError } from './import.actions';
 
 const reportParserService: IParser = new FlexQueryParserService();
 
-export const importFile = (file: File) => async (dispatch: Dispatch) => {
+export const importFile = (file: File, skipDuplicate: boolean) => async (dispatch: Dispatch) => {
     dispatch(reportLoading(undefined));
 
     const trades = await reportParserService.Parse(file);
 
     try {
-        await Promise.all(trades.map(trade => axios.post("/api/trades", { Raw: JSON.stringify(trade) })));
+        await Promise.all(trades.map(trade => axios.post("/api/trades", { SkipDuplicate: skipDuplicate, Raw: JSON.stringify(trade) })));
 
         loadTrades(dispatch);
     } catch {

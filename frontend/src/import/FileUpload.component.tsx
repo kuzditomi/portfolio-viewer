@@ -4,7 +4,7 @@ import {
   WithStyles,
   createStyles,
   withStyles,
-  TextField
+  TextField,
 } from "@material-ui/core";
 
 const styles = () =>
@@ -49,9 +49,11 @@ const FileUploadComponent: React.FC<FileUploadProps &
           <Button component="span" disabled={disabled === true}>Select file</Button>
         </label>
         {file && file.length ? (
-          <Button onClick={() => onImport()} color="primary" variant="contained" disabled={disabled === true}>
-            Import
-          </Button>
+          <>
+            <Button onClick={() => onImport()} color="primary" variant="contained" disabled={disabled === true}>
+              Import
+            </Button>
+          </>
         ) : null}
       </>
     );

@@ -11,7 +11,7 @@ const mapStateProps = (state: AppState): ImportStateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): ImportDispatchProps => ({
-  importFile: (file) => importFile(file)(dispatch)
+  importFile: (file: File, skipDuplicate: boolean) => importFile(file, skipDuplicate)(dispatch)
 })
 
 export default connect<ImportStateProps, ImportDispatchProps, {}, AppState>(
