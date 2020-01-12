@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  TableCell,
   createStyles,
   WithStyles,
   withStyles,
@@ -34,12 +33,12 @@ const PriceColumn: React.FC<PriceColumnProps & WithStyles<typeof styles>> = ({
   classes
 }) => {
   return (
-    <TableCell>
+    <>
       <span className={clsx(classes.badge, price > 0 ? classes.loss : classes.win)}>
         {price < 0 ? "C" : "D"}
       </span>
       <span>{price < 0 ? (price * -1).toFixed(2) : price.toFixed(2)}</span>
-    </TableCell>
+    </>
   );
 };
 

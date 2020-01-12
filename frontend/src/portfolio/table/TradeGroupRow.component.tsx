@@ -14,6 +14,9 @@ import TrashIcon from "@material-ui/icons/Delete";
 
 const styles = (theme: Theme) =>
   createStyles({
+    cell: {
+      whiteSpace: 'nowrap',
+    },
     icon: {
       padding: 0,
     },
@@ -65,16 +68,16 @@ const getRemainingDays = (date: Date): string => {
   return remainingDays < 0 ? "EXPIRED" : remainingDays.toString();
 };
 
-const cell = (key: string, child: React.ReactNode) => (
-  <TableCell key={key} className={key}>
-    {child}
-  </TableCell>
-);
-const empty = (key: string) => () => cell(key, "");
-
 const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps &
   WithStyles<typeof styles>> = ({ tradeGroup, classes, showChart, columnsToShow, onRemoveTrades }) => {
     const [isOpen, setIsOpen] = useState(false);
+
+    const cell = (key: string, child: React.ReactNode) => (
+      <TableCell key={key} className={clsx(key, classes.cell)}>
+        {child}
+      </TableCell>
+    );
+    const empty = (key: string) => () => cell(key, "");
 
     const toggleIsOpen = () => {
       setIsOpen(!isOpen);
@@ -116,9 +119,8 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
       optionType: empty("optionType"),
       strikePrice: empty("strikePrice"),
       position: empty("position"),
-      price: tradeGroup => (
+      price: tradeGroup => cell("price",
         <PriceColumn
-          key={"price"}
           price={tradeGroup.trades.reduce(
             (sum, trade) => (sum += trade.tradePrice),
             0
