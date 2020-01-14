@@ -4,6 +4,7 @@ import { FlexQueryParserService } from './Parser/FlexQueryParser.service';
 import axios from 'axios';
 import { Trade } from "../models";
 import { reportLoaded, reportLoading, reportLoadError } from './import.actions';
+import { applyFilters } from "../filters/filters.actioncreators";
 
 const reportParserService: IParser = new FlexQueryParserService();
 
@@ -38,4 +39,6 @@ export const loadTrades = async (dispatch: Dispatch) => {
     const report = reportParserService.CreateReportFromTrades(trades);
 
     dispatch(reportLoaded(report));
+
+    applyFilters(dispatch);
 }

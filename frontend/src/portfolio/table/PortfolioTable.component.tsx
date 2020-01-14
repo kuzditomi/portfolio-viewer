@@ -3,7 +3,7 @@ import { Report } from "../../models";
 import TradeHeader from "./TradeHeader.component";
 import TradeGroupRow from "./TradeGroupRow.container";
 import { Table, TableBody, createStyles, withStyles } from "@material-ui/core";
-import { ColumnsType } from '../../column-picker/models';
+import { ColumnsType } from '../../options/column-picker/models';
 import { WithStyles } from '@material-ui/styles';
 
 const styles = () => createStyles({

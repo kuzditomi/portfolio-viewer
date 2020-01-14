@@ -1,7 +1,7 @@
 import React from "react";
 import { TableHead, TableCell, TableRow } from "@material-ui/core";
-import { columnTitles } from './../../column-picker/models';
-import { ColumnsType } from '../../column-picker/models';
+import { columnTitles } from '../../options/column-picker/models';
+import { ColumnsType } from '../../options/column-picker/models';
 
 export interface TradeHeaderProps {
   columnsToShow: ColumnsType[];

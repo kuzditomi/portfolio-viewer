@@ -44,10 +44,12 @@ export abstract class ParserBase implements IParser {
                     underlying,
                     expiration,
                     trades: [],
+                    commission: 0,
                     pl: 0
                 };
             }
 
+            map[key].commission += trade.commission;
             map[key].trades.push(trade);
 
             return map;

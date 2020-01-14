@@ -5,17 +5,33 @@ import TradesCompareService from "../calculations/TradesCompare.service";
 import PLService from '../calculations/PL.Service';
 
 export class FilterService {
-    public applyFilters(reportToFilter: Report, filters: FiltersState): Report {
+    public applyFilters(reportToFilter: Report, filters: FiltersState, includeCommission: boolean): Report {
         const filtersToApply = [
             this.filterByDate(filters.dateFilter),
             this.filterByPosition(filters.positionFilter),
         ];
 
         const filteredPortfolio = filtersToApply.reduce((report, filter) => filter(report), reportToFilter)
+        filteredPortfolio.tradeGroups.forEach(tradeGroup => tradeGroup.commission = tradeGroup.trades.reduce((sum, trade) => sum + trade.commission, 0));
+
+        const tradeGroups = filteredPortfolio.tradeGroups
+            .map(group => {
+                const groupWithPL = PLService.setPLForGroup(group);
+
+                if (!includeCommission) {
+                    return groupWithPL;
+                }
+
+                return {
+                    ...groupWithPL,
+                    pl: groupWithPL.pl - (group.commission / 100)
+                }
+            });
+
 
         return {
             ...filteredPortfolio,
-            tradeGroups: filteredPortfolio.tradeGroups.map(PLService.setPLForGroup)
+            tradeGroups
         };
     }
 

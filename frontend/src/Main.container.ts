@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { AppState } from "./store";
 import { filteredPortfolioSelector, isChartOpenSelector } from './portfolio/portfolio.selector';
 import MainComponent, { MainStateProps, MainDispatchProps } from "./Main.component";
-import { selectedColumnsSelector } from './column-picker/columns.selector';
+import { selectedColumnsSelector } from './options/options.selector';
 import { Dispatch } from 'redux';
 import { loadTrades } from "./import/import.actioncreators";
 

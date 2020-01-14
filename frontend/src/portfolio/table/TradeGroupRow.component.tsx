@@ -1,6 +1,6 @@
 import { TradeGroup, Trade } from "../../models";
 import React, { useState } from "react";
-import { ColumnsType } from "../../column-picker/models";
+import { ColumnsType } from "../../options/column-picker/models";
 import TradeRow from "./TradeRow.component";
 import PriceColumn from "./PriceColumn.component";
 import { TableRow, TableCell, IconButton, Theme } from "@material-ui/core";
@@ -11,6 +11,7 @@ import clsx from 'clsx';
 import { grey, green, red } from '@material-ui/core/colors';
 import PLColumn from "./PLColumn.component";
 import TrashIcon from "@material-ui/icons/Delete";
+import CommissionColumn from "./CommissionColumn.component";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -127,6 +128,7 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
           )}
         />
       ),
+      commission: tradeGroup => (<CommissionColumn key={"commission"} commission={tradeGroup.commission} />),
       pl: tradeGroup => (
         <PLColumn
           key={"pl"}

@@ -5,6 +5,8 @@ import { originalPortfolioSelector } from '../portfolio/portfolio.selector';
 import store from '../store';
 import { portfolioFilteredAction } from '../portfolio/portfolio.actions';
 import { FilterService } from './filter.service';
+import { filtersSelector } from './filters.selectors';
+import { isCommissionIncludedInPLSelector } from '../options/options.selector';
 
 export const filterByDate = (filter: DateFilter) => (dispatch: Dispatch) => {
     dispatch(dateFilterSelectedAction(filter));
@@ -20,15 +22,18 @@ export const filterByPosition = (filter: PositionFilter) => (dispatch: Dispatch)
 
 
 const filterService = new FilterService();
-const applyFilters = (dispatch: Dispatch) => {
+export const applyFilters = (dispatch: Dispatch) => {
     const portfolio = originalPortfolioSelector(store.getState());
     
     if (!portfolio) {
         return;
     }
+    
+    const state = store.getState();
+    const filters = filtersSelector(state);
+    const includeCommission = isCommissionIncludedInPLSelector(state); 
 
-    const filtersState = store.getState().filters;
-    const filteredPortfolio = filterService.applyFilters(portfolio, filtersState);
+    const filteredPortfolio = filterService.applyFilters(portfolio, filters, includeCommission);
    
     dispatch(portfolioFilteredAction(filteredPortfolio));
 }

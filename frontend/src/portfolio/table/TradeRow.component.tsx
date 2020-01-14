@@ -1,12 +1,13 @@
 import { OptionType, Trade } from "../../models";
 import React from "react";
-import { ColumnsType } from "../../column-picker/models";
+import { ColumnsType } from "../../options/column-picker/models";
 import PriceColumn from "./PriceColumn.component";
 import { TableRow, TableCell, IconButton } from '@material-ui/core';
 import TrashIcon from "@material-ui/icons/Delete";
 import { WithStyles, createStyles, withStyles } from '@material-ui/styles';
 import { red } from "@material-ui/core/colors";
 import clsx from 'clsx';
+import CommissionColumn from "./CommissionColumn.component";
 
 const styles = () =>
   createStyles({
@@ -62,6 +63,7 @@ const TradeRow: React.FC<TradeRowProps & WithStyles<typeof styles>> = ({ trade, 
       cell("strikePrice", trade.strikePrice.toFixed(1)),
     position: trade => cell("position", trade.position.toString()),
     pl: () => cell('pl', ''),
+    commission: trade => (<CommissionColumn key={"commission"} commission={trade.commission} />),
     tradeDate: trade => cell('tradeDate', trade.tradeDate.toLocaleDateString()),
     expiration: trade => cell("expiration", trade.expiration.toLocaleDateString()),
     price: trade => cell("price", <PriceColumn price={trade.tradePrice} />),

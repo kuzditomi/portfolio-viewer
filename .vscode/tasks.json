@@ -28,7 +28,8 @@
                 "reveal": "always",
                 "focus": true,
                 "group": "build"
-            }
+            },
+            "problemMatcher": []
         },
         {
             "label": "Build api",

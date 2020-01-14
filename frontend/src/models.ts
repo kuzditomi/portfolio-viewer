@@ -11,6 +11,7 @@ export interface Trade {
     strikePrice: number;
     tradePrice: number; // signed with positions sign
     pl: number;
+    commission: number;
     tradeDate: Date;
 }
 
@@ -24,5 +25,6 @@ export interface TradeGroup {
     underlying: string;
     expiration: Date;
     trades: Trade[];
+    commission: number;
     pl: number;
 }

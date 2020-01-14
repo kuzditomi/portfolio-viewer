@@ -7,6 +7,7 @@ export const columns = [
     'position',
     'price',
     'pl',
+    'commission',
     'tradeDate',
     'expiration',
     'remainingDays'
@@ -23,6 +24,7 @@ export const columnTitles: { [key in ColumnsType]: string } = {
     expiration: "Expiration",
     price: "Trade Price",
     pl: "Realized P/L",
+    commission: "Commision",
     tradeDate: "Trade date",
     remainingDays: "Remaining days"
 };

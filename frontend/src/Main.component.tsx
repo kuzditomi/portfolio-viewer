@@ -3,14 +3,14 @@ import { withStyles, createStyles, WithStyles } from "@material-ui/styles";
 import { Theme, Container, Grid, Paper } from "@material-ui/core";
 import PortfolioSummary from "./portfolio/PortfolioSummary.container";
 import Filters from "./filters/Filters.component";
-import ColumnPicker from "./column-picker/ColumnPicker.container";
 import Import from "./import/Import.container";
 import { Report } from "./models";
 import PortfolioTableComponent from "./portfolio/table/PortfolioTable.component";
 import ChartPage from "./chart/ChartPage.container";
 import SwitcherComponent from "./switcher/Switcher.component";
 import SwitcherItemComponent from "./switcher/SwitcherItem.component";
-import { ColumnsType } from './column-picker/models';
+import { ColumnsType } from './options/column-picker/models';
+import Options from "./options/Options.component";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -75,7 +75,7 @@ const MainComponent: React.FC<MainStateProps & MainDispatchProps & WithStyles<ty
                 <Filters />
               </Grid>
               <Grid item xs={12} md={4}>
-                <ColumnPicker />
+                <Options/>
               </Grid>
             </Grid>
           </Paper>
