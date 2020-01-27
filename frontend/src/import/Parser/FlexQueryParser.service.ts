@@ -6,7 +6,9 @@ export class FlexQueryParserService extends ParserBase {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(rawText, "text/xml");
 
-        const trades: Trade[] = Array.from(xmlDoc.getElementsByTagName('Trade')).map(tradeElement => {
+        const trades: Trade[] = Array.from(xmlDoc.getElementsByTagName('Trade'))
+            .filter(tradeElement => tradeElement.getAttribute('assetCategory') === 'OPT') // support options only for now :(
+            .map(tradeElement => {
             const expiry = tradeElement.getAttribute('expiry')!;
             const tradeDate = tradeElement.getAttribute('tradeDate')!;
             const position = parseInt(tradeElement.getAttribute('quantity')!);
