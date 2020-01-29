@@ -1,15 +1,19 @@
 import { TradeGroup } from '../models';
-import TradesCompareService from './TradesCompare.service';
 
 const getPLForGroup = (group: TradeGroup): number => {
     const pl = group.trades.reduce((summary, trade) => {
-        const closingTrade = group.trades.find(TradesCompareService.isClosingCombinationWith(trade));
+        const tradePL = -trade.position * Math.abs(trade.tradePrice);
 
-        if (closingTrade && closingTrade.tradeDate >= trade.tradeDate) {
-            return summary + (-closingTrade.position * Math.abs(closingTrade.tradePrice)) + (-trade.position * Math.abs(trade.tradePrice));
-        }
+        return summary + tradePL;
 
-        return summary;
+        // TODO: this will miss the expired options when there is no closing trade
+        // const closingTrade = group.trades.find(TradesCompareService.isClosingCombinationWith(trade));
+
+        // if (closingTrade && closingTrade.tradeDate >= trade.tradeDate) {
+        //     return summary + (-closingTrade.position * Math.abs(closingTrade.tradePrice)) + (-trade.position * Math.abs(trade.tradePrice));
+        // }
+
+        // return summary;
     }, 0);
 
     return pl;

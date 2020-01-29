@@ -1,11 +1,17 @@
-import { Trade } from "../models";
+import { Trade, TradeGroup } from '../models';
 
-const isClosingCombinationWith = (trade: Trade) => (otherTrade: Trade) =>
-    trade.optionType === otherTrade.optionType &&
-    trade.strikePrice === otherTrade.strikePrice &&
-    trade.position === (-1 * otherTrade.position);
+class TradesCompareService {
+    hasClosingCombination(trade: Trade, tradeGroup: TradeGroup) {
+        const totalTradePosition = tradeGroup.trades.reduce((numberOfTradesForSameTrade, currentTrade) => {
+            if (currentTrade.optionType === trade.optionType && currentTrade.strikePrice === trade.strikePrice) {
+                return numberOfTradesForSameTrade + currentTrade.position;
+            }
 
-const TradesCompareService = {
-    isClosingCombinationWith
+            return numberOfTradesForSameTrade;
+        }, 0);
+
+        return totalTradePosition == 0;
+    }
 }
-export default TradesCompareService;
+
+export const tradesCompareService = new TradesCompareService();

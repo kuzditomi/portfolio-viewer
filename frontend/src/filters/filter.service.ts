@@ -1,7 +1,7 @@
 import { Report, TradeGroup, Trade } from '../models';
 import { DateFilter, PositionFilter } from './filters.models';
 import { FiltersState } from './filters.reducer';
-import TradesCompareService from "../calculations/TradesCompare.service";
+import { tradesCompareService } from "../calculations/TradesCompare.service";
 import PLService from '../calculations/PL.Service';
 
 export class FilterService {
@@ -57,7 +57,7 @@ export class FilterService {
             [PositionFilter.All]: (tradeGroup: TradeGroup) => tradeGroup,
             [PositionFilter.Closed]: (tradeGroup: TradeGroup) => {
                 const filteredTrades = tradeGroup.trades
-                    .filter(trade => tradeGroup.trades.find(TradesCompareService.isClosingCombinationWith(trade)))
+                    .filter(trade => tradesCompareService.hasClosingCombination(trade, tradeGroup))
 
                 return {
                     ...tradeGroup,
@@ -66,7 +66,7 @@ export class FilterService {
             },
             [PositionFilter.Open]: (tradeGroup: TradeGroup) => {
                 const filteredTrades = tradeGroup.trades
-                    .filter(trade => !tradeGroup.trades.find(TradesCompareService.isClosingCombinationWith(trade)))
+                    .filter(trade => !tradesCompareService.hasClosingCombination(trade, tradeGroup))
 
                 return {
                     ...tradeGroup,
