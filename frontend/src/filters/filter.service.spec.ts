@@ -4,6 +4,8 @@ import { Report, Trade, OptionType } from '../models';
 import { FiltersState } from './filters.reducer';
 
 const mockTrade: Trade = {
+    id: '1',
+    commission: 2,
     expiration: new Date(2000, 1, 1),
     strikePrice: 100,
     optionType: OptionType.Call,
@@ -21,6 +23,7 @@ describe('Filter Service', () => {
     beforeEach(() => {
         filterSerive = new FilterService();
         report = {
+            trades: [],
             name: 'test report',
             tradeGroups: []
         };
@@ -36,6 +39,8 @@ describe('Filter Service', () => {
 
             report.tradeGroups = [
                 {
+                    commission: 0,
+                    pl: 0,
                     expiration: mockTrade.expiration,
                     trades: [
                         {
@@ -57,7 +62,7 @@ describe('Filter Service', () => {
             ];
 
             // Act
-            const filteredPortfolio = filterSerive.applyFilters(report, filter);
+            const filteredPortfolio = filterSerive.applyFilters(report, filter, false);
 
             // Assert
             expect(filteredPortfolio.tradeGroups.length).toEqual(1);
@@ -73,6 +78,8 @@ describe('Filter Service', () => {
 
             report.tradeGroups = [
                 {
+                    commission: 0,
+                    pl: 0,
                     expiration: mockTrade.expiration,
                     trades: [
                         {
@@ -85,7 +92,7 @@ describe('Filter Service', () => {
             ];
 
             // Act
-            const filteredPortfolio = filterSerive.applyFilters(report, filter);
+            const filteredPortfolio = filterSerive.applyFilters(report, filter, false);
 
             // Assert
             expect(filteredPortfolio.tradeGroups.length).toEqual(0);
@@ -100,6 +107,8 @@ describe('Filter Service', () => {
 
             report.tradeGroups = [
                 {
+                    commission: 0,
+                    pl: 0,
                     expiration: mockTrade.expiration,
                     trades: [
                         {
@@ -121,7 +130,7 @@ describe('Filter Service', () => {
             ];
 
             // Act
-            const filteredPortfolio = filterSerive.applyFilters(report, filter);
+            const filteredPortfolio = filterSerive.applyFilters(report, filter, false);
 
             // Assert
             expect(filteredPortfolio.tradeGroups.length).toEqual(1);
@@ -137,6 +146,8 @@ describe('Filter Service', () => {
 
             report.tradeGroups = [
                 {
+                    commission: 0,
+                    pl: 0,
                     expiration: mockTrade.expiration,
                     trades: [
                         {
@@ -153,7 +164,7 @@ describe('Filter Service', () => {
             ];
 
             // Act
-            const filteredPortfolio = filterSerive.applyFilters(report, filter);
+            const filteredPortfolio = filterSerive.applyFilters(report, filter, false);
 
             // Assert
             expect(filteredPortfolio.tradeGroups.length).toEqual(0);
@@ -168,6 +179,8 @@ describe('Filter Service', () => {
 
             report.tradeGroups = [
                 {
+                    commission: 0,
+                    pl: 0,
                     expiration: mockTrade.expiration,
                     trades: [
                         {
@@ -189,11 +202,49 @@ describe('Filter Service', () => {
             ];
 
             // Act
-            const filteredPortfolio = filterSerive.applyFilters(report, filter);
+            const filteredPortfolio = filterSerive.applyFilters(report, filter, false);
 
             // Assert
             expect(filteredPortfolio.tradeGroups.length).toEqual(1);
             expect(filteredPortfolio.tradeGroups[0].trades.length).toEqual(1);
+        });
+
+        it('should understand closed when positions sum to 0', ()=>{
+            // Arange
+            const filter: FiltersState = {
+                dateFilter: DateFilter.All,
+                positionFilter: PositionFilter.Closed
+            }
+
+            report.tradeGroups = [
+                {
+                    commission: 0,
+                    pl: 0,
+                    expiration: mockTrade.expiration,
+                    trades: [
+                        {
+                            ...mockTrade,
+                            position: 1
+                        },
+                        {
+                            ...mockTrade,
+                            position: 1
+                        },
+                        {
+                            ...mockTrade,
+                            tradeDate: new Date(mockTrade.tradeDate.getTime() + 100),
+                            position: -2
+                        },
+                    ],
+                    underlying: mockTrade.underlying
+                }
+            ];
+
+            // Act
+            const filteredPortfolio = filterSerive.applyFilters(report, filter, false);
+
+            // Assert
+            expect(filteredPortfolio.tradeGroups.length).toEqual(1);
         });
     });
 });
