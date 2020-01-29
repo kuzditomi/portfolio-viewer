@@ -10,7 +10,7 @@ class TradesCompareService {
             return numberOfTradesForSameTrade;
         }, 0);
 
-        return totalTradePosition == 0;
+        return totalTradePosition === 0;
     }
 }
 
