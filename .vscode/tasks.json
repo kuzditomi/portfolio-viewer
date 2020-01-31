@@ -46,6 +46,18 @@
                 "group": "build"
             },
             "problemMatcher": []
-        }
+        },
+        {
+            "label": "Open coverage",
+            "windows": {
+                "command": "explorer.exe"
+            },
+            "osx": {
+                "command": "open"
+            },
+            "args": ["frontend\\coverage\\lcov-report\\index.html"],
+            "problemMatcher": []
+        },
+        
     ]
 }

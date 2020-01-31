@@ -2,8 +2,15 @@ export enum OptionType {
     Call = 1,
     Put = 2
 }
+
+export enum TradeType {
+    Option = 'OPT',
+    Stock = 'STK'
+}
+
 export interface Trade {
     id: string;
+    type: TradeType;
     underlying: string;
     position: number;
     expiration: Date;
