@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware  } from "redux";
+import thunk from 'redux-thunk';
 import portfolio from './portfolio/portfolio.reducer';
 import filters from './filters/filters.reducer';
 import options from './options/options.reducer';
@@ -14,4 +15,8 @@ export const rootReducer = combineReducers({
 
 export type AppState = ReturnType<typeof rootReducer>
 
-export default createStore(rootReducer, composeWithDevTools());
+const middleware = [
+    thunk,
+];
+
+export default createStore(rootReducer, composeWithDevTools(applyMiddleware(...middleware)));

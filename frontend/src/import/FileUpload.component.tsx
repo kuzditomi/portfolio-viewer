@@ -41,7 +41,7 @@ const FileUploadComponent: React.FC<FileUploadProps &
           onChange={e => setFile(e.target.files)}
         />
         <TextField
-          value={file && file.length ? file[0].name : undefined}
+          value={file && file.length ? file[0].name : ''}
           placeholder="No file chosen"
         />
 
