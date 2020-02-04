@@ -22,3 +22,4 @@ export const filteredPortfolioSummary = (state: AppState) => {
 
 export const isChartOpenSelector = (state: AppState) => !!state.portfolio.chartData;
 export const chartDataSelector = (state: AppState) => state.portfolio.chartData;
+export const tradeIdsSelector = (state: AppState) => state.portfolio.portfolio && state.portfolio.portfolio.trades.map(t => t.id);
