@@ -1,4 +1,4 @@
-import { TradeGroup, Trade } from "../../models";
+import { TradeGroup, Trade, OptionTrade } from "../../models";
 import React, { useState } from "react";
 import { ColumnsType } from "../../options/column-picker/models";
 import TradeRow from "./TradeRow.component";
@@ -151,7 +151,7 @@ const TradeGroupRow: React.FC<TradeGroupRowOwnProps & TradeGroupRowDispatchProps
         </TableRow>
         {isOpen
           ? tradeGroup.trades.map((trade, i) => (
-            <TradeRow trade={trade} key={i} columnsToShow={columnsToShow} onRemoveTrade={() => onRemoveTrades([trade])} />
+            <TradeRow trade={trade as OptionTrade} key={i} columnsToShow={columnsToShow} onRemoveTrade={() => onRemoveTrades([trade])} />
           ))
           : null}
       </>

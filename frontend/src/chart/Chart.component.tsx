@@ -1,6 +1,6 @@
 import React from "react";
 import { createStyles, WithStyles, withStyles } from "@material-ui/styles";
-import { TradeGroup, Trade } from '../models';
+import { TradeGroup, Trade, TradeType, OptionTrade } from '../models';
 import { Chart } from "react-google-charts";
 import ChartService from "./Chart.service";
 
@@ -15,7 +15,7 @@ export interface ChartProps {
 const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ chartData, showMainStrategyOnly, classes }) => {
     const isStrategy = chartData.trades.length > 1;
 
-    const getHeaderFromTrade = (trade: Trade) => `${trade.underlying} ${trade.strikePrice}`;
+    const getHeaderFromTrade = (trade: Trade) => trade.type === TradeType.Option ? `${trade.underlying} ${trade.strikePrice}` : trade.id;
 
     const getBoundaries = () => {
         let from = 0;
@@ -23,8 +23,8 @@ const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ char
         const tradeGroup = chartData;
 
         if (tradeGroup.trades.length > 1) {
-            const middlePoint = tradeGroup.trades.reduce((sum, t) => sum + t.strikePrice, 0) / tradeGroup.trades.length;
-            const strikes = tradeGroup.trades.map(t => t.strikePrice);
+            const middlePoint = tradeGroup.trades.reduce((sum, t) => sum + (t.type === TradeType.Option && t.strikePrice || t.tradePrice), 0) / tradeGroup.trades.length;
+            const strikes = tradeGroup.trades.map(t => t.type === TradeType.Option && t.strikePrice || t.tradePrice);
             const min = Math.min(...strikes)
             const max = Math.max(...strikes)
 
@@ -32,8 +32,9 @@ const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ char
             to = max + ((max - middlePoint) / 2);
         } else {
             const distance = Math.abs(tradeGroup.trades[0].tradePrice * 100)
-            from = tradeGroup.trades[0].strikePrice - 2 * distance;
-            to = tradeGroup.trades[0].strikePrice + 2 * distance;
+            const trade = tradeGroup.trades[0] as OptionTrade;
+            from = trade.strikePrice - 2 * distance;
+            to = trade.strikePrice + 2 * distance;
 
         }
 
@@ -65,7 +66,7 @@ const ChartComponent: React.FC<ChartProps & WithStyles<typeof styles>> = ({ char
         const headers = ['x'];
 
         if (showMainStrategyOnly) {
-            headers.push(chartData.trades[0].underlying);
+            headers.push((chartData.trades[0] as OptionTrade).underlying);
         } else {
             headers.push(...chartData.trades.map(getHeaderFromTrade));
             if (isStrategy) {

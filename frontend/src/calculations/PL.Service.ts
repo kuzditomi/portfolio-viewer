@@ -1,10 +1,14 @@
-import { TradeGroup } from '../models';
+import { TradeGroup, TradeType } from '../models';
 
 const getPLForGroup = (group: TradeGroup): number => {
     const pl = group.trades.reduce((summary, trade) => {
-        const tradePL = -trade.position * Math.abs(trade.tradePrice);
+        if (trade.type === TradeType.Option) {
+            const tradePL = -trade.position * Math.abs(trade.tradePrice);
 
-        return summary + tradePL;
+            return summary + tradePL;
+        }
+
+        return summary;
 
         // TODO: this will miss the expired options when there is no closing trade
         // const closingTrade = group.trades.find(TradesCompareService.isClosingCombinationWith(trade));

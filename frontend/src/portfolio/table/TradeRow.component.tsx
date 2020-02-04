@@ -1,4 +1,4 @@
-import { OptionType, Trade } from "../../models";
+import { OptionType, Trade, OptionTrade } from "../../models";
 import React from "react";
 import { ColumnsType } from "../../options/column-picker/models";
 import PriceColumn from "./PriceColumn.component";
@@ -28,7 +28,7 @@ const styles = () =>
   });
 
 export interface TradeRowProps {
-  trade: Trade;
+  trade: OptionTrade;
   columnsToShow: ColumnsType[];
   onRemoveTrade: (trade: Trade) => void;
 }
@@ -50,7 +50,7 @@ const TradeRow: React.FC<TradeRowProps & WithStyles<typeof styles>> = ({ trade, 
   );
 
   const columnDisplayers: {
-    [key in ColumnsType]: (trade: Trade) => React.ReactNode;
+    [key in ColumnsType]: (trade: OptionTrade) => React.ReactNode;
   } = {
     action: (trade) => cell("action", removeTradeCell(trade)),
     underlying: trade => cell("underlying", trade.underlying),

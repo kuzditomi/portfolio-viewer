@@ -1,5 +1,5 @@
 import { IParser } from './IParser.service';
-import { Report, Trade, TradeGroup } from '../../models';
+import { Report, Trade, TradeGroup, TradeType } from '../../models';
 import PLService from '../../calculations/PL.Service';
 
 export abstract class ParserBase implements IParser {
@@ -36,28 +36,32 @@ export abstract class ParserBase implements IParser {
 
     protected getGroupsFromTrades(trades: Trade[]) {
         const mapByUnderlyingAndExpiration = trades.reduce((map, trade) => {
-            const { expiration, underlying } = trade;
-            const key = `${underlying} - ${expiration.toLocaleDateString()}`;
+            if (trade.type === TradeType.Option) {
+                const { expiration, underlying } = trade;
+                const key = `${underlying} - ${expiration.toLocaleDateString()}`;
 
-            if (!map[key]) {
-                map[key] = {
-                    underlying,
-                    expiration,
-                    trades: [],
-                    commission: 0,
-                    pl: 0
-                };
+                if (!map[key]) {
+                    map[key] = {
+                        underlying,
+                        expiration,
+                        trades: [],
+                        commission: 0,
+                        pl: 0
+                    };
+                }
+
+                map[key].commission += trade.commission;
+                map[key].trades.push(trade);
+
+                return map;
+            } else {
+                return map; // TODO
             }
-
-            map[key].commission += trade.commission;
-            map[key].trades.push(trade);
-
-            return map;
         }, {} as { [key: string]: TradeGroup })
 
         return Object.values(mapByUnderlyingAndExpiration)
             .sort((a, b) => +a.expiration - +b.expiration)
-            .map(group => { group.trades.sort((a,b) => +a.tradeDate - +b.tradeDate); return group; })
+            .map(group => { group.trades.sort((a, b) => +a.tradeDate - +b.tradeDate); return group; })
             .map(PLService.setPLForGroup);
     }
 

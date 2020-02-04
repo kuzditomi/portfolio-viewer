@@ -8,9 +8,20 @@ export enum TradeType {
     Stock = 'STK'
 }
 
-export interface Trade {
+export type Trade = OptionTrade | StockTrade;
+
+export interface StockTrade {
     id: string;
-    type: TradeType;
+    type: TradeType.Stock;
+    tradePrice: number;
+    pl: number;
+    commission: number;
+    tradeDate: Date;
+}
+
+export interface OptionTrade {
+    id: string;
+    type: TradeType.Option;
     underlying: string;
     position: number;
     expiration: Date;
