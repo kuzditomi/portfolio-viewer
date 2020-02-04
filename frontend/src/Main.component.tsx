@@ -4,6 +4,7 @@ import { Theme, Container, Grid, Paper } from "@material-ui/core";
 import PortfolioSummary from "./portfolio/PortfolioSummary.container";
 import Filters from "./filters/Filters.component";
 import Import from "./import/Import.container";
+import ResetAccount from "./reset-account/ResetAccount.container";
 import { Report } from "./models";
 import PortfolioTableComponent from "./portfolio/table/PortfolioTable.component";
 import ChartPage from "./chart/ChartPage.container";
@@ -75,7 +76,7 @@ const MainComponent: React.FC<MainStateProps & MainDispatchProps & WithStyles<ty
                 <Filters />
               </Grid>
               <Grid item xs={12} md={4}>
-                <Options/>
+                <Options />
               </Grid>
             </Grid>
           </Paper>
@@ -103,7 +104,14 @@ const MainComponent: React.FC<MainStateProps & MainDispatchProps & WithStyles<ty
         <Grid container spacing={3}>
           <Grid item xs={12} md={12}>
             <Paper className={classes.paper}>
-              <Import />
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <Import/>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <ResetAccount/>
+                </Grid>
+              </Grid>
             </Paper>
           </Grid>
           {renderPortfolio()}
