@@ -2,9 +2,8 @@
 
 # portfolio-viewer
 
-You can import flex queries from IB and display stuff
-
-LIVE(old static version): [https://kuzditomi.github.io/portfolio-viewer](https://kuzditomi.github.io/portfolio-viewer)
+You can import flex queries from IB and display stuff. It works for options only.
+I've abandoned this project in favor of a trade planner/journal: https://github.com/kuzditomi/trading-journal
 
 # Prerequisites
 - Nodejs installed
